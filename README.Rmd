@@ -25,7 +25,7 @@ Historical borrowing in clinical trials can improve
   control response of the current study. It also quantifies
   the amount of borrowing through longitudinal benchmark models (independent
   and pooled). The hierarchical model approach to historical borrowing
-  is discussed in Viele et al. (2013).
+  is discussed by Viele et al. (2013).
 
 ## Installation
 

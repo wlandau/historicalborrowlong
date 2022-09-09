@@ -12,7 +12,7 @@ hierarchical model to borrow historical control data from other studies
 to better characterize the control response of the current study. It
 also quantifies the amount of borrowing through longitudinal benchmark
 models (independent and pooled). The hierarchical model approach to
-historical borrowing is discussed in Viele et al. (2013).
+historical borrowing is discussed by Viele et al. (2013).
 
 ## Installation
 
