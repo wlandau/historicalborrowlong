@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^_pkgdown\.yml$
+^\.lintr$
+^\.github$
+^README\.Rmd$
+^NOTICE$
+^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$

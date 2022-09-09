@@ -1,0 +1,528 @@
+---
+title: "Usage"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(historicalborrowlong)
+library(dplyr)
+library(posterior)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  fig.width = 7,
+  fig.height = 5
+)
+set.seed(0)
+```
+
+
+This tutorial shows how to fit historical control-group borrowing models using the `historicalborrowlong` package.
+
+# Data
+
+`historicalborrowlong` expects data on multiple patients partitioned into studies, groups, and repeated measures ("reps"). Here is a simulated example. There are functions to simulate from the prior predictive distribution of each of the hierarchical, independent, and pooled models.
+
+```{r, paged.print = FALSE}
+library(historicalborrowlong)
+library(dplyr)
+set.seed(0)
+data <- hbl_sim_independent(
+  n_continuous = 1,
+  n_study = 3,
+  n_group = 2,
+  n_rep = 4,
+  alpha = rep(1, 12),
+  delta = rep(0.5, 4),
+  n_patient = 10
+)$data %>%
+  rename(
+    outcome = response,
+    trial = study,
+    arm = group,
+    subject = patient,
+    visit = rep,
+    factor1 = covariate_study1_continuous1,
+    factor2 = covariate_study2_continuous1
+  ) %>%
+  mutate(
+    trial = paste0("trial", trial),
+    arm = paste0("arm", arm),
+    subject = paste0("subject", subject),
+    visit = paste0("visit", visit),
+  )
+data
+```
+
+You as the user will choose a reference level of the `study` ("trial") column to indicate which study is the current one (the other are historical). Likewise, you will choose a level of the `group` ("arm") column to indicate which group is the control group and a level of the `rep` ("visit") column to indicate the first measurement of each patient (baseline). To see how `historicalborrowlong` assigns numeric indexes to the study and group levels, use `hbl_data()`. Viewing this output may assist with interpreting the results later on.
+
+```{r}
+standardized_data <- hbl_data(
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+   # Can be continuous, categorical, or binary columns:
+  covariates = c("factor1", "factor2")
+)
+standardized_data
+```
+
+```{r}
+distinct(
+  standardized_data,
+  study,
+  study_label,
+  group,
+  group_label,
+  rep,
+  rep_label
+) %>%
+  select(
+    study,
+    study_label,
+    group,
+    group_label,
+    rep,
+    rep_label
+  )
+```
+
+As explained in the `hbl_data()` and `hb_mcmc_*()` help files, before running the MCMC, dataset is pre-processed.
+This includes expanding the rows of the data so every rep
+of every patient gets an explicit row. So if your
+original data has irregular rep IDs, e.g. unscheduled
+visits in a clinical trial that few patients attend,
+please remove them before the analysis. Only the most
+common rep IDs should be added.
+
+After expanding the rows, the function fills in missing
+values for every column except the response. That includes
+covariates. Missing covariate values are filled in,
+first with last observation carried forward,
+then with last observation carried backward.
+If there are still missing values after this process,
+the program throws an informative error.
+
+# Models
+
+## Recommended: run all models using `hbl_mcmc_sge()`
+
+The `hbl_mcmc_sge()` function runs all 3 models of interest on a Sun Grid Engine (SGE) computing cluster and returns a list of results from all three models. For standardized analyses of real studies, this is highly recommended over the alternative of running each model separately (`hbl_mcmc_hierarchical()`, `hbl_mcmc_pool()`, and `hbl_mcmc_independent()`, as in the next subsection).
+
+In `hbl_mcmc_sge()`, each model runs in its own SGE job, and chains run in parallel across the cores available to each job. The return value is a list of results from each model (hierarchical, independent, and pooled) that you would get by running `hbl_mcmc_hierarchical()`, `hbl_mcmc_pool()`, and `hbl_mcmc_independent()` separately. Each of these data frames each be supplied separately to `hbl_summary()` as explained later in this vignette.
+
+```{r, eval = FALSE, echo = TRUE}
+mcmc <- hbl_mcmc_sge(
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+   # Can be continuous, categorical, or binary columns:
+  covariates = c("factor1", "factor2"),
+  s_tau = 0.5, # The user should to choose this carefully.
+  # Raise these arguments for serious analyses:
+  chains = 1, # Increase to about 3 or 4 in real-life use cases.
+  cores = 1, # *HIGHLY* recommended to have cores = chains
+  iter = 20, # Increase to several thousand in real-life use cases.
+  warmup = 10, # Increase to several thousand in real-life use cases.
+  log = "/dev/null", # optional SGE log file, /dev/null to disregard the log
+  scheduler = "local" # Set to "sge" for serious analysis.
+)
+```
+
+```{r, warning = FALSE, output = FALSE, message = FALSE, eval = TRUE, echo = FALSE}
+suppressWarnings(
+  mcmc <- hbl_mcmc_sge(
+    data = data,
+    response = "outcome",
+    study = "trial",
+    study_reference = "trial3",
+    group = "arm",
+    group_reference = "arm1",
+    patient = "subject",
+    rep = "visit",
+    rep_reference = "visit1",
+     # Can be continuous, categorical, or binary columns:
+    covariates = c("factor1", "factor2"),
+    s_tau = 0.5, # Choose carefully
+    # Raise these arguments for serious analyses:
+    chains = 1, # Increase to about 3 or 4 in real-life use cases.
+    cores = 1, # *HIGHLY* recommended to have cores = chains
+    iter = 20, # Increase to several thousand in real-life use cases.
+    warmup = 10, # Increase to several thousand in real-life use cases.
+    log = "/dev/null", # optional SGE log file, /dev/null to disregard the log
+    scheduler = "local" # Set to "sge" for serious analysis.
+  )
+)
+```
+
+```{r}
+mcmc
+```
+
+## Alternative: run specific models
+
+The hierarchical model is the primary model of interest. For a small number of historical studies, it may be necessary to choose a value of `s_tau` to approximate the prior amount of borrowing given a desired precision ratio and supposed residual variance. See the function `hbl_s_tau()` for how to do this. For a large number of historical studies, the computation may take an extremely long time to run. It may be necessary to change arguments `covariance_current` and `covariance_historical` (especially the latter) for computational efficiency, but not even that may be enough if the data is enormous.
+
+```{r, warning = FALSE, output = FALSE, echo = TRUE, eval = FALSE}
+mcmc_hierarchical <- hbl_mcmc_hierarchical(
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  # Can be continuous, categorical, or binary columns.
+  covariates = c("factor1", "factor2"),
+  s_tau = 0.5, # Choose carefully.
+  # Raise these arguments for serious analyses:
+  chains = 1, # Increase to about 3 or 4 in real-life use cases.
+  iter = 400, # Increase to several thousand in real-life use cases.
+  warmup = 200, # Increase to several thousand in real-life use cases.
+  cores = 1 # Optionally run different chains in different processes.
+)
+```
+
+```{r, warning = FALSE, output = FALSE, echo = FALSE, eval = TRUE}
+suppressWarnings(
+  mcmc_hierarchical <- hbl_mcmc_hierarchical(
+    data = data,
+    response = "outcome",
+    study = "trial",
+    study_reference = "trial3",
+    group = "arm",
+    group_reference = "arm1",
+    patient = "subject",
+    rep = "visit",
+    rep_reference = "visit1",
+     # Can be continuous, categorical, or binary columns:
+    covariates = c("factor1", "factor2"),
+    s_tau = 0.5, # Choose carefully.
+    # Raise these arguments for serious analyses:
+    chains = 1, # Increase to about 3 or 4 in real-life use cases.
+    iter = 400, # Increase to several thousand in real-life use cases.
+    warmup = 200, # Increase to several thousand in real-life use cases.
+    cores = 1 # Optionally run different chains in different processes.
+  )
+)
+```
+
+```{r}
+mcmc_hierarchical
+```
+
+The pooled and independent models are benchmarks used to quantify the borrowing strength of the hierarchical model. To run these benchmark models, run the functions below. Each function returns a data frame with one column per parameter and one row per posterior sample.
+
+```{r, warning = FALSE, output = FALSE, eval = FALSE, echo = TRUE}
+mcmc_pool <- hbl_mcmc_pool(
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  # Can be continuous, categorical, or binary columns:
+  covariates = c("factor1", "factor2"),
+  # Raise these arguments for serious analyses:
+  chains = 1, # Increase to about 3 or 4 in real-life use cases.
+  iter = 400, # Increase to several thousand in real-life use cases.
+  warmup = 200, # Increase to several thousand in real-life use cases.
+  cores = 1 # Optionally run different chains in different processes.
+)
+```
+
+```{r, warning = FALSE, output = FALSE, eval = TRUE, echo = FALSE}
+suppressWarnings(
+  mcmc_pool <- hbl_mcmc_pool(
+    data = data,
+    response = "outcome",
+    study = "trial",
+    study_reference = "trial3",
+    group = "arm",
+    group_reference = "arm1",
+    patient = "subject",
+    rep = "visit",
+    rep_reference = "visit1",
+    # Can be continuous, categorical, or binary columns.
+    covariates = c("factor1", "factor2"),
+    # Raise these arguments for serious analyses:
+    chains = 1, # Increase to about 3 or 4 in real-life use cases.
+    iter = 400, # Increase to several thousand in real-life use cases.
+    warmup = 200, # Increase to several thousand in real-life use cases.
+    cores = 1 # Optionally run different chains in different processes.
+  )
+)
+```
+
+```{r}
+mcmc_pool
+```
+
+```{r, warning = FALSE, output = FALSE, eval = FALSE, echo = TRUE}
+mcmc_independent <- hbl_mcmc_independent(
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  covariates = c("factor1", "factor2"),
+  # Raise these arguments for serious analyses:
+  chains = 1, # Increase to about 3 or 4 in real-life use cases.
+  iter = 400, # Increase to several thousand in real-life use cases.
+  warmup = 200, # Increase to several thousand in real-life use cases.
+  cores = 1 # Optionally run different chains in different processes.
+)
+```
+
+```{r, warning = FALSE, output = FALSE, eval = TRUE, echo = FALSE}
+suppressWarnings(
+  mcmc_independent <- hbl_mcmc_independent(
+    data = data,
+    response = "outcome",
+    study = "trial",
+    study_reference = "trial3",
+    group = "arm",
+    group_reference = "arm1",
+    patient = "subject",
+    rep = "visit",
+    rep_reference = "visit1",
+    covariates = c("factor1", "factor2"),
+    # Raise these arguments for serious analyses:
+    chains = 1, # Increase to about 3 or 4 in real-life use cases.
+    iter = 400, # Increase to several thousand in real-life use cases.
+    warmup = 200, # Increase to several thousand in real-life use cases.
+    cores = 1 # Optionally run different chains in different processes.
+  )
+)
+```
+
+```{r}
+mcmc_independent
+```
+
+# Model performance
+
+A typical workflow will run all three models. Since each model can take several hours to run, it is strongly recommended to:
+
+1. For each model, run all chains in parallel by setting the `cores` argument equal to `chains`.
+2. Run all models concurrently on different jobs on a computing cluster. Since `cores` will usually be greater than 1, it is strongly recommended that each cluster job have as many cores/slots as the `cores` argument.
+
+# Convergence
+
+It is important to check convergence diagnostics on each model. The `hbl_convergence()` function returns data frame of summarized convergence diagnostics.
+ `max_rhat` is the maximum univariate Gelman/Rubin potential scale
+ reduction factor over all the parameters of the model,
+ `min_ess_bulk` is the minimum bulk effective sample size over the
+ parameters, and `min_ess_tail` is the minimum tail effective
+ sample size. `max_rhat` should be below 1.01, and the ESS metrics
+ should both be above 100 times the number of MCMC chains. If
+ any of these conditions are not true, the MCMC did not converge,
+ and it is recommended to try running the model for more saved
+ iterations (and if `max_rhat` is high, possibly more warmup
+ iterations). You could also try increasing `adapt_delta` and `max_treedepth` in the `control` argument, or adjust other MCMC/HMC settings through `control` or the informal arguments (ellipsis "`...`"). See `?rstan::stan` for details.
+
+```{r, warning = FALSE, echo = TRUE, eval = FALSE}
+hbl_convergence(mcmc_hierarchical)
+```
+
+```{r, warning = FALSE, echo = FALSE, eval = TRUE}
+suppressWarnings(hbl_convergence(mcmc_hierarchical))
+```
+
+# Results
+
+Each model can be summarized with the `hbl_summary()` function. The output is a table with few rows and many columns.
+
+```{r}
+summary_hierarchical <- hbl_summary(
+  mcmc = mcmc_hierarchical,
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  covariates = c("factor1", "factor2"),
+  eoi = c(0, 1),
+  direction = c(">", "<")
+)
+summary_hierarchical
+```
+
+`hbl_summary()` returns a tidy data frame with one row per group (e.g. treatment arm) and the columns in the following list. Unless otherwise specified,
+the quantities are calculated at the group-by-rep level.
+Some are calculated for the current (non-historical) study only,
+while others pertain to the combined dataset which includes
+all historical studies.
+
+* `group`: group index.
+* `group_label`: original group label in the data.
+* `rep`: rep index.
+* `rep_label`: original rep label in the data.
+* `data_mean`: observed mean of the response specific to the current
+  study.
+* `data_sd`: observed standard deviation of the response
+  specific to the current study.
+* `data_lower`: lower bound of a simple frequentist 95% confidence
+  interval of the observed data mean specific to the current study.
+* `data_upper`: upper bound of a simple frequentist 95% confidence
+  interval of the observed data mean specific to the current study.
+* `data_n`: number of non-missing observations in the combined dataset
+  (all studies).
+* `data_N`: total number of observations (missing and non-missing)
+  in the combined dataset (all studies).
+* `data_n_study_*`: number of non-missing observations in each study.
+  The suffixes of these column names are integer study indexes.
+  Call `dplyr::distinct(hbl_data(your_data), study, study_label)`
+  to see which study labels correspond to these integer indexes.
+* `data_N_study_*`: total number of observations
+  (missing and non-missing) within each study.
+  The suffixes of these column names are integer study indexes.
+  Call `dplyr::distinct(hbl_data(your_data), study, study_label)`
+  to see which study labels correspond to these integer indexes.
+* `response_mean`: Estimated posterior mean of the response
+  from the model. (Here, the response variable in the data
+  should be a change from baseline outcome.)
+  Specific to the current study.
+* `response_sd`: Estimated posterior standard deviation of the mean
+  response from the model.
+  Specific to the current study.
+* `response_variance`: Estimated posterior variance of the mean
+  response from the model.
+   Specific to the current study.
+* `response_lower`: Lower bound of a 95% posterior interval on the mean
+  response from the model.
+   Specific to the current study.
+* `response_upper`: Upper bound of a 95% posterior interval on the mean
+  response from the model.
+   Specific to the current study.
+* `response_mean_mcse`: Monte Carlo standard error of `response_mean`.
+* `response_sd_mcse`: Monte Carlo standard error of `response_sd`.
+* `response_lower_mcse`: Monte Carlo standard error of `response_lower`.
+* `response_upper_mcse`: Monte Carlo standard error of `response_upper`.
+* `change_*`: same as the `response_*` columns, but for change
+  from baseline instead of the response. Not included if `response_type`
+  is `"change"` because in that case the response is already
+  change from baseline.
+   Specific to the current study.
+* `change_percent_*`: same as the `change_*` columns, but for the *percent* change from baseline (from 0% to 100%). Not included if `response_type` is `"change"` because in that case the response is already change from baseline. Specific to the current study.
+* `diff_*`: same as the `response_*` columns, but for treatment effect.
+* `P(diff > EOI)`, `P(diff < EOI)`: CSF probabilities on the
+  treatment effect specified with the `eoi` and `direction`
+  arguments.
+   Specific to the current study.
+* `effect_mean`: same as the `response_*` columns, but for the effect size
+  (diff / residual standard deviation).
+   Specific to the current study.
+* `precision_ratio*`: same as the `response_*` columns,
+  but for the precision ratio, which compares within-study variance
+  to among-study variance. Only returned for the hierarchical model.
+  Specific to the current study.
+
+## Borrowing metrics
+
+The `hbl_metrics()` function shows borrowing metrics like the mean shift ratio and variance shift ratio which require input from benchmark models. The mean shift ratio and variance shift ratio are defined in the methods vignette. Below, we compute these metrics on the hierarchical model.
+
+```{r}
+summary_pool <- hbl_summary(
+  mcmc = mcmc_pool,
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  covariates = c("factor1", "factor2")
+)
+
+summary_independent <- hbl_summary(
+  mcmc = mcmc_independent,
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1",
+  covariates = c("factor1", "factor2")
+)
+
+hbl_metrics(
+  borrow = summary_hierarchical,
+  pool = summary_pool,
+  independent = summary_independent
+)
+```
+
+## Plots
+
+The `hbl_plot_borrow()` function visualizes the results from the hierarchical model against the benchmark models (independent and pooled) to gain intuition about the overall effect of borrowing on estimation.
+
+```{r}
+hbl_plot_borrow(
+  borrow = summary_hierarchical,
+  pool = summary_pool,
+  independent = summary_independent
+)
+```
+
+`hbl_plot_group()` shows the same information but grouped by the group designations in the data (e.g. treatment arm). The results below are not actually correct because the MCMCs ran for so few iterations. For serious analyses, increase the `iter` and `warmup` arguments to several thousand and increase the number of chains to about 3 or 4.
+
+```{r}
+hbl_plot_group(
+  borrow = summary_hierarchical,
+  pool = summary_pool,
+  independent = summary_independent
+)
+```
+
+For the hierarchical model, we can plot the marginal posterior of the $\tau$ parameter to see the influence of the uniform prior upper bound. If the probability mass of $\tau$ builds up against the uniform upper bound, then the estimated hierarchical variance may be larger than assumed, and should indicate that the algorithm wants to borrow less. If the probability mass of $\tau$ is concentrated on the left, towards 0, then this may indicate that the data suggests borrowing and the uniform prior upper bound has little effect on the model estimates.
+
+```{r}
+hbl_plot_tau(mcmc_hierarchical)
+```
+
+## Ongoing problems with borrowing metrics
+
+For some analyses, the mean shift ratio can fall below 0 or above 1. This may occur if pooled model estimates are very close to independent model estimates for some time points, or when the uniform upper bound prior is set to an uninformative large value and pooled model estimates are very far away from independent model estimates, due to random variability in the estimates of the independent, pooled, and hierarchical model estimates. Mean shift ratio issues may also occur when enforcing nontrivial correlation structures among time points because of differences in longitudinal smoothing behavior among models. (In the latter case, specifying diagonal covariance matrices may resolve the issues.)
+
+Similar issues with the variance shift ratio may occur for time points where the pooled model estimate is far away from the independent model, since large shifts in the mean may increase the magnitude of the estimate of residual error for the current study.
+
+The precision ratio metric is based on the conditional estimation of treatment effect, rather than the unconditional estimation, so it will usually be an underestimate of the mean shift ratio or the variance shift ratio. (One benefit of unconditional estimation over conditional estimation is reduced variability in the estimate of treatment effect.)

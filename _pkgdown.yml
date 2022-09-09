@@ -1,0 +1,30 @@
+destination: docs/
+reference:
+- title: Help
+  contents:
+  - '`historicalborrowlong-package`'
+- title: Data
+  contents:
+  - '`hbl_data`'
+  - '`hbl_s_tau`'
+- title: Simulate
+  contents:
+  - '`hbl_sim_hierarchical`'
+  - '`hbl_sim_pool`'
+  - '`hbl_sim_independent`'
+- title: MCMC
+  contents:
+  - '`hbl_convergence`'
+  - '`hbl_mcmc_hierarchical`'
+  - '`hbl_mcmc_pool`'
+  - '`hbl_mcmc_independent`'
+  - '`hbl_mcmc_sge`'
+- title: Summary
+  contents:
+  - '`hbl_summary`'
+  - '`hbl_metrics`'
+- title: Plot
+  contents:
+  - '`hbl_plot_borrow`'
+  - '`hbl_plot_group`'
+  - '`hbl_plot_tau`'

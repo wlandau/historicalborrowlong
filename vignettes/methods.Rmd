@@ -1,0 +1,246 @@
+---
+title: "Methods"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette defines the models and historical borrowing metrics supported in the `historicalborrowlong` package.
+
+# Models
+
+## Definitions
+
+Unless otherwise specified, Greek letters refer to parameters estimated by the model, and Roman letters refer to fixed hyperparameters and other constants set by the user in advance.
+
+* "Study": a clinical trial. Could be a borrowed clinical trial from the past or a current clinical trial under analysis.
+* "Group": a study arm, such as a treatment group or placebo group.
+* "Rep": a repeated measure in the context of repeated measures / longitudinal modeling. Could be a time point such as a study visit.
+* $k$: study index.
+* $K$: index of the current study.
+* $y_k$: vector of patient-by-rep clinical responses to a continuous outcome variable for study $k$.
+* $(X)_{k}$: the row of matrix $X$ corresponding to study $k$.
+* $\alpha$: Vector of control group mean parameters, one for each rep for the pooled model, one for each study and rep in the hierarchical and independent models. The first elements are for the historical studies, and the last one is for the current study.
+* $\delta$: Vector of study-specific treatment mean parameters. There is one for each combination of study, non-control treatment group, and rep. An optional constraint may be added to pool all arms at baseline within each study, which reduces the number of elements of $\delta$.
+* $d$: integer index for the elements of $\delta$.
+* $b$: integer index for the elements of $\beta$.
+* $t$: index of a rep (e.g. time point of a repeated measure such as a patient visit in a clinical trial.)
+* $\beta$: Vector of study-specific baseline covariate parameters.
+* $X_\alpha$: model matrix for the control group mean parameters $\alpha$. It has indicator columns to select the appropriate element of $\alpha$ for each element of $y_k$.
+* $X_\delta$: model matrix for the treatment mean parameters $\delta$. It has indicator columns to select the appropriate element of $\delta$ for each element of $y_k$.
+* $X_\beta$: model matrix for the baseline covariate fixed effect parameters $\beta$. It has indicator columns to select the appropriate element of $\beta$ for each element of $y_k$.
+* $\sigma_k$: Vector of rep-specific residual standard deviations for study $k$.
+* $\Lambda_k$: lower-triangular Cholesky factor of the by-rep residual correlation matrix for study $k$.
+* $N_k$: number of patients in study $k$.
+* $\Sigma_k$: by-rep residual covariance matrix of study $k$.
+* $T$: number of repeated measures per subject.
+* $I_T$: identity matrix with rows and columns equal to the number of repeated measures per subject.
+* $I(\cdot)$: indicator function
+* $\Lambda$: Cholesky factor of the $T \times T$ block of the correlation matrix of the observed data for the current (non-historical) study.
+* $AR(1)(n, \rho)$: an AR(1) correlation matrix with $n$ rows and correlation parameter $\rho$.
+* $m_k$ index to indicate the type of residual covariance of study $k$: 1 for unstructured / fully parameterized, 2 for AR(1), and 3 for diagonal.
+
+## Baseline covariates
+
+The baseline covariates model matrix $X_\beta$ adjusts for baseline covariates. It may contain a continuous column for baseline and binary indicator columns for the levels of user-defined covariates. All these columns are included if possible, but the method automatically drops baseline covariate columns to ensure that the combine model matrix $X_k^* = \left [ {X_\alpha}^* \quad {X_\delta}^* \quad {X_\beta}^* \right ]_k$ is full rank, where $X_k^*$ denotes the rows of matrix $X$ corresponding to study $k$, with additional rows dropped if the corresponding elements of $y$ are missing. The choice of columns to drop from ${X_\beta}_k^*$ is determined by the rank and pivoting strategy of the QR decomposition of $X_k$ using the Householder algorithm with pivoting (`base::qr()`, LINPACK routine DQRDC).
+
+Separately within each study, each column of $X_\beta$ is centered to have mean 0, and if possible, scaled to have variance 1. Scaling ensures that the priors on parameters $\beta$ remain relatively diffuse relative to the input data. Study-level centering ensures that the $\alpha$ parameters truly act as *unconditional* study-specific control group means (as opposed to conditional on the subset of patients at the reference level of $X_\beta$), and it ensures that borrowing across $\alpha$ components fully presents as control group borrowing.
+
+## Model matrices
+
+Each primary model is parameterized thus:
+
+$$
+\begin{aligned}
+E(y) = \left( X_\alpha \right)_k \alpha + \left ( X_\delta \right)_k \delta + \left ( X_\beta  \right)_k \beta
+\end{aligned}
+$$
+
+Above, $\left (X_\alpha \right)_k$, $\left (X_\delta \right)_k$, and $\left (X_\beta \right)_k$ are fixed matrices for study $k$. $\left (X_\beta \right)_k$ is a conventional model matrix for the baseline covariates $\beta$, and the details are explained in the "Baseline covariates" section below. $\left (X_\alpha \right)_k$ is a matrix of zeroes and ones. It is constructed such that each scalar component of $\alpha$ is the mean response of the control group in a particular study at a given time point. Likewise, $\left (X_\delta \right)_k$ is a matrix of zeroes and ones such that each scalar component of $\delta$ is the mean response of a non-control treatment group in a particular study at a given time point.
+
+To illustrate, let $y_{ijkt}$ be patient $i$ in treatment group $j$ (where $j = 1$ is the control group) of study $k$ at time point $t$, and let $\left ( X_\beta \beta \right )_{ijkt}$ be the corresponding scalar element of the vector $\left ( X_\beta \right ) \beta$. Then,
+
+$$
+\begin{aligned}
+E(y_{ijkt}) = I (j = 1) \alpha_{kt} + I (j > 1) \delta_{jkt} + \left ( X_\beta \beta \right )_{ijkt}
+\end{aligned}
+$$
+
+In addition, if the constraint in the parameterization is activated (i.e. `hbl_mcmc_hierarchical(constraint = TRUE)`) then the control and treatment patients are pooled at time point $t = 1$ within each study $k$:
+
+$$
+\begin{aligned}
+E(y_{ijk1}) = \alpha_{k1} + \left ( X_\beta \beta \right )_{ijk1}
+\end{aligned}
+$$
+
+This parameterization is represented in the more compact expression $\left( X_\alpha \right)_k \alpha + \left ( X_\delta \right)_k \delta + \left ( X_\beta  \right)_k \beta$ in the model definitions in this vignette.
+
+## Post-processing
+
+The `hbl_summary()` function post-processes the results from the model. It accepts MCMC samples of parameters and returns interpretable group-level posterior summaries such as change from baseline response and treatment effect. To arrive at these summaries, `hbl_summary()` computes marginal posteriors of transformed parameters. The transformations derive patient-level fitted values from model parameters, then derive group-level responses as averages of fitted values. We refer to this style of estimation as "unconditional estimation", as opposed to "conditional estimation", which takes each group mean to be the appropriate linear combination of the relevant $\alpha$ and $\delta$ parameters, without using $\beta$ components or going through fitted values. If the baseline covariates are balanced across studies, unconditional and conditional estimation should produce similar estimates of control and treatment effects. This approach to post-processing is explained in section III.C of the [FDA draft guidance on adjusting for covariates](https://www.fda.gov/media/148910/download).
+
+## Hierarchical model
+
+Functions:
+
+* `hbl_sim_hierarchical()`
+* `hbl_mcmc_hierarchical()`
+* `hbl_s_tau()`
+
+The hierarchical model analyzes the data from all studies and shrinks the control study-by-rep means $\alpha_{kt}$ (one scalar parameter for each unique combination of study and rep) towards a common normal distribution with mean $\mu_t$ and variance $\tau_t^2$. For each study in the data (both current and historical), the covariance is user-defined. Options include:
+
+1. Fully parameterized ("unstructured") with a separation strategy with the LKJ prior to model within-subject correlations among residuals.
+1. AR(1) variances $\sigma_k$ and correlation $\rho_k$.
+1. Diagonal with variances $\sigma_k$.
+
+$$
+\begin{aligned}
+& y_k \sim \text{MVN}((X_\alpha)_k \cdot \alpha + (X_\delta)_k \cdot \delta + (X_\beta)_k \cdot \beta, \ I_{N_k} \otimes \Sigma_k ) \\
+& \qquad \alpha_{kt} \stackrel{\text{ind}}{\sim} \text{Normal} (\mu_t, \tau_t^2) \\
+& \qquad \qquad \mu_t \stackrel{\text{ind}}{\sim} \text{Normal}(0, s_\mu^2) \\
+& \qquad \qquad \tau_t \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\tau) \\
+& \qquad \delta_{dt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\delta^2) \\
+& \qquad \beta_{b} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\beta^2) \\
+& \qquad \Sigma_k = \left (I_T \sigma_k \right ) \Lambda_k \Lambda_k' \left (I_T \sigma_k \right ) \\
+& \qquad \qquad \sigma_{k1}, \ldots, \sigma_{kT} \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\sigma) \\
+& \qquad \qquad \Lambda_k \Lambda_k' \sim \begin{cases}
+  \text{LKJ}(\text{shape} = s_\lambda, \ \text{order} = T) && m_k = 1 \\
+  \text{AR(1)}(T,\rho_k) && m_k = 2 \\
+  I_T && m_k = 3 \\
+\end{cases} \\
+& \qquad \qquad \rho_k \stackrel{\text{ind}}{\sim} \text{Uniform}(-1, 1) \qquad (\text{only for } m_k = 2)
+\end{aligned} 
+$$
+
+## Independent model
+
+Functions:
+
+* `hbl_sim_independent()`
+* `hbl_mcmc_independent()`
+
+The independent model is the same as the hierarchical model, but with independent control group parameters $\alpha$. We use it as a no-borrowing benchmark to quantify the borrowing strength of the hierarchical model.
+
+$$
+\begin{aligned}
+& y_k \sim \text{MVN}((X_\alpha)_k \cdot \alpha + (X_\delta)_k \cdot \delta + (X_\beta)_k \cdot \beta, \ I_{N_k} \otimes \Sigma_k ) \\
+& \qquad \alpha_{kt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\alpha^2) \\
+& \qquad \delta_{dt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\delta^2) \\
+& \qquad \beta_{b} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\beta^2) \\
+& \qquad \Sigma_k = \left (I_T \sigma_k \right ) \Lambda_k \Lambda_k' \left (I_T \sigma_k \right ) \\
+& \qquad \qquad \sigma_{k1}, \ldots, \sigma_{kT} \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\sigma) \\
+& \qquad \qquad \Lambda_k \Lambda_k' \sim \begin{cases}
+  \text{LKJ}(\text{shape} = s_\lambda, \ \text{order} = T) && m_k = 1 \\
+  \text{AR(1)}(T,\rho_k) && m_k = 2 \\
+  I_T && m_k = 3 \\
+\end{cases} \\
+& \qquad \qquad \rho_k \stackrel{\text{ind}}{\sim} \text{Uniform}(-1, 1) \qquad (\text{only for } m_k = 2)
+\end{aligned} 
+$$
+
+
+
+## Pooled model
+
+Functions:
+
+* `hbl_sim_pool()`
+* `hbl_mcmc_pool()`
+
+The pooled model is the same as the independent model, but with rep-specific control means pooled across studies. In other words $\alpha_{kt}$ loses the $k$ subscript, and we use a smaller matrix $\left (X_\alpha^{\text{pool}} \right )_k$ instead of $(X_\alpha)_k$. $\left (X_\alpha^{\text{pool}} \right )_k$ has fewer columns (rep-specific rather than study-by-rep-specific). Like the independent model, we use it as a no-borrowing benchmark to quantify the borrowing strength of the hierarchical model. 
+
+$$
+\begin{aligned}
+& y_k \sim \text{MVN}((X_\alpha^{\text{pool}})_k \cdot \alpha + (X_\delta)_k \cdot \delta + (X_\beta)_k \cdot \beta, \ I_{N_k} \otimes \Sigma_k ) \\
+& \qquad \alpha_{t} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\alpha^2) \\
+& \qquad \delta_{dt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\delta^2) \\
+& \qquad \beta_{b} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\beta^2) \\
+& \qquad \Sigma_k = \left (I_T \sigma_k \right ) \Lambda_k \Lambda_k' \left (I_T \sigma_k \right ) \\
+& \qquad \qquad \sigma_{k1}, \ldots, \sigma_{kT} \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\sigma) \\
+& \qquad \qquad \Lambda_k \Lambda_k' \sim \begin{cases}
+  \text{LKJ}(\text{shape} = s_\lambda, \ \text{order} = T) && m_k = 1 \\
+  \text{AR(1)}(T,\rho_k) && m_k = 2 \\
+  I_T && m_k = 3 \\
+\end{cases} \\
+& \qquad \qquad \rho_k \stackrel{\text{ind}}{\sim} \text{Uniform}(-1, 1) \qquad (\text{only for } m_k = 2)
+\end{aligned} 
+$$
+
+# Borrowing metrics
+
+## Mean shift ratio
+
+Let $\theta_m$ be the posterior mean control group response estimated by model $m$ at a given rep. The mean shift ratio is:
+
+$$
+\begin{aligned}
+\frac{\theta_{m*} - \theta_{\text{independent}}}{\theta_{\text{pool}} - \theta_{\text{independent}}}
+\end{aligned}
+$$
+
+where $m*$ is a historical borrowing model such as the hierarchical model featured here.
+
+## Variance shift ratio
+
+Let $V_m$ be the estimated posterior variance of $\alpha_I$ (current study control group response mean) estimated by model $m$ at a given rep. The variance shift ratio is:
+
+$$
+\begin{aligned}
+\frac{V_{m*} - V_{\text{independent}}}{V_{\text{pool}} - V_{\text{independent}}}
+\end{aligned}
+$$
+
+where $m*$ is a historical borrowing model such as the hierarchical model featured here.
+
+## Precision ratio (hierarchical model only)
+
+The precision ratio compares the prior precision of a control mean response (an $\alpha$ component, numerator) to the analogous precision of the full conditional distribution (denominator). The former is $\frac{1}{\tau^2}$, and the latter is $\frac{1}{\tau^2} + \frac{n}{\sigma^2}$. Here, $n$ is the number of non-missing observed patients in the current study at the given rep, $\sigma^2$ is the residual variance at the given rep, and $\tau^2$ is the variance of study-specific control means (components of $\alpha$) at the given rep. The precision ratio is calculated on a rep-by-rep basis. The full precision ratio formula is:
+
+$$
+\begin{aligned}
+\frac{\frac{1}{\tau^2}}{\frac{1}{\tau^2} + \frac{n}{\sigma^2}}
+\end{aligned}
+$$
+
+The precision ratio comes from the conditional distribution of $\alpha_k$ in the hierarchical model given the other parameters and the data. More precisely, in this conditional distribution, the mean is a weighted average between the prior mean and data mean, and the precision ratio is the weight on the prior mean. This can be seen in a simpler case with a Bayesian model with a normal data model, a normal prior on the mean, and known constant variance. For details, see Chapter 2 of [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/) 3rd Ed. by Gelman et al.
+
+## Adjusting borrowing strength using the prior
+
+If there are few historical studies, there may not be enough studies to estimate the hierarchical variance $\tau_k^2$, so the model may exhibit weak borrowing. To roughly target a given minimum amount of borrowing, one option is to set the upper bound $s_\tau$ of the uniform prior of $\tau_k$. In the case where there are few studies, the function `hbl_s_tau()` suggests a value of $s_\tau$ that assigns a desired prior precision ratio. Suppose $P$ is the desired prior precision ratio. Taking $\tau^2$ and $\sigma^2$ to be scalar variances of the control means and residuals, respectively, and taking $n$ to be the number of non-missing observed patient in at a given rep in the current study:
+
+$$
+\begin{aligned}
+P = \frac{\frac{1}{\tau^2}}{\frac{1}{\tau^2} + \frac{n}{\sigma^2}}
+\end{aligned}
+$$
+
+Solving for $\tau$:
+
+$$
+\begin{aligned}
+\tau = \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
+\end{aligned}
+$$
+
+If we expect the mean of $\tau$ to be as above, then our uniform upper bound is double. This is the value returned by `hbl_s_tau()`:
+
+$$
+\begin{aligned}
+s_\tau = 2 \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
+\end{aligned}
+$$
+
+If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_k$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.
