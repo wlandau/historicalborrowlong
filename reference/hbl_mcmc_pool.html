@@ -288,7 +288,8 @@ the program throws an informative error.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"HBL_TEST"</span>, unset <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="hbl_sim_pool.html">hbl_sim_pool</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_study <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  n_group <span class="op">=</span> <span class="fl">2</span>,</span></span>
@@ -307,26 +308,7 @@ the program throws an informative error.</p>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mcmc</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 34</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    `alpha[1]` `alpha[2]` alpha…¹ delta…² delta…³ delta…⁴ sigma…⁵ sigma…⁶ sigma…⁷</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>       1.31    -<span style="color: #BB0000;">0.571</span>    1.40     1.31   0.304   -<span style="color: #BB0000;">1.78</span>  0.097<span style="text-decoration: underline;">5</span>  28.2     0.672</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>       1.39    -<span style="color: #BB0000;">0.082</span><span style="color: #BB0000; text-decoration: underline;">5</span>   0.985    1.37   0.353   -<span style="color: #BB0000;">1.70</span>  0.143   27.4     0.553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>       1.31    -<span style="color: #BB0000;">0.351</span>    1.10     1.38   0.282   -<span style="color: #BB0000;">1.29</span>  0.130   24.5     0.419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>       1.36    -<span style="color: #BB0000;">0.187</span>    1.03     1.09   0.468   -<span style="color: #BB0000;">1.28</span>  0.079<span style="text-decoration: underline;">8</span>   0.977   0.546</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>       1.37    -<span style="color: #BB0000;">0.457</span>    1.39     1.25   0.245   -<span style="color: #BB0000;">1.25</span>  0.108    0.786   0.393</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>       1.33    -<span style="color: #BB0000;">0.396</span>    1.30     1.23   0.550   -<span style="color: #BB0000;">1.57</span>  0.180    0.467   0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>       1.40    -<span style="color: #BB0000;">0.467</span>    1.30     1.28   0.167   -<span style="color: #BB0000;">1.28</span>  0.102    1.03    0.469</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>       1.33    -<span style="color: #BB0000;">0.332</span>    1.21     1.10   0.748   -<span style="color: #BB0000;">1.58</span>  0.195    0.965   0.408</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>       1.39    -<span style="color: #BB0000;">0.225</span>    1.22     1.12   0.739   -<span style="color: #BB0000;">1.46</span>  0.186    0.931   0.396</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>       1.39    -<span style="color: #BB0000;">0.301</span>    1.30     1.58  -<span style="color: #BB0000;">0.375</span>   -<span style="color: #BB0000;">1.36</span>  0.194    0.486   0.504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 25 more variables: `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `sigma[3,2]` &lt;dbl&gt;, `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `sigma[3,3]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, .chain &lt;int&gt;, .iteration &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   .draw &lt;int&gt;, `lambda_current[1,2,1]` &lt;dbl&gt;, `lambda_current[1,3,1]` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `lambda_current[1,2,2]` &lt;dbl&gt;, `lambda_current[1,3,2]` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `lambda_current[1,3,3]` &lt;dbl&gt;, `lambda_historical[1,2,1]` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `lambda_historical[2,2,1]` &lt;dbl&gt;, `lambda_historical[1,3,1]` &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
