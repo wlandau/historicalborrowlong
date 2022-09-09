@@ -12,8 +12,7 @@ hierarchical model to borrow historical control data from other studies
 to better characterize the control response of the current study. It
 also quantifies the amount of borrowing through longitudinal benchmark
 models (independent and pooled). The hierarchical model approach to
-historical borrowing is discussed in [Viele et
-al. (2013)](https://onlinelibrary.wiley.com/doi/10.1002/pst.1589).
+historical borrowing is discussed by Viele et al. (2013).
 
 ## Installation
 
@@ -45,3 +44,9 @@ Please note that the historicalborrowlong project is released with a
 [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+## References
+
+-   Viele, Kert and Berry, Scott and Neuenschwander, Beat et al. “Use of
+    historical control data for assessing treatment effects in clinical
+    trials.” Pharmaceutical Statistics 1(13), 2013.
