@@ -18,6 +18,7 @@ Plot the rep-specific tau parameters
 of a fitted hierarchical model.
 }
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 set.seed(0)
 data <- hbl_sim_independent(n_continuous = 2)$data
 tmp <- utils::capture.output(
@@ -32,6 +33,7 @@ tmp <- utils::capture.output(
   )
 )
 hbl_plot_tau(mcmc)
+}
 }
 \seealso{
 Other plot: 

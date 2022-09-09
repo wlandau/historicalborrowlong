@@ -8,6 +8,7 @@
 #' @return A `ggplot` object
 #' @inheritParams hbl_plot_borrow
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_independent(
 #'   n_study = 2,
@@ -56,6 +57,7 @@
 #'   pool = pool,
 #'   independent = independent
 #' )
+#' }
 hbl_plot_group <- function(
   borrow,
   pool,

@@ -10,6 +10,7 @@
 #' @param outcome Character of length 1, either `"response"`, `"change"`,
 #'   or `"diff"`: the quantity to plot on the vertical axis.
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_independent(
 #'   n_study = 2,
@@ -58,6 +59,7 @@
 #'   pool = pool,
 #'   independent = independent
 #' )
+#' }
 hbl_plot_borrow <- function(
   borrow,
   pool,

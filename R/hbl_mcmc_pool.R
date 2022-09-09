@@ -18,6 +18,7 @@
 #' @param ... Additional named arguments of `rstan::sampling()`.
 #'   See the documentation of `rstan::sampling()` for details.
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_pool(
 #'   n_study = 3,
@@ -37,6 +38,7 @@
 #'   )
 #' )
 #' mcmc
+#' }
 hbl_mcmc_pool <- function(
   data,
   response = "response",

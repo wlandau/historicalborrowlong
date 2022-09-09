@@ -28,6 +28,7 @@
 #'   `scheduler` is `"sge"`.
 #' @examples
 #' if (identical(Sys.getenv("HBL_SGE"), "true")) {
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_hierarchical(
 #'   n_study = 2,
@@ -48,6 +49,7 @@
 #'   )
 #' )
 #' mcmc
+#' }
 #' }
 hbl_mcmc_sge <- function(
   data,

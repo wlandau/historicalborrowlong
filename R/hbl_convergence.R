@@ -15,6 +15,7 @@
 #'   iterations).
 #' @inheritParams hbl_summary
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_pool(
 #'   n_study = 2,
@@ -34,6 +35,7 @@
 #'   )
 #' )
 #' hbl_convergence(mcmc)
+#' }
 hbl_convergence <- function(mcmc) {
   out <- posterior::summarize_draws(
     mcmc,

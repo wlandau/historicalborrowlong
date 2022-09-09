@@ -27,6 +27,7 @@ iterations).
 Check the convergence diagnostics on a model.
 }
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 set.seed(0)
 data <- hbl_sim_pool(
   n_study = 2,
@@ -46,6 +47,7 @@ tmp <- utils::capture.output(
   )
 )
 hbl_convergence(mcmc)
+}
 }
 \seealso{
 Other mcmc: 

@@ -22,7 +22,8 @@ Numeric of length equal to \code{length(precision_ratio)} and
 \description{
 Suggest a value of the \code{s_tau} hyperparameter
 to roughly target a specified minimum amount of borrowing
-in the hierarchical model.
+in the hierarchical model. Only use if a diffuse prior
+on \code{tau} is not feasible.
 }
 \details{
 The target minimum amount of borrowing

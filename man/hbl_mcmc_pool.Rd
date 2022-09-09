@@ -193,6 +193,7 @@ the program throws an informative error.
 }
 
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 set.seed(0)
 data <- hbl_sim_pool(
   n_study = 3,
@@ -212,6 +213,7 @@ tmp <- utils::capture.output(
   )
 )
 mcmc
+}
 }
 \seealso{
 Other mcmc: 

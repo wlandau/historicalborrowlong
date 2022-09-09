@@ -34,6 +34,7 @@ for a hierarchical model.
 and the independent and pooled benchmark models.
 }
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 set.seed(0)
 data <- hbl_sim_independent(
   n_study = 2,
@@ -82,6 +83,7 @@ hbl_plot_group(
   pool = pool,
   independent = independent
 )
+}
 }
 \seealso{
 Other plot: 

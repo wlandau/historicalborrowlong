@@ -12,6 +12,8 @@
 #' @param independent A data frame returned by [hbl_summary()]
 #'   for the independent model.
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
+#' set.seed(0)
 #' data <- hbl_sim_independent(
 #'   n_study = 2,
 #'   n_group = 2,
@@ -59,6 +61,7 @@
 #'   pool = pool,
 #'   independent = independent
 #' )
+#' }
 hbl_metrics <- function(borrow, pool, independent) {
   true(is.data.frame(borrow))
   true(is.data.frame(pool))

@@ -219,7 +219,7 @@ The precision ratio comes from the conditional distribution of $\alpha_k$ in the
 
 ## Adjusting borrowing strength using the prior
 
-If there are few historical studies, there may not be enough studies to estimate the hierarchical variance $\tau_k^2$, so the model may exhibit weak borrowing. To roughly target a given minimum amount of borrowing, one option is to set the upper bound $s_\tau$ of the uniform prior of $\tau_k$. In the case where there are few studies, the function `hbl_s_tau()` suggests a value of $s_\tau$ that assigns a desired prior precision ratio. Suppose $P$ is the desired prior precision ratio. Taking $\tau^2$ and $\sigma^2$ to be scalar variances of the control means and residuals, respectively, and taking $n$ to be the number of non-missing observed patient in at a given rep in the current study:
+It is almost always best to set a diffuse prior on $\tau_t$ so that hierarchical borrowing is fully dynamic. However, in extreme cases (e.g. few historical studies, combined with other issues), there may not be enough information to estimate the hierarchical variance $\tau_t^2$, so the model may exhibit weaker borrowing than it should. To roughly target a given minimum amount of borrowing, one option is to set the upper bound $s_\tau$ of the uniform prior of $\tau_t$. In the case where there are few studies, the function `hbl_s_tau()` suggests a value of $s_\tau$ that assigns a desired prior precision ratio. Suppose $P$ is the desired prior precision ratio. Taking $\tau^2$ and $\sigma^2$ to be scalar variances of the control means and residuals, respectively, and taking $n$ to be the number of non-missing observed patient in at a given rep in the current study:
 
 $$
 \begin{aligned}
@@ -243,4 +243,4 @@ s_\tau = 2 \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
 \end{aligned}
 $$
 
-If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_k$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.
+If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_t$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.

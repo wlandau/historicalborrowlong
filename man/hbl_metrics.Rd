@@ -25,6 +25,8 @@ summary output from a fitted borrowing model and
 analogous summaries from the benchmark models.
 }
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
+set.seed(0)
 data <- hbl_sim_independent(
   n_study = 2,
   n_group = 2,
@@ -72,6 +74,7 @@ hbl_metrics(
   pool = pool,
   independent = independent
 )
+}
 }
 \seealso{
 Other summary: 

@@ -17,6 +17,7 @@
 #'   and covariates. All columns must be atomic vectors
 #'   (e.g. not lists).
 #' @examples
+#' if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 #' set.seed(0)
 #' data <- hbl_sim_independent(
 #'   n_study = 2,
@@ -36,6 +37,7 @@
 #'   )
 #' )
 #' mcmc
+#' }
 hbl_mcmc_independent <- function(
   data,
   response = "response",

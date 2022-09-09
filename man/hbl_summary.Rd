@@ -204,6 +204,7 @@ unconditional and conditional estimation should produce similar
 estimates of placebo and treatment effects.
 }
 \examples{
+if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
 set.seed(0)
 data <- hbl_sim_pool(
   n_study = 2,
@@ -223,6 +224,7 @@ tmp <- utils::capture.output(
   )
 )
 hbl_summary(mcmc, data)
+}
 }
 \seealso{
 Other summary: 
