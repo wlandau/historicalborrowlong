@@ -1,6 +1,6 @@
-# historicalborrowlong 0.0.3.9000
+# historicalborrowlong 0.0.4
 
-
+* Fix DOI formatting in the `DESCRIPTION` file.
 
 # historicalborrowlong 0.0.3
 
