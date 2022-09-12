@@ -1,4 +1,5 @@
 test_that("hbl_plot_borrow()", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_independent(
     n_study = 2,

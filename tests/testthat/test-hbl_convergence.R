@@ -1,4 +1,5 @@
 test_that("hbl_convergence()", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_pool(
     n_study = 2,

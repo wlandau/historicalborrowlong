@@ -1,3 +1,7 @@
+# historicalborrowlong 0.0.5
+
+Reduce check time for CRAN.
+
 # historicalborrowlong 0.0.4
 
 * Fix DOI formatting in the `DESCRIPTION` file.

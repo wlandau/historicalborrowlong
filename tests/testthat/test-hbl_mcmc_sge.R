@@ -1,4 +1,5 @@
 test_that("hbl_mcmc_sge() + diagonal + unstructured", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_hierarchical(
     n_study = 2,
@@ -151,6 +152,7 @@ test_that("hbl_mcmc_sge() + diagonal + unstructured", {
 })
 
 test_that("hbl_mcmc_sge_model() bad model", {
+  skip_on_cran()
   expect_error(
     hbl_mcmc_sge_model("nope", list()),
     class = "hbl_error"

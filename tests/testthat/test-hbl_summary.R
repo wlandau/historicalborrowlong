@@ -1,4 +1,5 @@
 test_that("hbl_summary() pool with raw response type", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_pool(
     n_study = 2,
@@ -157,6 +158,7 @@ test_that("hbl_summary() data counts", {
 })
 
 test_that("hbl_summary() hierarchical with raw response type", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_hierarchical(
     n_study = 2,
@@ -398,6 +400,7 @@ test_that("hbl_summary() pool mock mcmc", {
 })
 
 test_that("hbl_summary() precision ratio", {
+  skip_on_cran()
   set.seed(0)
   data <- hbl_sim_hierarchical(
     n_study = 2,

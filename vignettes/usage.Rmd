@@ -10,20 +10,24 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-library(historicalborrowlong)
-library(dplyr)
-library(posterior)
+```{r setup, include = FALSE}
+eval <- identical(Sys.getenv("NOT_CRAN", unset = "true"), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   warning = FALSE,
   fig.width = 7,
-  fig.height = 5
+  fig.height = 5,
+  eval = eval
 )
-set.seed(0)
 ```
 
+```{r packages, include = FALSE}
+library(historicalborrowlong)
+library(dplyr)
+library(posterior)
+set.seed(0)
+```
 
 This tutorial shows how to fit historical control-group borrowing models using the `historicalborrowlong` package.
 
@@ -148,7 +152,7 @@ mcmc <- hbl_mcmc_sge(
 )
 ```
 
-```{r, warning = FALSE, output = FALSE, message = FALSE, eval = TRUE, echo = FALSE}
+```{r, warning = FALSE, output = FALSE, message = FALSE, echo = FALSE}
 suppressWarnings(
   mcmc <- hbl_mcmc_sge(
     data = data,
@@ -202,7 +206,7 @@ mcmc_hierarchical <- hbl_mcmc_hierarchical(
 )
 ```
 
-```{r, warning = FALSE, output = FALSE, echo = FALSE, eval = TRUE}
+```{r, warning = FALSE, output = FALSE, echo = FALSE}
 suppressWarnings(
   mcmc_hierarchical <- hbl_mcmc_hierarchical(
     data = data,
@@ -252,7 +256,7 @@ mcmc_pool <- hbl_mcmc_pool(
 )
 ```
 
-```{r, warning = FALSE, output = FALSE, eval = TRUE, echo = FALSE}
+```{r, warning = FALSE, output = FALSE, echo = FALSE}
 suppressWarnings(
   mcmc_pool <- hbl_mcmc_pool(
     data = data,
@@ -299,7 +303,7 @@ mcmc_independent <- hbl_mcmc_independent(
 )
 ```
 
-```{r, warning = FALSE, output = FALSE, eval = TRUE, echo = FALSE}
+```{r, warning = FALSE, output = FALSE, echo = FALSE}
 suppressWarnings(
   mcmc_independent <- hbl_mcmc_independent(
     data = data,
@@ -346,11 +350,11 @@ It is important to check convergence diagnostics on each model. The `hbl_converg
  iterations (and if `max_rhat` is high, possibly more warmup
  iterations). You could also try increasing `adapt_delta` and `max_treedepth` in the `control` argument, or adjust other MCMC/HMC settings through `control` or the informal arguments (ellipsis "`...`"). See `?rstan::stan` for details.
 
-```{r, warning = FALSE, echo = TRUE, eval = FALSE}
+```{r, warning = FALSE, eval = FALSE}
 hbl_convergence(mcmc_hierarchical)
 ```
 
-```{r, warning = FALSE, echo = FALSE, eval = TRUE}
+```{r, warning = FALSE, echo = FALSE}
 suppressWarnings(hbl_convergence(mcmc_hierarchical))
 ```
 

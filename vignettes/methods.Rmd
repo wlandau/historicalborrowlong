@@ -10,13 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
 This vignette defines the models and historical borrowing metrics supported in the `historicalborrowlong` package.
 
 # Models
