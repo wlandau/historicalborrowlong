@@ -29,7 +29,7 @@ library(posterior)
 set.seed(0)
 ```
 
-This tutorial shows how to fit historical control-group borrowing models using the `historicalborrowlong` package.
+This usage tutorial shows how to fit historical control-group borrowing models using the `historicalborrowlong` package.
 
 # Data
 

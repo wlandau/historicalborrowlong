@@ -7,3 +7,4 @@
 ^NOTICE$
 ^LICENSE\.md$
 ^CODE_OF_CONDUCT\.md$
+^vignettes/usage\.Rmd$
