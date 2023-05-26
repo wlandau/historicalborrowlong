@@ -116,22 +116,24 @@ hbl_plot_borrow <- function(
   out$Group <- as.character(out$group_label)
   out$Rep <- as.character(out$rep_label)
   out <- out[!is.na(out[[paste0(outcome, "_mean")]]),, drop = FALSE] # nolint
+  args_point <- list(
+    x = as.symbol("Rep"),
+    y = as.symbol(paste0(outcome, "_mean")),
+    color = as.symbol("Model")
+  )
+  args_errorbar <- list(
+    x = as.symbol("Rep"),
+    ymin = as.symbol(paste0(outcome, "_lower")),
+    ymax = as.symbol(paste0(outcome, "_upper")),
+    color = as.symbol("Model")
+  )
   ggplot2::ggplot(out) +
     ggplot2::geom_point(
-      ggplot2::aes_string(
-        x = "Rep",
-        y = paste0(outcome, "_mean"),
-        color = "Model"
-      ),
+      do.call(what = ggplot2::aes, args = args_point),
       position = ggplot2::position_dodge(width = 0.5)
     ) +
     ggplot2::geom_errorbar(
-      ggplot2::aes_string(
-        x = "Rep",
-        ymin = paste0(outcome, "_lower"),
-        ymax = paste0(outcome, "_upper"),
-        color = "Model"
-      ),
+      do.call(what = ggplot2::aes, args = args_errorbar),
       position = ggplot2::position_dodge(width = 0.5)
     ) +
     ggplot2::facet_wrap(~ Group) +
