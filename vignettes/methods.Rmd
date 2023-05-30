@@ -41,7 +41,6 @@ Unless otherwise specified, Greek letters refer to parameters estimated by the m
 * $T$: number of repeated measures per subject.
 * $I_T$: identity matrix with rows and columns equal to the number of repeated measures per subject.
 * $I(\cdot)$: indicator function
-* $\Lambda$: Cholesky factor of the $T \times T$ block of the correlation matrix of the observed data for the current (non-historical) study.
 * $AR(1)(n, \rho)$: an AR(1) correlation matrix with $n$ rows and correlation parameter $\rho$.
 * $m_k$ index to indicate the type of residual covariance of study $k$: 1 for unstructured / fully parameterized, 2 for AR(1), and 3 for diagonal.
 
