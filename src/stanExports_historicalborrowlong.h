@@ -33,11 +33,11 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_historicalborrowlong");
-    reader.add_event(265, 263, "end", "model_historicalborrowlong");
+    reader.add_event(263, 261, "end", "model_historicalborrowlong");
     return reader;
 }
 template <typename T0__, typename T1__>
-Eigen::Matrix<typename boost::math::tools::promote_args<T0__, T1__>::type, 1, Eigen::Dynamic>
+typename boost::math::tools::promote_args<T0__, T1__>::type
 log_normal_kernel(const Eigen::Matrix<T0__, Eigen::Dynamic, Eigen::Dynamic>& cholesky,
                       const Eigen::Matrix<T1__, Eigen::Dynamic, Eigen::Dynamic>& epsilon, std::ostream* pstream__) {
     typedef typename boost::math::tools::promote_args<T0__, T1__>::type local_scalar_t__;
@@ -49,7 +49,7 @@ log_normal_kernel(const Eigen::Matrix<T0__, Eigen::Dynamic, Eigen::Dynamic>& cho
     int current_statement_begin__ = -1;
     try {
         current_statement_begin__ = 24;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(subtract(multiply(-(0.5), columns_dot_self(mdivide_left_tri_low(cholesky, epsilon))), sum(stan::math::log(diagonal(cholesky)))));
+        return stan::math::promote_scalar<fun_return_scalar_t__>((sum(multiply(-(0.5), columns_dot_self(mdivide_left_tri_low(cholesky, epsilon)))) - sum(stan::math::log(diagonal(cholesky)))));
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
         // Next line prevents compiler griping about no return
@@ -58,7 +58,7 @@ log_normal_kernel(const Eigen::Matrix<T0__, Eigen::Dynamic, Eigen::Dynamic>& cho
 }
 struct log_normal_kernel_functor__ {
     template <typename T0__, typename T1__>
-        Eigen::Matrix<typename boost::math::tools::promote_args<T0__, T1__>::type, 1, Eigen::Dynamic>
+        typename boost::math::tools::promote_args<T0__, T1__>::type
     operator()(const Eigen::Matrix<T0__, Eigen::Dynamic, Eigen::Dynamic>& cholesky,
                       const Eigen::Matrix<T1__, Eigen::Dynamic, Eigen::Dynamic>& epsilon, std::ostream* pstream__) const {
         return log_normal_kernel(cholesky, epsilon, pstream__);
@@ -1312,64 +1312,54 @@ public:
             (void) length;  // dummy to suppress unused var warning
             stan::math::fill(length, std::numeric_limits<int>::min());
             current_statement_begin__ = 226;
-            validate_non_negative_index("log_lik", "n_patient", n_patient);
-            Eigen::Matrix<local_scalar_t__, 1, Eigen::Dynamic> log_lik(n_patient);
-            stan::math::initialize(log_lik, DUMMY_VAR__);
-            stan::math::fill(log_lik, DUMMY_VAR__);
-            current_statement_begin__ = 227;
             for (int study = 1; study <= n_study; ++study) {
-                current_statement_begin__ = 228;
+                current_statement_begin__ = 227;
                 stan::math::assign(start, get_base1(index_patient_study, study, "index_patient_study", 1));
-                current_statement_begin__ = 229;
+                current_statement_begin__ = 228;
                 stan::math::assign(length, get_base1(n_patient_study, study, "n_patient_study", 1));
-                current_statement_begin__ = 230;
+                current_statement_begin__ = 229;
                 stan::math::assign(end, ((start + length) - 1));
-                current_statement_begin__ = 231;
-                stan::model::assign(log_lik, 
-                            stan::model::cons_list(stan::model::index_min_max(start, end), stan::model::nil_index_list()), 
-                            log_normal_kernel(get_base1(covariance_cholesky, study, "covariance_cholesky", 1), block(epsilon, 1, start, n_rep, length), pstream__), 
-                            "assigning variable log_lik");
+                current_statement_begin__ = 230;
+                lp_accum__.add(log_normal_kernel(get_base1(covariance_cholesky, study, "covariance_cholesky", 1), block(epsilon, 1, start, n_rep, length), pstream__));
             }
-            current_statement_begin__ = 236;
-            lp_accum__.add(sum(log_lik));
-            current_statement_begin__ = 239;
+            current_statement_begin__ = 237;
             if (as_bool(logical_eq(model_type, 3))) {
-                current_statement_begin__ = 240;
+                current_statement_begin__ = 238;
                 lp_accum__.add(std_normal_log<propto__>(alpha_raw));
-                current_statement_begin__ = 241;
+                current_statement_begin__ = 239;
                 lp_accum__.add(normal_log<propto__>(mu, 0, s_mu));
-                current_statement_begin__ = 242;
+                current_statement_begin__ = 240;
                 lp_accum__.add(uniform_log<propto__>(tau, 0, s_tau));
             } else {
-                current_statement_begin__ = 244;
+                current_statement_begin__ = 242;
                 lp_accum__.add(normal_log<propto__>(alpha_raw, 0, s_alpha));
             }
-            current_statement_begin__ = 246;
+            current_statement_begin__ = 244;
             lp_accum__.add(normal_log<propto__>(delta, 0, s_delta));
-            current_statement_begin__ = 247;
+            current_statement_begin__ = 245;
             lp_accum__.add(normal_log<propto__>(beta, 0, s_beta));
-            current_statement_begin__ = 248;
+            current_statement_begin__ = 246;
             for (int i = 1; i <= n_study; ++i) {
-                current_statement_begin__ = 249;
+                current_statement_begin__ = 247;
                 lp_accum__.add(uniform_log<propto__>(get_base1(sigma, i, "sigma", 1), 0, s_sigma));
             }
-            current_statement_begin__ = 251;
+            current_statement_begin__ = 249;
             if (as_bool(logical_eq(covariance_current, covariance_unstructured))) {
-                current_statement_begin__ = 252;
+                current_statement_begin__ = 250;
                 lp_accum__.add(lkj_corr_cholesky_log<propto__>(get_base1(lambda_current, 1, "lambda_current", 1), s_lambda));
             } else if (as_bool(logical_eq(covariance_current, covariance_ar1))) {
-                current_statement_begin__ = 254;
+                current_statement_begin__ = 252;
                 lp_accum__.add(uniform_log<propto__>(rho_current, -(1), 1));
             }
-            current_statement_begin__ = 256;
+            current_statement_begin__ = 254;
             if (as_bool(logical_eq(covariance_historical, covariance_unstructured))) {
-                current_statement_begin__ = 257;
+                current_statement_begin__ = 255;
                 for (int i = 1; i <= n_lambda_historical; ++i) {
-                    current_statement_begin__ = 258;
+                    current_statement_begin__ = 256;
                     lp_accum__.add(lkj_corr_cholesky_log<propto__>(get_base1(lambda_historical, i, "lambda_historical", 1), s_lambda));
                 }
             } else if (as_bool(logical_eq(covariance_historical, covariance_ar1))) {
-                current_statement_begin__ = 261;
+                current_statement_begin__ = 259;
                 lp_accum__.add(uniform_log<propto__>(rho_historical, -(1), 1));
             }
             }

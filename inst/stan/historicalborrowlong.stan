@@ -20,8 +20,8 @@ functions {
   * @param epsilon Matrix with one row per dimension of the multivariate normal
   *   and one column per data record.
   */
-  row_vector log_normal_kernel(matrix cholesky, matrix epsilon) {
-    return -0.5 * columns_dot_self(mdivide_left_tri_low(cholesky, epsilon))
+  real log_normal_kernel(matrix cholesky, matrix epsilon) {
+    return sum(-0.5 * columns_dot_self(mdivide_left_tri_low(cholesky, epsilon)))
       -sum(log(diagonal(cholesky)));
   }
 /** 
@@ -223,17 +223,15 @@ model {
   int start;
   int end;
   int length;
-  row_vector[n_patient] log_lik;
   for (study in 1:n_study) {
     start = index_patient_study[study];
     length = n_patient_study[study];
     end = start + length - 1;
-    log_lik[start:end] = log_normal_kernel(
+    target += log_normal_kernel(
       covariance_cholesky[study],
       block(epsilon, 1, start, n_rep, length)
     );
   }
-  target += sum(log_lik);
 
   // Priors
   if (model_type == 3) {
