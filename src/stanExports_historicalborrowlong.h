@@ -1320,7 +1320,7 @@ public:
                 current_statement_begin__ = 229;
                 stan::math::assign(end, ((start + length) - 1));
                 current_statement_begin__ = 230;
-                lp_accum__.add(log_normal_kernel(get_base1(covariance_cholesky, study, "covariance_cholesky", 1), block(epsilon, 1, start, n_rep, length), pstream__));
+                lp_accum__.add(log_normal_kernel(get_base1(covariance_cholesky, study, "covariance_cholesky", 1), stan::model::rvalue(epsilon, stan::model::cons_list(stan::model::index_omni(), stan::model::cons_list(stan::model::index_min_max(start, end), stan::model::nil_index_list())), "epsilon"), pstream__));
             }
             current_statement_begin__ = 237;
             if (as_bool(logical_eq(model_type, 3))) {

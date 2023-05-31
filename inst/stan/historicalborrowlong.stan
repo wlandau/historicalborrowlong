@@ -229,7 +229,7 @@ model {
     end = start + length - 1;
     target += log_normal_kernel(
       covariance_cholesky[study],
-      block(epsilon, 1, start, n_rep, length)
+      epsilon[:, start:end]
     );
   }
 
