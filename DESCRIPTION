@@ -8,7 +8,7 @@ Description: Historical borrowing in clinical trials can improve
   the amount of borrowing through longitudinal benchmark models (independent
   and pooled). The hierarchical model approach to historical borrowing
   is discussed by Viele et al. (2013) <doi:10.1002/pst.1589>.
-Version: 0.0.5.9000
+Version: 0.0.6
 License: MIT + file LICENSE
 URL: https://wlandau.github.io/historicalborrowlong/,
   https://github.com/wlandau/historicalborrowlong
@@ -64,7 +64,7 @@ Language: en-US
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Biarch: true
 LinkingTo: 
   BH,

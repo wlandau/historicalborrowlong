@@ -1,6 +1,6 @@
-# historicalborrowlong 0.0.5.9000
+# historicalborrowlong 0.0.6
 
-
+* Vectorize the likelihood for performance.
 
 # historicalborrowlong 0.0.5
 

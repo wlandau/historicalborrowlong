@@ -1,22 +1,22 @@
 stan_mcmc <- function(
-  model_type,
-  data,
-  n_mu,
-  n_tau,
-  x_alpha,
-  x_delta,
-  x_beta,
-  s_alpha,
-  s_delta,
-  s_beta,
-  s_sigma,
-  s_lambda,
-  s_mu,
-  s_tau,
-  alpha_rep_index,
-  covariance_current,
-  covariance_historical,
-  args
+    model_type,
+    data,
+    n_mu,
+    n_tau,
+    x_alpha,
+    x_delta,
+    x_beta,
+    s_alpha,
+    s_delta,
+    s_beta,
+    s_sigma,
+    s_lambda,
+    s_mu,
+    s_tau,
+    alpha_rep_index,
+    covariance_current,
+    covariance_historical,
+    args
 ) {
   response <- data$response
   hbl_warn_identifiable(
@@ -66,6 +66,8 @@ stan_mcmc <- function(
   x_beta_row_n <- as.integer(table(row))
   x_beta_col_index <- (cumsum(x_beta_col_n) - x_beta_col_n + 1L)[studies]
   x_beta_row_index <- cumsum(x_beta_row_n) - x_beta_row_n + 1L
+  study_patient_match <- dplyr::distinct(data, patient, study)
+  study_patient_match <- dplyr::arrange(study_patient_match, patient)
   data_stan <- list(
     model_type = model_type,
     n_alpha = ncol(x_alpha),
@@ -103,16 +105,20 @@ stan_mcmc <- function(
     x_beta_row_n = x_beta_row_n,
     count_missing = count_missing,
     study_index = study_index,
+    study_patient = study_patient_match$study,
     covariance_current = stan_covariance(covariance_current),
     covariance_historical = stan_covariance(covariance_historical),
     y = response,
     x_alpha = x_alpha,
     x_delta = x_delta,
-    x_beta = x_beta
+    x_beta = x_beta,
+    covariance_unstructured = 1L,
+    covariance_ar1 = 2L,
+    covariance_diagonal = 3L
   )
-  args$object <- eval(parse(text = "stanmodels$model"))
+  args$object <- eval(parse(text = "stanmodels$historicalborrowlong"))
   args$data <- data_stan
-  args$pars <- c(
+  pars <- c(
     "alpha",
     "delta",
     "beta",
@@ -122,14 +128,25 @@ stan_mcmc <- function(
     "rho_current",
     "rho_historical",
     "mu",
-    "tau"
+    "tau",
+    "lp__"
   )
-  out <- do.call(what = rstan::sampling, args = args)
-  out <- tibble::as_tibble(as.data.frame(out))
+  args$pars <- pars
+  fit <- do.call(what = rstan::sampling, args = args)
+  out <- tibble::as_tibble(as.data.frame(fit))
   n <- args$iter - args$warmup
   out$.chain <- rep(seq_len(args$chains), each = n)
   out$.iteration <- rep(seq_len(n), times = args$chains)
   out$.draw <- seq_len(nrow(out))
+  out <- dplyr::select(
+    out,
+    tidyselect::starts_with(pars), tidyselect::starts_with(".")
+  )
+  out <- dplyr::select(
+    out,
+    -tidyselect::contains("_latent"),
+    -tidyselect::contains("_raw")
+  )
   stan_prune_lambda(out)
 }
 
