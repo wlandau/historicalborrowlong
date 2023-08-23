@@ -56,6 +56,7 @@ hbl_mcmc_hierarchical <- function(
   s_lambda = 1,
   s_mu = 30,
   s_tau = 30,
+  l_tau = 0,
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
   control = list(max_treedepth = 17, adapt_delta = 0.99),
@@ -81,7 +82,8 @@ hbl_mcmc_hierarchical <- function(
   true(s_sigma, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
   true(s_lambda, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
   true(s_mu, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
-  true(s_tau, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
+  true(s_tau, length(.) == 1, is.finite(.), is.numeric(.), . >= 0)
+  true(l_tau, length(.) == 1, is.finite(.), is.numeric(.), . >= 0)
   true(is.list(control))
   data <- hbl_data(
     data = data,
@@ -118,6 +120,7 @@ hbl_mcmc_hierarchical <- function(
     s_lambda = s_lambda,
     s_mu = s_mu,
     s_tau = s_tau,
+    l_tau = l_tau,
     alpha_rep_index = alpha_rep_index,
     covariance_current = covariance_current,
     covariance_historical = covariance_historical,

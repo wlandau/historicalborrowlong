@@ -21,6 +21,7 @@
 #'   prior standard deviation of `mu`.
 #' @param s_tau Numeric of length 1,
 #'   Upper bound on `tau`.
+#' @param l_tau Numeric of length 1, lower bound on `tau`.
 #' @param mu Numeric of length `n_rep`,
 #'   mean of the control group means `alpha` for each rep.
 #' @param tau Numeric of length `n_rep`,
@@ -41,6 +42,7 @@ hbl_sim_hierarchical <- function(
   s_lambda = 1,
   s_mu = 1,
   s_tau = 1,
+  l_tau = 0,
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
   alpha = stats::rnorm(
@@ -60,7 +62,7 @@ hbl_sim_hierarchical <- function(
   ),
   sigma = stats::runif(n = n_study * n_rep, min = 0, max = s_sigma),
   mu = stats::rnorm(n = n_rep, mean = 0, sd = s_mu),
-  tau = stats::runif(n = n_rep, min = 0, max = s_tau),
+  tau = stats::runif(n = n_rep, min = l_tau, max = s_tau),
   rho_current = stats::runif(n = 1, min = -1, max = 1),
   rho_historical = stats::runif(n = n_study - 1, min = -1, max = 1)
 ) {
@@ -76,7 +78,8 @@ hbl_sim_hierarchical <- function(
   true(s_beta, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
   true(s_sigma, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
   true(s_mu, length(.) == 1, is.finite(.), is.numeric(.))
-  true(s_tau, length(.) == 1, is.finite(.), is.numeric(.), . > 0)
+  true(s_tau, length(.) == 1, is.finite(.), is.numeric(.), . >= 0)
+  true(l_tau, length(.) == 1, is.finite(.), is.numeric(.), . >= 0)
   true(
     covariance_current,
     is.character(.),

@@ -116,6 +116,7 @@ hbl_mcmc_independent <- function(
     s_lambda = s_lambda,
     s_mu = 30,
     s_tau = 30,
+    l_tau = 0,
     alpha_rep_index = alpha_rep_index,
     covariance_current = covariance_current,
     covariance_historical = covariance_historical,

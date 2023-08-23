@@ -76,6 +76,7 @@ data {
   real<lower=0> s_alpha;
   real<lower=0> s_mu;
   real<lower=0> s_tau;
+  real<lower=0> l_tau;
   real<lower=0> s_beta;
   real<lower=0> s_delta;
   real<lower=0> s_sigma;
@@ -105,7 +106,7 @@ parameters {
   vector[n_missing] y_missing;
   vector[n_alpha] alpha_raw;
   vector[n_mu] mu;
-  vector<lower=0,upper=s_tau>[n_tau] tau;
+  vector<lower=l_tau,upper=s_tau>[n_tau] tau;
   vector[n_delta] delta;
   vector[n_beta] beta;
   vector<lower=0,upper=s_sigma>[n_rep] sigma[n_study];
@@ -239,7 +240,7 @@ model {
   if (model_type == 3) {
     alpha_raw ~ std_normal();
     mu ~ normal(0, s_mu);
-    tau ~ uniform(0, s_tau);
+    tau ~ uniform(l_tau, s_tau);
   } else {
     alpha_raw ~ normal(0, s_alpha);
   }

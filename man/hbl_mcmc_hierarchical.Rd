@@ -22,6 +22,7 @@ hbl_mcmc_hierarchical(
   s_lambda = 1,
   s_mu = 30,
   s_tau = 30,
+  l_tau = 0,
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
   control = list(max_treedepth = 17, adapt_delta = 0.99),
@@ -111,6 +112,8 @@ prior standard deviation of \code{mu}.}
 
 \item{s_tau}{Numeric of length 1,
 Upper bound on \code{tau}.}
+
+\item{l_tau}{Numeric of length 1, lower bound on \code{tau}.}
 
 \item{covariance_current}{Character of length 1,
 covariance structure of the current study.
