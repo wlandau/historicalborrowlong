@@ -70,9 +70,9 @@ data {
   int<lower=0> n_lambda_historical;
   int<lower=0> n_rho_current;
   int<lower=0> n_rho_historical;
-  int<lower=0> n_patient_study[n_study];
-  int<lower=0> index_patient_study[n_study];
-  int<lower=0> index_patient[n_observe];
+  array[n_study] int<lower=0> n_patient_study;
+  array[n_study] int<lower=0> index_patient_study;
+  array[n_observe] int<lower=0> index_patient;
   real<lower=0> s_alpha;
   real<lower=0> s_mu;
   real<lower=0> s_tau;
@@ -80,17 +80,17 @@ data {
   real<lower=0> s_delta;
   real<lower=0> s_sigma;
   real<lower=0> s_lambda;
-  int<lower=0> missing[n_observe];
-  int<lower=0> count_missing[n_observe];
-  int<lower=0> study_index[n_observe];
-  int<lower=0> alpha_rep_index[n_alpha];
-  int<lower=0> alpha_data_index[n_observe];
-  int<lower=0> delta_data_index[n_observe];
-  int<lower=0> x_beta_col_index[n_study_x_beta];
-  int<lower=0> x_beta_row_index[n_study_x_beta];
-  int<lower=0> x_beta_col_n[n_study_x_beta];
-  int<lower=0> x_beta_row_n[n_study_x_beta];
-  int<lower=0,upper=n_patient> study_patient[n_patient];
+  array[n_observe] int<lower=0> missing;
+  array[n_observe] int<lower=0> count_missing;
+  array[n_observe] int<lower=0> study_index;
+  array[n_alpha] int<lower=0> alpha_rep_index;
+  array[n_observe] int<lower=0> alpha_data_index;
+  array[n_observe] int<lower=0> delta_data_index;
+  array[n_study_x_beta] int<lower=0> x_beta_col_index;
+  array[n_study_x_beta] int<lower=0> x_beta_row_index;
+  array[n_study_x_beta] int<lower=0> x_beta_col_n;
+  array[n_study_x_beta] int<lower=0> x_beta_row_n;
+  array[n_patient] int<lower=0,upper=n_patient> study_patient;
   vector[n_observe] y;
   matrix[n_observe, n_alpha] x_alpha;
   matrix[n_observe, n_delta] x_delta;
@@ -108,16 +108,16 @@ parameters {
   vector<lower=0,upper=s_tau>[n_tau] tau;
   vector[n_delta] delta;
   vector[n_beta] beta;
-  vector<lower=0,upper=s_sigma>[n_rep] sigma[n_study];
-  cholesky_factor_corr[n_rep] lambda_current[n_lambda_current];
-  cholesky_factor_corr[n_rep] lambda_historical[n_lambda_historical];
+  array[n_study] vector<lower=0,upper=s_sigma>[n_rep] sigma;
+  array[n_lambda_current] cholesky_factor_corr[n_rep] lambda_current;
+  array[n_lambda_historical] cholesky_factor_corr[n_rep] lambda_historical;
   vector<lower=-1,upper=1>[n_rho_current] rho_current;
   vector<lower=-1,upper=1>[n_rho_historical] rho_historical;
 }
 transformed parameters {
   vector[n_alpha] alpha;
   matrix[n_rep, n_patient] epsilon;
-  matrix[n_rep, n_rep] covariance_cholesky[n_study];
+  array[n_study] matrix[n_rep, n_rep] covariance_cholesky;
   {
     int index;
     int last_visit;
