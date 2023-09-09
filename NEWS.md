@@ -1,3 +1,11 @@
+# historicalborrowlong 0.0.7.9000
+
+* Implement `l_tau`.
+
+# historicalborrowlong 0.0.7
+
+* Use new Stan array syntax (#3, @andrjohns).
+
 # historicalborrowlong 0.0.6
 
 * Vectorize the likelihood for performance.
