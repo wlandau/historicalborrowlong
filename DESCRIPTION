@@ -44,7 +44,7 @@ Imports:
   Rcpp,
   RcppParallel,
   rlang,
-  rstan,
+  rstan (>= 2.26.0),
   rstantools,
   stats,
   tibble,
@@ -71,6 +71,6 @@ LinkingTo:
   Rcpp,
   RcppEigen,
   RcppParallel,
-  rstan,
-  StanHeaders
+  rstan (>= 2.26.0),
+  StanHeaders (>= 2.26.0)
 SystemRequirements: GNU make
