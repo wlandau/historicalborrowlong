@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">historicalborrowlong</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.7</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@
 
       
 
-      </header><script src="usage_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Usage</h1>
@@ -91,11 +91,17 @@
 
     
     
-<p>This usage tutorial shows how to fit historical control-group borrowing models using the <code>historicalborrowlong</code> package.</p>
+<p>This usage tutorial shows how to fit historical control-group
+borrowing models using the <code>historicalborrowlong</code>
+package.</p>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p><code>historicalborrowlong</code> expects data on multiple patients partitioned into studies, groups, and repeated measures (“reps”). Here is a simulated example. There are functions to simulate from the prior predictive distribution of each of the hierarchical, independent, and pooled models.</p>
+<p><code>historicalborrowlong</code> expects data on multiple patients
+partitioned into studies, groups, and repeated measures (“reps”). Here
+is a simulated example. There are functions to simulate from the prior
+predictive distribution of each of the hierarchical, independent, and
+pooled models.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/historicalborrowlong/" class="external-link">historicalborrowlong</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -128,19 +134,27 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 160 × 8</span></span></span>
 <span><span class="co">#&gt;    trial  arm   subject  visit  factor1 factor2 covariate_study3_conti…¹ outcome</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> trial1 arm1  subject1 visit1   0.764       0                        0   3.54 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> trial1 arm1  subject1 visit2   0.764       0                        0   2.92 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> trial1 arm1  subject1 visit3   0.764       0                        0   3.22 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> trial1 arm1  subject1 visit4   0.764       0                        0   3.32 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> trial1 arm1  subject2 visit1  -<span style="color: #BB0000;">0.799</span>       0                        0   0.426</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> trial1 arm1  subject2 visit2  -<span style="color: #BB0000;">0.799</span>       0                        0  -<span style="color: #BB0000;">0.521</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> trial1 arm1  subject2 visit3  -<span style="color: #BB0000;">0.799</span>       0                        0   0.334</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> trial1 arm1  subject2 visit4  -<span style="color: #BB0000;">0.799</span>       0                        0   0.288</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> trial1 arm1  subject3 visit1  -<span style="color: #BB0000;">1.15</span>        0                        0  -<span style="color: #BB0000;">1.05</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> trial1 arm1  subject3 visit2  -<span style="color: #BB0000;">1.15</span>        0                        0  -<span style="color: #BB0000;">0.485</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 150 more rows, and abbreviated variable name</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​covariate_study3_continuous1</span></span></span></code></pre></div>
-<p>You as the user will choose a reference level of the <code>study</code> (“trial”) column to indicate which study is the current one (the other are historical). Likewise, you will choose a level of the <code>group</code> (“arm”) column to indicate which group is the control group and a level of the <code>rep</code> (“visit”) column to indicate the first measurement of each patient (baseline). To see how <code>historicalborrowlong</code> assigns numeric indexes to the study and group levels, use <code><a href="../reference/hbl_data.html">hbl_data()</a></code>. Viewing this output may assist with interpreting the results later on.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> trial1 arm1  subject1 visit1   0.764       0                        0  2.82  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> trial1 arm1  subject1 visit2   0.764       0                        0  3.40  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> trial1 arm1  subject1 visit3   0.764       0                        0  3.30  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> trial1 arm1  subject1 visit4   0.764       0                        0  3.02  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> trial1 arm1  subject2 visit1  -<span style="color: #BB0000;">0.799</span>       0                        0 -<span style="color: #BB0000;">0.504</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> trial1 arm1  subject2 visit2  -<span style="color: #BB0000;">0.799</span>       0                        0  0.095<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> trial1 arm1  subject2 visit3  -<span style="color: #BB0000;">0.799</span>       0                        0  0.441 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> trial1 arm1  subject2 visit4  -<span style="color: #BB0000;">0.799</span>       0                        0 -<span style="color: #BB0000;">0.092</span><span style="color: #BB0000; text-decoration: underline;">1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> trial1 arm1  subject3 visit1  -<span style="color: #BB0000;">1.15</span>        0                        0 -<span style="color: #BB0000;">0.073</span><span style="color: #BB0000; text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> trial1 arm1  subject3 visit2  -<span style="color: #BB0000;">1.15</span>        0                        0 -<span style="color: #BB0000;">1.13</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated name: ¹​covariate_study3_continuous1</span></span></span></code></pre></div>
+<p>You as the user will choose a reference level of the
+<code>study</code> (“trial”) column to indicate which study is the
+current one (the other are historical). Likewise, you will choose a
+level of the <code>group</code> (“arm”) column to indicate which group
+is the control group and a level of the <code>rep</code> (“visit”)
+column to indicate the first measurement of each patient (baseline). To
+see how <code>historicalborrowlong</code> assigns numeric indexes to the
+study and group levels, use <code><a href="../reference/hbl_data.html">hbl_data()</a></code>. Viewing this output
+may assist with interpreting the results later on.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">standardized_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_data.html">hbl_data</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -157,21 +171,21 @@
 <span><span class="op">)</span></span>
 <span><span class="va">standardized_data</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 160 × 11</span></span></span>
-<span><span class="co">#&gt;    study patient patient_l…¹   rep rep_l…² respo…³ study…⁴ group…⁵ group covar…⁶</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1       1 subject1        1 visit1   3.54   trial1  arm1        1   0.764</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1       1 subject1        2 visit2   2.92   trial1  arm1        1   0.764</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1       1 subject1        3 visit3   3.22   trial1  arm1        1   0.764</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1       1 subject1        4 visit4   3.32   trial1  arm1        1   0.764</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1       2 subject10       1 visit1  -<span style="color: #BB0000;">2.00</span>   trial1  arm1        1  -<span style="color: #BB0000;">1.24</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1       2 subject10       2 visit2   0.092<span style="text-decoration: underline;">9</span> trial1  arm1        1  -<span style="color: #BB0000;">1.24</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1       2 subject10       3 visit3  -<span style="color: #BB0000;">0.478</span>  trial1  arm1        1  -<span style="color: #BB0000;">1.24</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1       2 subject10       4 visit4  -<span style="color: #BB0000;">0.803</span>  trial1  arm1        1  -<span style="color: #BB0000;">1.24</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1      12 subject2        1 visit1   0.426  trial1  arm1        1  -<span style="color: #BB0000;">0.799</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1      12 subject2        2 visit2  -<span style="color: #BB0000;">0.521</span>  trial1  arm1        1  -<span style="color: #BB0000;">0.799</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 150 more rows, 1 more variable: covariate_factor2 &lt;dbl&gt;, and</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   abbreviated variable names ¹​patient_label, ²​rep_label, ³​response,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​study_label, ⁵​group_label, ⁶​covariate_factor1</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    study patient patient_label   rep rep_label response study_label group_label</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1       1 subject1          1 visit1      2.82   trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1       1 subject1          2 visit2      3.40   trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1       1 subject1          3 visit3      3.30   trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1       1 subject1          4 visit4      3.02   trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1       2 subject10         1 visit1      0.343  trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1       2 subject10         2 visit2     -<span style="color: #BB0000;">1.46</span>   trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1       2 subject10         3 visit3     -<span style="color: #BB0000;">0.747</span>  trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1       2 subject10         4 visit4      0.155  trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1      12 subject2          1 visit1     -<span style="color: #BB0000;">0.504</span>  trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1      12 subject2          2 visit2      0.095<span style="text-decoration: underline;">2</span> trial1      arm1       </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: group &lt;int&gt;, covariate_factor1 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   covariate_factor2 &lt;dbl&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
 <span>  <span class="va">standardized_data</span>,</span>
@@ -209,8 +223,19 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>     3 trial3          2 arm2            2 visit2   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>     3 trial3          2 arm2            3 visit3   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>     3 trial3          2 arm2            4 visit4</span></span></code></pre></div>
-<p>As explained in the <code><a href="../reference/hbl_data.html">hbl_data()</a></code> and <code>hb_mcmc_*()</code> help files, before running the MCMC, dataset is pre-processed. This includes expanding the rows of the data so every rep of every patient gets an explicit row. So if your original data has irregular rep IDs, e.g. unscheduled visits in a clinical trial that few patients attend, please remove them before the analysis. Only the most common rep IDs should be added.</p>
-<p>After expanding the rows, the function fills in missing values for every column except the response. That includes covariates. Missing covariate values are filled in, first with last observation carried forward, then with last observation carried backward. If there are still missing values after this process, the program throws an informative error.</p>
+<p>As explained in the <code><a href="../reference/hbl_data.html">hbl_data()</a></code> and
+<code>hb_mcmc_*()</code> help files, before running the MCMC, dataset is
+pre-processed. This includes expanding the rows of the data so every rep
+of every patient gets an explicit row. So if your original data has
+irregular rep IDs, e.g. unscheduled visits in a clinical trial that few
+patients attend, please remove them before the analysis. Only the most
+common rep IDs should be added.</p>
+<p>After expanding the rows, the function fills in missing values for
+every column except the response. That includes covariates. Missing
+covariate values are filled in, first with last observation carried
+forward, then with last observation carried backward. If there are still
+missing values after this process, the program throws an informative
+error.</p>
 </div>
 <div class="section level2">
 <h2 id="models">Models<a class="anchor" aria-label="anchor" href="#models"></a>
@@ -218,8 +243,21 @@
 <div class="section level3">
 <h3 id="recommended-run-all-models-using-hbl_mcmc_sge">Recommended: run all models using <code>hbl_mcmc_sge()</code><a class="anchor" aria-label="anchor" href="#recommended-run-all-models-using-hbl_mcmc_sge"></a>
 </h3>
-<p>The <code><a href="../reference/hbl_mcmc_sge.html">hbl_mcmc_sge()</a></code> function runs all 3 models of interest on a Sun Grid Engine (SGE) computing cluster and returns a list of results from all three models. For standardized analyses of real studies, this is highly recommended over the alternative of running each model separately (<code><a href="../reference/hbl_mcmc_hierarchical.html">hbl_mcmc_hierarchical()</a></code>, <code><a href="../reference/hbl_mcmc_pool.html">hbl_mcmc_pool()</a></code>, and <code><a href="../reference/hbl_mcmc_independent.html">hbl_mcmc_independent()</a></code>, as in the next subsection).</p>
-<p>In <code><a href="../reference/hbl_mcmc_sge.html">hbl_mcmc_sge()</a></code>, each model runs in its own SGE job, and chains run in parallel across the cores available to each job. The return value is a list of results from each model (hierarchical, independent, and pooled) that you would get by running <code><a href="../reference/hbl_mcmc_hierarchical.html">hbl_mcmc_hierarchical()</a></code>, <code><a href="../reference/hbl_mcmc_pool.html">hbl_mcmc_pool()</a></code>, and <code><a href="../reference/hbl_mcmc_independent.html">hbl_mcmc_independent()</a></code> separately. Each of these data frames each be supplied separately to <code><a href="../reference/hbl_summary.html">hbl_summary()</a></code> as explained later in this vignette.</p>
+<p>The <code><a href="../reference/hbl_mcmc_sge.html">hbl_mcmc_sge()</a></code> function runs all 3 models of
+interest on a Sun Grid Engine (SGE) computing cluster and returns a list
+of results from all three models. For standardized analyses of real
+studies, this is highly recommended over the alternative of running each
+model separately (<code><a href="../reference/hbl_mcmc_hierarchical.html">hbl_mcmc_hierarchical()</a></code>,
+<code><a href="../reference/hbl_mcmc_pool.html">hbl_mcmc_pool()</a></code>, and <code><a href="../reference/hbl_mcmc_independent.html">hbl_mcmc_independent()</a></code>,
+as in the next subsection).</p>
+<p>In <code><a href="../reference/hbl_mcmc_sge.html">hbl_mcmc_sge()</a></code>, each model runs in its own SGE job,
+and chains run in parallel across the cores available to each job. The
+return value is a list of results from each model (hierarchical,
+independent, and pooled) that you would get by running
+<code><a href="../reference/hbl_mcmc_hierarchical.html">hbl_mcmc_hierarchical()</a></code>, <code><a href="../reference/hbl_mcmc_pool.html">hbl_mcmc_pool()</a></code>, and
+<code><a href="../reference/hbl_mcmc_independent.html">hbl_mcmc_independent()</a></code> separately. Each of these data
+frames each be supplied separately to <code><a href="../reference/hbl_summary.html">hbl_summary()</a></code> as
+explained later in this vignette.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_mcmc_sge.html">hbl_mcmc_sge</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -242,10 +280,10 @@
 <span>  scheduler <span class="op">=</span> <span class="st">"local"</span> <span class="co"># Set to "sge" for serious analysis.</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000136 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.36 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000125 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.25 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -265,15 +303,15 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.114133 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.699515 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.813648 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.061 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.545 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.606 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000137 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.37 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 9.1e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.91 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -293,15 +331,15 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.193637 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.082017 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.275654 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.081 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.093 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.174 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000127 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.27 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.7e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.87 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -321,76 +359,76 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 18 / 20 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 20 / 20 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.124442 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.106259 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.230701 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.065 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.07 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.135 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc</span></span>
 <span><span class="co">#&gt; $hierarchical</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 69</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² alpha…³ alpha…⁴ alpha…⁵ alpha…⁶ alpha…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.11       0.937   0.899   0.654   0.367  -<span style="color: #BB0000;">0.291</span>  -<span style="color: #BB0000;">0.251</span>    1.62  6.72  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.632      0.941   0.836   0.946  -<span style="color: #BB0000;">0.553</span>   0.670  -<span style="color: #BB0000;">0.382</span>    2.13  1.86  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      0.731      1.19    0.976   1.09    0.201   0.992   0.930    1.59  0.084<span style="text-decoration: underline;">3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      0.986      0.631   1.08    0.466   0.347   0.986   1.56     1.36  0.649 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.786      1.49    0.972   0.539   0.251   0.988   1.25     1.49  0.763 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.990      1.24    0.969   0.679   0.820   0.989   1.32     1.08  0.428 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.704      1.17    1.09    0.582   0.227   0.982   0.640    1.04  0.064<span style="text-decoration: underline;">2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.732      1.11    1.00    0.633   0.388   0.989   1.02     1.16  0.243 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      0.891      1.10    0.994   0.677   0.615   1.01    1.41     1.38  0.533 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      1.22       0.983   0.968   0.537   1.06    0.982   1.48     1.31  0.850 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 60 more variables: `alpha[10]` &lt;dbl&gt;, `alpha[11]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;, `delta[3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;, `sigma[1,1]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;, `sigma[1,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;, `sigma[1,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, `sigma[1,4]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, `mu[1]` &lt;dbl&gt;, `mu[2]` &lt;dbl&gt;, …</span></span></span>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `alpha[5]` `alpha[6]` `alpha[7]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      2.37       1.32       0.679      1.42       3.06      -<span style="color: #BB0000;">0.732</span>      0.187</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.778      1.75       1.28       0.870      0.748      0.603      1.30 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      0.770      1.14       1.02       0.866      0.722      0.655      1.02 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.04       1.58       1.18       1.23       0.945      1.08       1.18 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.566      2.07       1.10       0.506      0.497      0.911      1.10 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.521      1.61       1.00       0.896      0.431      0.970      1.01 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.810      1.14       1.08       0.724      0.868      0.986      1.09 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      1.03       0.963      1.03       0.752      0.619      0.966      0.529</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.27       0.857      0.930      0.752      0.657      1.01       1.22 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.560      1.75       0.975      0.256      0.604      0.980      0.634</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 62 more variables: `alpha[8]` &lt;dbl&gt;, `alpha[9]` &lt;dbl&gt;, `alpha[10]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[11]` &lt;dbl&gt;, `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `delta[3]` &lt;dbl&gt;, `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, …</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $independent</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 61</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² alpha…³ alpha…⁴ alpha…⁵ alpha…⁶ alpha…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.28       -<span style="color: #BB0000;">1.16</span>    1.15   1.01   -<span style="color: #BB0000;">0.306</span>   0.957   0.568   0.548  -<span style="color: #BB0000;">0.670</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      1.25       -<span style="color: #BB0000;">1.49</span>    1.15   1.03    0.930   0.985   1.50    1.45    0.176</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.14       -<span style="color: #BB0000;">1.54</span>    1.08   1.18    0.808   0.985   1.44    1.45    0.239</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      0.942      -<span style="color: #BB0000;">1.11</span>    1.42   0.869   0.473   0.992   1.38    1.62    0.661</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.933      -<span style="color: #BB0000;">1.11</span>    1.41   0.872   0.476   0.995   1.38    1.62    0.675</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.933      -<span style="color: #BB0000;">1.11</span>    1.41   0.872   0.476   0.995   1.38    1.62    0.675</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.935      -<span style="color: #BB0000;">1.10</span>    1.40   0.882   0.492   0.987   1.37    1.62    0.661</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.926      -<span style="color: #BB0000;">1.12</span>    1.41   0.905   0.489   0.985   1.37    1.63    0.650</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      0.926      -<span style="color: #BB0000;">1.12</span>    1.41   0.905   0.489   0.985   1.37    1.63    0.650</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.737      -<span style="color: #BB0000;">1.13</span>    1.22   0.854   0.622   0.990   1.28    1.56    0.559</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 52 more variables: `alpha[10]` &lt;dbl&gt;, `alpha[11]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;, `delta[3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;, `sigma[1,1]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;, `sigma[1,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;, `sigma[1,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, `sigma[1,4]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, .chain &lt;int&gt;, …</span></span></span>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `alpha[5]` `alpha[6]` `alpha[7]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.00       1.45       1.01       0.902      0.408     -<span style="color: #BB0000;">1.74</span>        1.10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      1.37       0.852      0.948      0.839      0.923     -<span style="color: #BB0000;">0.784</span>       1.70</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      0.913      0.914      1.07       1.20       0.284      0.935       1.26</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      0.868      0.969      1.02       1.48       0.661      0.986       2.32</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      1.05       1.01       1.03       1.52       0.264      0.992       2.24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.501      1.04       1.05       0.808      1.05       0.994       2.10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.965      1.16       1.00       0.559     -<span style="color: #BB0000;">0.256</span>      0.998       1.31</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.830      1.10       1.02       0.612     -<span style="color: #BB0000;">0.457</span>      1.01        1.35</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.49       0.927      0.891      0.522      1.24       0.981       1.07</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      1.18       0.840      0.972      0.894      0.982      0.979       1.25</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 54 more variables: `alpha[8]` &lt;dbl&gt;, `alpha[9]` &lt;dbl&gt;, `alpha[10]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[11]` &lt;dbl&gt;, `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `delta[3]` &lt;dbl&gt;, `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, …</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $pool</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 53</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² delta…³ delta…⁴ delta…⁵ delta…⁶ beta[…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      0.849      0.971   0.993   0.952  0.612   0.869    0.854  0.655     1.34</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      1.13       0.977   0.978   1.09   0.672   0.714    0.712  0.614     1.24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.00       1.00    0.978   1.02   0.160   0.899    0.353  0.774     1.33</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.03       0.998   1.06    1.18   0.332   0.528    0.307  0.392     1.32</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      1.19       0.994   1.02    1.03   0.219   0.523    0.305  0.764     1.29</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.874      0.982   1.01    0.778  0.423   0.701    0.506  0.564     1.28</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      1.09       0.993   1.04    1.03   0.353   0.476    0.445  0.255     1.21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      1.02       0.999   1.05    0.729 -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">1</span>  0.657    0.219  0.254     1.26</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.14       1.01    1.00    1.32   0.068<span style="text-decoration: underline;">0</span>  0.063<span style="text-decoration: underline;">5</span>  -<span style="color: #BB0000;">0.218</span>  0.436     1.26</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.932      0.972   1.03    0.862  0.025<span style="text-decoration: underline;">3</span>  0.012<span style="text-decoration: underline;">9</span>  -<span style="color: #BB0000;">0.142</span> -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">6</span>    1.28</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 44 more variables: `beta[2]` &lt;dbl&gt;, `sigma[1,1]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;, `sigma[1,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;, `sigma[1,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, `sigma[1,4]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, .chain &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   .iteration &lt;int&gt;, .draw &lt;int&gt;, `lambda_current[1,2,1]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `delta[1]` `delta[2]` `delta[3]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.02       0.942      1.01       1.06     -<span style="color: #BB0000;">0.797</span>     -<span style="color: #BB0000;">0.276</span>   -<span style="color: #BB0000;">0.665</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.941      1.02       1.04       0.927     0.528      0.015<span style="text-decoration: underline;">1</span>   0.263   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.07       0.839      0.998      0.854    -<span style="color: #BB0000;">0.311</span>      0.310    0.187   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      0.741      1.17       1.04       1.00     -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">3</span>    -<span style="color: #BB0000;">0.102</span>   -<span style="color: #BB0000;">0.272</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.994      1.04       1.04       0.964    -<span style="color: #BB0000;">0.010</span><span style="color: #BB0000; text-decoration: underline;">3</span>     0.275   -<span style="color: #BB0000;">0.165</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.954      1.06       0.984      0.951    -<span style="color: #BB0000;">0.493</span>      0.765    0.278   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      1.02       0.958      1.02       0.874     0.207      0.681    0.453   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.974      0.962      1.02       0.908    -<span style="color: #BB0000;">0.192</span>      0.322    0.015<span style="text-decoration: underline;">8</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      0.867      0.955      0.873      1.03     -<span style="color: #BB0000;">0.035</span><span style="color: #BB0000; text-decoration: underline;">6</span>     0.023<span style="text-decoration: underline;">0</span>  -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">104</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.936      0.970      0.969      1.01     -<span style="color: #BB0000;">0.731</span>      0.170   -<span style="color: #BB0000;">0.384</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 46 more variables: `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   .chain &lt;int&gt;, .iteration &lt;int&gt;, .draw &lt;int&gt;, `lambda_current[1,2,1]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `lambda_current[1,3,1]` &lt;dbl&gt;, `lambda_current[1,4,1]` &lt;dbl&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -417,10 +455,10 @@
 <span>  cores <span class="op">=</span> <span class="fl">1</span> <span class="co"># Optionally run different chains in different processes.</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000134 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.34 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 9.3e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.93 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -437,33 +475,36 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 360 / 400 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 400 / 400 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 23.1173 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                10.7592 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                33.8765 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 20.286 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                15.226 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                35.512 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_hierarchical</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 200 × 69</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² alpha…³ alpha…⁴ alpha…⁵ alpha…⁶ alpha…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.29       0.961   0.951   1.01  -<span style="color: #BB0000;">0.532</span>    0.986   0.823   0.640   0.573</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.793      1.13    0.967   0.543  0.743    0.981   1.35    1.72    0.815</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      0.498      1.04    1.01    0.531  0.434    0.989   0.990   0.746   0.524</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.96       0.992   0.945   0.952  0.589    0.991   1.12    0.774   0.604</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.981      0.974   0.961   0.441  0.862    0.986   1.36    1.22    1.01 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.876      0.961   1.05    0.820 -<span style="color: #BB0000;">0.089</span><span style="color: #BB0000; text-decoration: underline;">9</span>   0.974   0.700   0.697   0.409</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      1.53       0.877   0.901   0.658  0.458    0.974   0.900   1.42    0.998</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.902      0.808   1.04    0.882  0.433    0.974   1.06    1.11    0.791</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.36       0.993   0.952   1.13   0.602    0.977   1.09    1.09    0.634</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      1.18       0.883   0.997   1.05   0.081<span style="text-decoration: underline;">6</span>   0.978   0.975   0.794   0.614</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 190 more rows, 60 more variables: `alpha[10]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `alpha[5]` `alpha[6]` `alpha[7]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>       1.08      0.960      1.01       0.861      0.438      0.958      0.749</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>       1.04      0.981      1.01       0.869      0.159      0.979      0.953</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>       1.67      0.605      0.856      0.868      0.156      0.990      1.00 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>       1.03      1.00       1.00       0.696      0.647      0.985      0.838</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>       1.08      0.922      1.01       0.830      0.626      0.993      1.20 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>       1.37      0.925      0.749      0.852      0.416      1.00       1.11 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>       1.33      0.780      0.982      1.19       0.114      0.987      1.02 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>       1.28      0.907      0.886      0.465      0.685      0.961      0.922</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>       1.29      0.952      0.985      1.10       0.495      0.997      1.27 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>       1.14      0.864      0.950      0.781      0.555      0.999      0.866</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 190 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 62 more variables: `alpha[8]` &lt;dbl&gt;, `alpha[9]` &lt;dbl&gt;, `alpha[10]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[11]` &lt;dbl&gt;, `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `delta[3]` &lt;dbl&gt;, `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<p>The pooled and independent models are benchmarks used to quantify the borrowing strength of the hierarchical model. To run these benchmark models, run the functions below. Each function returns a data frame with one column per parameter and one row per posterior sample.</p>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<p>The pooled and independent models are benchmarks used to quantify the
+borrowing strength of the hierarchical model. To run these benchmark
+models, run the functions below. Each function returns a data frame with
+one column per parameter and one row per posterior sample.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_mcmc_pool.html">hbl_mcmc_pool</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -484,10 +525,10 @@
 <span>  cores <span class="op">=</span> <span class="fl">1</span> <span class="co"># Optionally run different chains in different processes.</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000136 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.36 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 9e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.9 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -504,32 +545,32 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 360 / 400 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 400 / 400 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 6.32006 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                2.77638 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                9.09645 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 2.854 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                1.207 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.061 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_pool</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 200 × 53</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² delta…³ delta…⁴ delta…⁵ delta…⁶ beta[…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      0.923      0.992   1.05    0.871   0.620   1.14   0.766   0.881     1.27</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.954      0.983   1.03    0.906   0.322   1.05   0.383   1.10      1.32</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      0.794      0.976   1.01    0.710  -<span style="color: #BB0000;">0.114</span>   0.794  0.176   0.776     1.19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      0.825      0.984   1.05    0.794   0.107   0.471  0.305   0.212     1.26</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.875      0.974   0.969   0.858   0.117   0.694  0.241   0.519     1.27</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      1.03       0.994   0.991   0.930  -<span style="color: #BB0000;">0.165</span>   0.294  0.143   0.164     1.28</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      1.18       0.979   0.978   0.870  -<span style="color: #BB0000;">0.203</span>   0.156 -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">5</span>  0.080<span style="text-decoration: underline;">6</span>    1.30</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.866      0.989   1.01    0.832   0.103   0.510  0.181   0.241     1.23</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.13       0.985   1.03    0.828   0.845   0.800  0.824   0.705     1.30</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.741      0.986   0.961   0.857   0.111   0.667  0.065<span style="text-decoration: underline;">1</span>  0.592     1.25</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 190 more rows, 44 more variables: `beta[2]` &lt;dbl&gt;, `sigma[1,1]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;, `sigma[1,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;, `sigma[1,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, `sigma[1,4]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, .chain &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   .iteration &lt;int&gt;, .draw &lt;int&gt;, `lambda_current[1,2,1]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `lambda_current[1,3,1]` &lt;dbl&gt;, `lambda_current[1,4,1]` &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `delta[1]` `delta[2]` `delta[3]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.06       0.974       1.07      1.13      0.023<span style="text-decoration: underline;">0</span>    -<span style="color: #BB0000;">0.025</span><span style="color: #BB0000; text-decoration: underline;">5</span>    0.006<span style="text-decoration: underline;">54</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.942      0.995       1.01      1.03     -<span style="color: #BB0000;">0.340</span>      0.041<span style="text-decoration: underline;">9</span>   -<span style="color: #BB0000;">0.079</span><span style="color: #BB0000; text-decoration: underline;">7</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.03       0.995       1.03      0.882    -<span style="color: #BB0000;">0.455</span>     -<span style="color: #BB0000;">0.037</span><span style="color: #BB0000; text-decoration: underline;">1</span>   -<span style="color: #BB0000;">0.424</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.11       0.977       1.02      0.894     0.794      1.22      0.911  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      1.07       0.982       1.01      0.917     0.746      1.24      0.957  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.946      0.980       1.00      0.981    -<span style="color: #BB0000;">0.059</span><span style="color: #BB0000; text-decoration: underline;">1</span>     0.298     0.152  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.986      0.978       1.04      0.931    -<span style="color: #BB0000;">0.453</span>      0.094<span style="text-decoration: underline;">3</span>   -<span style="color: #BB0000;">0.294</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.960      0.977       1.00      0.948     0.332      0.500     0.230  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.05       0.974       1.03      0.951     0.933      0.765     0.884  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      1.07       0.986       1.03      0.852     0.419      1.01      0.602  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 190 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 46 more variables: `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   .chain &lt;int&gt;, .iteration &lt;int&gt;, .draw &lt;int&gt;, …</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_independent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_mcmc_independent.html">hbl_mcmc_independent</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -549,10 +590,10 @@
 <span>  cores <span class="op">=</span> <span class="fl">1</span> <span class="co"># Optionally run different chains in different processes.</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; SAMPLING FOR MODEL 'model' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'historicalborrowlong' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 0.000144 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.44 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.8e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.88 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -569,58 +610,79 @@
 <span><span class="co">#&gt; Chain 1: Iteration: 360 / 400 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 400 / 400 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 5.68271 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                1.8925 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                7.57522 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 3.143 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                1.167 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                4.31 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc_independent</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 200 × 61</span></span></span>
-<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` alpha…¹ alpha…² alpha…³ alpha…⁴ alpha…⁵ alpha…⁶ alpha…⁷</span></span>
-<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      0.946      1.03    1.03    0.447  0.785    0.978    1.26   1.16    2.04 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.681      1.30    1.03    0.457  0.642    0.987    1.02   1.13    2.00 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.57       1.12    1.07    0.724  0.611    0.983    1.31   1.24    0.942</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.50       0.939   1.04    0.881  0.596    0.982    1.04   1.25    1.14 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      1.16       1.03    0.948   0.943  0.023<span style="text-decoration: underline;">0</span>   0.987    1.53   1.14    1.24 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      1.35       0.949   1.03    1.04   0.552    0.980    1.03   0.898   0.913</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      0.312      1.13    0.991   0.423  0.480    0.999    1.47   1.01    1.14 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      1.13       0.850   0.948   1.06   0.324    0.995    1.40   1.08   -<span style="color: #BB0000;">0.238</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      1.49       1.06    0.989   1.09   0.408    0.979    1.17   1.31    0.103</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      0.924      0.861   0.948   0.831  1.09     1.00     1.34   1.12    0.859</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 190 more rows, 52 more variables: `alpha[10]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt;    `alpha[1]` `alpha[2]` `alpha[3]` `alpha[4]` `alpha[5]` `alpha[6]` `alpha[7]`</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1.35       0.832      0.961      0.960      0.581      0.982      0.983</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      0.817      0.911      0.995      0.616      0.393      0.974      1.01 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1.02       0.822      1.09       0.891      0.148      0.970      0.956</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      1.18       0.767      0.963      0.860      0.207      0.986      1.29 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      0.941      1.05       0.916      0.679      0.106      0.989      0.810</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      0.958      0.965      1.02       0.639      0.837      0.988      1.40 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      1.40       1.06       0.899      0.621      0.250      0.981      0.983</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      0.779      1.00       1.05       0.752      0.507      0.991      1.27 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      0.792      0.932      1.06       0.815      0.586      0.990      1.10 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      1.33       0.913      1.02       0.881      0.419      0.985      0.871</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 190 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 54 more variables: `alpha[8]` &lt;dbl&gt;, `alpha[9]` &lt;dbl&gt;, `alpha[10]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `alpha[11]` &lt;dbl&gt;, `alpha[12]` &lt;dbl&gt;, `delta[1]` &lt;dbl&gt;, `delta[2]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `delta[3]` &lt;dbl&gt;, `delta[4]` &lt;dbl&gt;, `beta[1]` &lt;dbl&gt;, `beta[2]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,1]` &lt;dbl&gt;, `sigma[2,1]` &lt;dbl&gt;, `sigma[3,1]` &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,2]` &lt;dbl&gt;, `sigma[2,2]` &lt;dbl&gt;, `sigma[3,2]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,4]` &lt;dbl&gt;, `sigma[2,4]` &lt;dbl&gt;, `sigma[3,4]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sigma[1,3]` &lt;dbl&gt;, `sigma[2,3]` &lt;dbl&gt;, `sigma[3,3]` &lt;dbl&gt;, …</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="model-performance">Model performance<a class="anchor" aria-label="anchor" href="#model-performance"></a>
 </h2>
-<p>A typical workflow will run all three models. Since each model can take several hours to run, it is strongly recommended to:</p>
+<p>A typical workflow will run all three models. Since each model can
+take several hours to run, it is strongly recommended to:</p>
 <ol style="list-style-type: decimal">
-<li>For each model, run all chains in parallel by setting the <code>cores</code> argument equal to <code>chains</code>.</li>
-<li>Run all models concurrently on different jobs on a computing cluster. Since <code>cores</code> will usually be greater than 1, it is strongly recommended that each cluster job have as many cores/slots as the <code>cores</code> argument.</li>
+<li>For each model, run all chains in parallel by setting the
+<code>cores</code> argument equal to <code>chains</code>.</li>
+<li>Run all models concurrently on different jobs on a computing
+cluster. Since <code>cores</code> will usually be greater than 1, it is
+strongly recommended that each cluster job have as many cores/slots as
+the <code>cores</code> argument.</li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="convergence">Convergence<a class="anchor" aria-label="anchor" href="#convergence"></a>
 </h2>
-<p>It is important to check convergence diagnostics on each model. The <code><a href="../reference/hbl_convergence.html">hbl_convergence()</a></code> function returns data frame of summarized convergence diagnostics. <code>max_rhat</code> is the maximum univariate Gelman/Rubin potential scale reduction factor over all the parameters of the model, <code>min_ess_bulk</code> is the minimum bulk effective sample size over the parameters, and <code>min_ess_tail</code> is the minimum tail effective sample size. <code>max_rhat</code> should be below 1.01, and the ESS metrics should both be above 100 times the number of MCMC chains. If any of these conditions are not true, the MCMC did not converge, and it is recommended to try running the model for more saved iterations (and if <code>max_rhat</code> is high, possibly more warmup iterations). You could also try increasing <code>adapt_delta</code> and <code>max_treedepth</code> in the <code>control</code> argument, or adjust other MCMC/HMC settings through <code>control</code> or the informal arguments (ellipsis “<code>...</code>”). See <code><a href="https://mc-stan.org/rstan/reference/stan.html" class="external-link">?rstan::stan</a></code> for details.</p>
+<p>It is important to check convergence diagnostics on each model. The
+<code><a href="../reference/hbl_convergence.html">hbl_convergence()</a></code> function returns data frame of summarized
+convergence diagnostics. <code>max_rhat</code> is the maximum univariate
+Gelman/Rubin potential scale reduction factor over all the parameters of
+the model, <code>min_ess_bulk</code> is the minimum bulk effective
+sample size over the parameters, and <code>min_ess_tail</code> is the
+minimum tail effective sample size. <code>max_rhat</code> should be
+below 1.01, and the ESS metrics should both be above 100 times the
+number of MCMC chains. If any of these conditions are not true, the MCMC
+did not converge, and it is recommended to try running the model for
+more saved iterations (and if <code>max_rhat</code> is high, possibly
+more warmup iterations). You could also try increasing
+<code>adapt_delta</code> and <code>max_treedepth</code> in the
+<code>control</code> argument, or adjust other MCMC/HMC settings through
+<code>control</code> or the informal arguments (ellipsis
+“<code>...</code>”). See <code><a href="https://mc-stan.org/rstan/reference/stan.html" class="external-link">?rstan::stan</a></code> for details.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hbl_convergence.html">hbl_convergence</a></span><span class="op">(</span><span class="va">mcmc_hierarchical</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
 <span><span class="co">#&gt;   max_rhat min_ess_bulk min_ess_tail</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1.08         11.4         28.3</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1.06         18.7         21.5</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h2>
-<p>Each model can be summarized with the <code><a href="../reference/hbl_summary.html">hbl_summary()</a></code> function. The output is a table with few rows and many columns.</p>
+<p>Each model can be summarized with the <code><a href="../reference/hbl_summary.html">hbl_summary()</a></code>
+function. The output is a table with few rows and many columns.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">summary_hierarchical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_summary.html">hbl_summary</a></span><span class="op">(</span></span>
 <span>  mcmc <span class="op">=</span> <span class="va">mcmc_hierarchical</span>,</span>
@@ -639,24 +701,29 @@
 <span><span class="op">)</span></span>
 <span><span class="va">summary_hierarchical</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 54</span></span></span>
-<span><span class="co">#&gt;   group group_label   rep rep_la…¹ data_n data_N data_…² data_…³ data_…⁴ data_…⁵</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 arm1            1 visit1       30     30      10      10      10      10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1 arm1            2 visit2       30     30      10      10      10      10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1 arm1            3 visit3       30     30      10      10      10      10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1 arm1            4 visit4       30     30      10      10      10      10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     2 arm2            1 visit1       10     10       0       0      10       0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     2 arm2            2 visit2       10     10       0       0      10       0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>     2 arm2            3 visit3       10     10       0       0      10       0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>     2 arm2            4 visit4       10     10       0       0      10       0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 44 more variables: data_N_study_2 &lt;int&gt;, data_N_study_3 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   data_mean &lt;dbl&gt;, data_sd &lt;dbl&gt;, data_lower &lt;dbl&gt;, data_upper &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   response_mean &lt;dbl&gt;, response_variance &lt;dbl&gt;, response_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   response_lower &lt;dbl&gt;, response_upper &lt;dbl&gt;, response_mean_mcse &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   response_sd_mcse &lt;dbl&gt;, response_lower_mcse &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   response_upper_mcse &lt;dbl&gt;, change_mean &lt;dbl&gt;, change_lower &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   change_upper &lt;dbl&gt;, change_mean_mcse &lt;dbl&gt;, change_lower_mcse &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<p><code><a href="../reference/hbl_summary.html">hbl_summary()</a></code> returns a tidy data frame with one row per group (e.g. treatment arm) and the columns in the following list. Unless otherwise specified, the quantities are calculated at the group-by-rep level. Some are calculated for the current (non-historical) study only, while others pertain to the combined dataset which includes all historical studies.</p>
+<span><span class="co">#&gt;   group group_label   rep rep_label data_n data_N data_n_study_1 data_n_study_2</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 arm1            1 visit1        30     30             10             10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1 arm1            2 visit2        30     30             10             10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1 arm1            3 visit3        30     30             10             10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1 arm1            4 visit4        30     30             10             10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     2 arm2            1 visit1        10     10              0              0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     2 arm2            2 visit2        10     10              0              0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>     2 arm2            3 visit3        10     10              0              0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>     2 arm2            4 visit4        10     10              0              0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 46 more variables: data_n_study_3 &lt;int&gt;, data_N_study_1 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   data_N_study_2 &lt;int&gt;, data_N_study_3 &lt;int&gt;, data_mean &lt;dbl&gt;, data_sd &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   data_lower &lt;dbl&gt;, data_upper &lt;dbl&gt;, response_mean &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   response_variance &lt;dbl&gt;, response_sd &lt;dbl&gt;, response_lower &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   response_upper &lt;dbl&gt;, response_mean_mcse &lt;dbl&gt;, response_sd_mcse &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   response_lower_mcse &lt;dbl&gt;, response_upper_mcse &lt;dbl&gt;, change_mean &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   change_lower &lt;dbl&gt;, change_upper &lt;dbl&gt;, change_mean_mcse &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<p><code><a href="../reference/hbl_summary.html">hbl_summary()</a></code> returns a tidy data frame with one row per
+group (e.g. treatment arm) and the columns in the following list. Unless
+otherwise specified, the quantities are calculated at the group-by-rep
+level. Some are calculated for the current (non-historical) study only,
+while others pertain to the combined dataset which includes all
+historical studies.</p>
 <ul>
 <li>
 <code>group</code>: group index.</li>
@@ -667,56 +734,103 @@
 <li>
 <code>rep_label</code>: original rep label in the data.</li>
 <li>
-<code>data_mean</code>: observed mean of the response specific to the current study.</li>
+<code>data_mean</code>: observed mean of the response specific to
+the current study.</li>
 <li>
-<code>data_sd</code>: observed standard deviation of the response specific to the current study.</li>
+<code>data_sd</code>: observed standard deviation of the response
+specific to the current study.</li>
 <li>
-<code>data_lower</code>: lower bound of a simple frequentist 95% confidence interval of the observed data mean specific to the current study.</li>
+<code>data_lower</code>: lower bound of a simple frequentist 95%
+confidence interval of the observed data mean specific to the current
+study.</li>
 <li>
-<code>data_upper</code>: upper bound of a simple frequentist 95% confidence interval of the observed data mean specific to the current study.</li>
+<code>data_upper</code>: upper bound of a simple frequentist 95%
+confidence interval of the observed data mean specific to the current
+study.</li>
 <li>
-<code>data_n</code>: number of non-missing observations in the combined dataset (all studies).</li>
+<code>data_n</code>: number of non-missing observations in the
+combined dataset (all studies).</li>
 <li>
-<code>data_N</code>: total number of observations (missing and non-missing) in the combined dataset (all studies).</li>
+<code>data_N</code>: total number of observations (missing and
+non-missing) in the combined dataset (all studies).</li>
 <li>
-<code>data_n_study_*</code>: number of non-missing observations in each study. The suffixes of these column names are integer study indexes. Call <code>dplyr::distinct(hbl_data(your_data), study, study_label)</code> to see which study labels correspond to these integer indexes.</li>
+<code>data_n_study_*</code>: number of non-missing observations in
+each study. The suffixes of these column names are integer study
+indexes. Call
+<code>dplyr::distinct(hbl_data(your_data), study, study_label)</code> to
+see which study labels correspond to these integer indexes.</li>
 <li>
-<code>data_N_study_*</code>: total number of observations (missing and non-missing) within each study. The suffixes of these column names are integer study indexes. Call <code>dplyr::distinct(hbl_data(your_data), study, study_label)</code> to see which study labels correspond to these integer indexes.</li>
+<code>data_N_study_*</code>: total number of observations (missing
+and non-missing) within each study. The suffixes of these column names
+are integer study indexes. Call
+<code>dplyr::distinct(hbl_data(your_data), study, study_label)</code> to
+see which study labels correspond to these integer indexes.</li>
 <li>
-<code>response_mean</code>: Estimated posterior mean of the response from the model. (Here, the response variable in the data should be a change from baseline outcome.) Specific to the current study.</li>
+<code>response_mean</code>: Estimated posterior mean of the response
+from the model. (Here, the response variable in the data should be a
+change from baseline outcome.) Specific to the current study.</li>
 <li>
-<code>response_sd</code>: Estimated posterior standard deviation of the mean response from the model. Specific to the current study.</li>
+<code>response_sd</code>: Estimated posterior standard deviation of
+the mean response from the model. Specific to the current study.</li>
 <li>
-<code>response_variance</code>: Estimated posterior variance of the mean response from the model. Specific to the current study.</li>
+<code>response_variance</code>: Estimated posterior variance of the
+mean response from the model. Specific to the current study.</li>
 <li>
-<code>response_lower</code>: Lower bound of a 95% posterior interval on the mean response from the model. Specific to the current study.</li>
+<code>response_lower</code>: Lower bound of a 95% posterior interval
+on the mean response from the model. Specific to the current study.</li>
 <li>
-<code>response_upper</code>: Upper bound of a 95% posterior interval on the mean response from the model. Specific to the current study.</li>
+<code>response_upper</code>: Upper bound of a 95% posterior interval
+on the mean response from the model. Specific to the current study.</li>
 <li>
-<code>response_mean_mcse</code>: Monte Carlo standard error of <code>response_mean</code>.</li>
+<code>response_mean_mcse</code>: Monte Carlo standard error of
+<code>response_mean</code>.</li>
 <li>
-<code>response_sd_mcse</code>: Monte Carlo standard error of <code>response_sd</code>.</li>
+<code>response_sd_mcse</code>: Monte Carlo standard error of
+<code>response_sd</code>.</li>
 <li>
-<code>response_lower_mcse</code>: Monte Carlo standard error of <code>response_lower</code>.</li>
+<code>response_lower_mcse</code>: Monte Carlo standard error of
+<code>response_lower</code>.</li>
 <li>
-<code>response_upper_mcse</code>: Monte Carlo standard error of <code>response_upper</code>.</li>
+<code>response_upper_mcse</code>: Monte Carlo standard error of
+<code>response_upper</code>.</li>
 <li>
-<code>change_*</code>: same as the <code>response_*</code> columns, but for change from baseline instead of the response. Not included if <code>response_type</code> is <code>"change"</code> because in that case the response is already change from baseline. Specific to the current study.</li>
+<code>change_*</code>: same as the <code>response_*</code> columns,
+but for change from baseline instead of the response. Not included if
+<code>response_type</code> is <code>"change"</code> because in that case
+the response is already change from baseline. Specific to the current
+study.</li>
 <li>
-<code>change_percent_*</code>: same as the <code>change_*</code> columns, but for the <em>percent</em> change from baseline (from 0% to 100%). Not included if <code>response_type</code> is <code>"change"</code> because in that case the response is already change from baseline. Specific to the current study.</li>
+<code>change_percent_*</code>: same as the <code>change_*</code>
+columns, but for the <em>percent</em> change from baseline (from 0% to
+100%). Not included if <code>response_type</code> is
+<code>"change"</code> because in that case the response is already
+change from baseline. Specific to the current study.</li>
 <li>
-<code>diff_*</code>: same as the <code>response_*</code> columns, but for treatment effect.</li>
+<code>diff_*</code>: same as the <code>response_*</code> columns,
+but for treatment effect.</li>
 <li>
-<code>P(diff &gt; EOI)</code>, <code>P(diff &lt; EOI)</code>: CSF probabilities on the treatment effect specified with the <code>eoi</code> and <code>direction</code> arguments. Specific to the current study.</li>
+<code>P(diff &gt; EOI)</code>, <code>P(diff &lt; EOI)</code>: CSF
+probabilities on the treatment effect specified with the
+<code>eoi</code> and <code>direction</code> arguments. Specific to the
+current study.</li>
 <li>
-<code>effect_mean</code>: same as the <code>response_*</code> columns, but for the effect size (diff / residual standard deviation). Specific to the current study.</li>
+<code>effect_mean</code>: same as the <code>response_*</code>
+columns, but for the effect size (diff / residual standard deviation).
+Specific to the current study.</li>
 <li>
-<code>precision_ratio*</code>: same as the <code>response_*</code> columns, but for the precision ratio, which compares within-study variance to among-study variance. Only returned for the hierarchical model. Specific to the current study.</li>
+<code>precision_ratio*</code>: same as the <code>response_*</code>
+columns, but for the precision ratio, which compares within-study
+variance to among-study variance. Only returned for the hierarchical
+model. Specific to the current study.</li>
 </ul>
 <div class="section level3">
 <h3 id="borrowing-metrics">Borrowing metrics<a class="anchor" aria-label="anchor" href="#borrowing-metrics"></a>
 </h3>
-<p>The <code><a href="../reference/hbl_metrics.html">hbl_metrics()</a></code> function shows borrowing metrics like the mean shift ratio and variance shift ratio which require input from benchmark models. The mean shift ratio and variance shift ratio are defined in the methods vignette. Below, we compute these metrics on the hierarchical model.</p>
+<p>The <code><a href="../reference/hbl_metrics.html">hbl_metrics()</a></code> function shows borrowing metrics like
+the mean shift ratio and variance shift ratio which require input from
+benchmark models. The mean shift ratio and variance shift ratio are
+defined in the methods vignette. Below, we compute these metrics on the
+hierarchical model.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">summary_pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hbl_summary.html">hbl_summary</a></span><span class="op">(</span></span>
 <span>  mcmc <span class="op">=</span> <span class="va">mcmc_pool</span>,</span>
@@ -754,15 +868,18 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
 <span><span class="co">#&gt;     rep rep_label mean_shift_ratio variance_shift_ratio</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 visit1               1.47                 0.821</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 visit2               0.728                0.896</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 visit3              20.4                  0.861</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 visit4               0.568                0.895</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 visit1               1.31                 0.685</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 visit2               0.806                0.746</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 visit3               2.72                 0.755</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 visit4               0.661                0.773</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="plots">Plots<a class="anchor" aria-label="anchor" href="#plots"></a>
 </h3>
-<p>The <code><a href="../reference/hbl_plot_borrow.html">hbl_plot_borrow()</a></code> function visualizes the results from the hierarchical model against the benchmark models (independent and pooled) to gain intuition about the overall effect of borrowing on estimation.</p>
+<p>The <code><a href="../reference/hbl_plot_borrow.html">hbl_plot_borrow()</a></code> function visualizes the results
+from the hierarchical model against the benchmark models (independent
+and pooled) to gain intuition about the overall effect of borrowing on
+estimation.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hbl_plot_borrow.html">hbl_plot_borrow</a></span><span class="op">(</span></span>
 <span>  borrow <span class="op">=</span> <span class="va">summary_hierarchical</span>,</span>
@@ -770,7 +887,12 @@
 <span>  independent <span class="op">=</span> <span class="va">summary_independent</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="usage_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
-<p><code><a href="../reference/hbl_plot_group.html">hbl_plot_group()</a></code> shows the same information but grouped by the group designations in the data (e.g. treatment arm). The results below are not actually correct because the MCMCs ran for so few iterations. For serious analyses, increase the <code>iter</code> and <code>warmup</code> arguments to several thousand and increase the number of chains to about 3 or 4.</p>
+<p><code><a href="../reference/hbl_plot_group.html">hbl_plot_group()</a></code> shows the same information but grouped
+by the group designations in the data (e.g. treatment arm). The results
+below are not actually correct because the MCMCs ran for so few
+iterations. For serious analyses, increase the <code>iter</code> and
+<code>warmup</code> arguments to several thousand and increase the
+number of chains to about 3 or 4.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hbl_plot_group.html">hbl_plot_group</a></span><span class="op">(</span></span>
 <span>  borrow <span class="op">=</span> <span class="va">summary_hierarchical</span>,</span>
@@ -778,7 +900,15 @@
 <span>  independent <span class="op">=</span> <span class="va">summary_independent</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="usage_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
-<p>For the hierarchical model, we can plot the marginal posterior of the <span class="math inline">\(\tau\)</span> parameter to see the influence of the uniform prior upper bound. If the probability mass of <span class="math inline">\(\tau\)</span> builds up against the uniform upper bound, then the estimated hierarchical variance may be larger than assumed, and should indicate that the algorithm wants to borrow less. If the probability mass of <span class="math inline">\(\tau\)</span> is concentrated on the left, towards 0, then this may indicate that the data suggests borrowing and the uniform prior upper bound has little effect on the model estimates.</p>
+<p>For the hierarchical model, we can plot the marginal posterior of the
+<span class="math inline">\(\tau\)</span> parameter to see the influence
+of the uniform prior upper bound. If the probability mass of <span class="math inline">\(\tau\)</span> builds up against the uniform upper
+bound, then the estimated hierarchical variance may be larger than
+assumed, and should indicate that the algorithm wants to borrow less. If
+the probability mass of <span class="math inline">\(\tau\)</span> is
+concentrated on the left, towards 0, then this may indicate that the
+data suggests borrowing and the uniform prior upper bound has little
+effect on the model estimates.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hbl_plot_tau.html">hbl_plot_tau</a></span><span class="op">(</span><span class="va">mcmc_hierarchical</span><span class="op">)</span></span></code></pre></div>
 <p><img src="usage_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
@@ -786,15 +916,43 @@
 <div class="section level3">
 <h3 id="ongoing-problems-with-borrowing-metrics">Ongoing problems with borrowing metrics<a class="anchor" aria-label="anchor" href="#ongoing-problems-with-borrowing-metrics"></a>
 </h3>
-<p>For some analyses, the mean shift ratio can fall below 0 or above 1. This may occur if pooled model estimates are very close to independent model estimates for some time points, or when the uniform upper bound prior is set to an uninformative large value and pooled model estimates are very far away from independent model estimates, due to random variability in the estimates of the independent, pooled, and hierarchical model estimates. Mean shift ratio issues may also occur when enforcing nontrivial correlation structures among time points because of differences in longitudinal smoothing behavior among models. (In the latter case, specifying diagonal covariance matrices may resolve the issues.)</p>
-<p>Similar issues with the variance shift ratio may occur for time points where the pooled model estimate is far away from the independent model, since large shifts in the mean may increase the magnitude of the estimate of residual error for the current study.</p>
-<p>The precision ratio metric is based on the conditional estimation of treatment effect, rather than the unconditional estimation, so it will usually be an underestimate of the mean shift ratio or the variance shift ratio. (One benefit of unconditional estimation over conditional estimation is reduced variability in the estimate of treatment effect.)</p>
+<p>For some analyses, the mean shift ratio can fall below 0 or above 1.
+This may occur if pooled model estimates are very close to independent
+model estimates for some time points, or when the uniform upper bound
+prior is set to an uninformative large value and pooled model estimates
+are very far away from independent model estimates, due to random
+variability in the estimates of the independent, pooled, and
+hierarchical model estimates. Mean shift ratio issues may also occur
+when enforcing nontrivial correlation structures among time points
+because of differences in longitudinal smoothing behavior among models.
+(In the latter case, specifying diagonal covariance matrices may resolve
+the issues.)</p>
+<p>Similar issues with the variance shift ratio may occur for time
+points where the pooled model estimate is far away from the independent
+model, since large shifts in the mean may increase the magnitude of the
+estimate of residual error for the current study.</p>
+<p>The precision ratio metric is based on the conditional estimation of
+treatment effect, rather than the unconditional estimation, so it will
+usually be an underestimate of the mean shift ratio or the variance
+shift ratio. (One benefit of unconditional estimation over conditional
+estimation is reduced variability in the estimate of treatment
+effect.)</p>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p>It is almost always best to set a diffuse prior on <span class="math inline">\(\tau_t\)</span> so that historical borrowing is fully dynamic. But in extreme cases with small numbers of historical studies, it may be necessary to choose a value of <code>s_tau</code> to approximate the prior amount of borrowing given a desired precision ratio and supposed residual variance. See the function <code><a href="../reference/hbl_s_tau.html">hbl_s_tau()</a></code> to suggest a rough value to begin exploring. For a large number of historical studies, the computation may take an extremely long time to run. It may be necessary to change arguments <code>covariance_current</code> and <code>covariance_historical</code> (especially the latter) for computational efficiency, but not even that may be enough if the data is enormous.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>It is almost always best to set a diffuse prior on <span class="math inline">\(\tau_t\)</span> so that historical borrowing is
+fully dynamic. But in extreme cases with small numbers of historical
+studies, it may be necessary to choose a value of <code>s_tau</code> to
+approximate the prior amount of borrowing given a desired precision
+ratio and supposed residual variance. See the function
+<code><a href="../reference/hbl_s_tau.html">hbl_s_tau()</a></code> to suggest a rough value to begin exploring.
+For a large number of historical studies, the computation may take an
+extremely long time to run. It may be necessary to change arguments
+<code>covariance_current</code> and <code>covariance_historical</code>
+(especially the latter) for computational efficiency, but not even that
+may be enough if the data is enormous.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -816,7 +974,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

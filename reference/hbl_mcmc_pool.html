@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">historicalborrowlong</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.7</span>
       </span>
     </div>
 
@@ -234,10 +234,12 @@ Each historical study has its own separate covariance matrix.</p></dd>
 <li><p><code>adapt_term_buffer</code> (<code>integer</code>, positive, defaults to 50)</p></li>
 <li><p><code>adapt_window</code> (<code>integer</code>, positive, defaults to 25)</p></li>
 </ul><p>In addition, algorithm HMC (called 'static HMC' in Stan) and NUTS share the
-    following parameters:</p><ul><li><p><code>stepsize</code> (<code>double</code>, positive)</p></li>
-<li><p><code>stepsize_jitter</code> (<code>double</code>, [0,1])</p></li>
-<li><p><code>metric</code> (<code>string</code>, one of "unit_e", "diag_e", "dense_e")</p></li>
-</ul><p>For algorithm NUTS, we can also set:</p><ul><li><p><code>max_treedepth</code> (<code>integer</code>, positive)</p></li>
+    following parameters:</p><ul><li><p><code>stepsize</code> (<code>double</code>, positive, defaults to 1) 
+        Note: this controls the <em>initial</em> stepsize only, unless <code>adapt_engaged=FALSE</code>.</p></li>
+<li><p><code>stepsize_jitter</code> (<code>double</code>, [0,1], defaults to 0)</p></li>
+<li><p><code>metric</code> (<code>string</code>, one of "unit_e", "diag_e", "dense_e", 
+      defaults to "diag_e")</p></li>
+</ul><p>For algorithm NUTS, we can also set:</p><ul><li><p><code>max_treedepth</code> (<code>integer</code>, positive, defaults to 10)</p></li>
 </ul><p>For algorithm HMC, we can also set:</p><ul><li><p><code>int_time</code> (<code>double</code>, positive)</p></li>
 </ul><p>For <code>test_grad</code> mode, the following parameters can be set:</p><ul><li><p><code>epsilon</code> (<code>double</code>, defaults to 1e-6)</p></li>
 <li><p><code>error</code> (<code>double</code>, defaults to 1e-6)</p></li>
@@ -323,7 +325,7 @@ the program throws an informative error.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
