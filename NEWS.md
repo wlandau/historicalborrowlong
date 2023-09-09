@@ -1,3 +1,7 @@
+# historicalborrowlong 0.0.7
+
+* Use new Stan array syntax (#3, @andrjohns).
+
 # historicalborrowlong 0.0.6
 
 * Vectorize the likelihood for performance.
