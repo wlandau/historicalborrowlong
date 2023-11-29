@@ -1,3 +1,7 @@
+# historicalborrowlong 0.0.8
+
+* Release back to CRAN.
+
 # historicalborrowlong 0.0.7
 
 * Use new Stan array syntax (#3, @andrjohns).
