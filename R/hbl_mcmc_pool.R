@@ -114,6 +114,8 @@ hbl_mcmc_pool <- function(
     s_lambda = s_lambda,
     s_mu = 30,
     s_tau = 30,
+    d_tau = 4,
+    prior_tau = "half_t",
     alpha_rep_index = alpha_rep_index,
     covariance_current = covariance_current,
     covariance_historical = covariance_historical,

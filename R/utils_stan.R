@@ -13,6 +13,8 @@ stan_mcmc <- function(
   s_lambda,
   s_mu,
   s_tau,
+  d_tau,
+  prior_tau,
   alpha_rep_index,
   covariance_current,
   covariance_historical,

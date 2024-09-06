@@ -22,6 +22,8 @@ hbl_mcmc_hierarchical(
   s_lambda = 1,
   s_mu = 30,
   s_tau = 30,
+  d_tau = 4,
+  prior_tau = "half_t",
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
   control = list(max_treedepth = 17, adapt_delta = 0.99),
@@ -109,8 +111,16 @@ on the unstructured correlation matrices.}
 \item{s_mu}{Numeric of length 1,
 prior standard deviation of \code{mu}.}
 
-\item{s_tau}{Numeric of length 1,
-Upper bound on \code{tau}.}
+\item{s_tau}{Non-negative numeric of length 1.
+If \code{prior_tau} is \code{"half_t"}, then \code{s_tau} is the scale parameter of
+the Student t prior of \code{tau} and analogous to the \code{sigma} parameter of
+the Student-t parameterization given at
+\url{https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html}. # nolint
+If \code{prior_tau} is \code{"uniform"}, then \code{s_tau} is the upper bound of \code{tau}.
+Upper bound on \code{tau} if \code{prior_tau} is \code{"uniform"}.}
+
+\item{d_tau}{Positive numeric of length 1. Degrees of freedom of the
+Student t prior of \code{tau} if \code{prior_tau} is \code{"half_t"}.}
 
 \item{covariance_current}{Character of length 1,
 covariance structure of the current study.

@@ -1,59 +1,62 @@
 test_that("sim hierarchical data", {
   set.seed(0)
-  out <- hbl_sim_hierarchical(
-    n_study = 2,
-    n_group = 3,
-    n_patient = 5,
-    n_rep = 2,
-    n_continuous = 2,
-    n_binary = 2,
-    covariance_current = "unstructured",
-    covariance_historical = "unstructured"
-  )$data
-  expect_equal(dim(out), c(40, 13))
-  expect_equal(out$study, rep(c(1, 2, 2, 2), each = 10))
-  expect_equal(out$group, rep(c(1, 1, 2, 3), each = 10))
-  expect_equal(out$patient, rep(seq_len(20), each = 2))
-  expect_equal(out$rep, rep(seq_len(2), times = 20))
-  expect_true(is.numeric(out$response))
-  expect_false(anyNA(out$response))
-  cols <- c(
-    "covariate_study1_continuous1",
-    "covariate_study1_continuous2",
-    "covariate_study1_binary1",
-    "covariate_study1_binary2"
-  )
-  for (col in cols) {
-    expect_true(any(abs(out[[col]][seq_len(10)]) > 0))
-    expect_equal(out[[col]][seq(11, 40)], rep(0, 30))
-  }
-  cols <- c(
-    "covariate_study2_continuous1",
-    "covariate_study2_continuous2",
-    "covariate_study2_binary1",
-    "covariate_study2_binary2"
-  )
-  for (col in cols) {
-    expect_true(any(abs(out[[col]][seq(11, 40)]) > 0))
-    expect_equal(out[[col]][seq(1, 10)], rep(0, 10))
-  }
-  cols <- c(
-    "covariate_study1_binary1",
-    "covariate_study1_binary2",
-    "covariate_study2_binary1",
-    "covariate_study2_binary2"
-  )
-  for (col in cols) {
-    expect_equal(sort(unique(out[[col]])), sort(unique(c(0, 1))))
-  }
-  cols <- c(
-    "covariate_study1_continuous1",
-    "covariate_study1_continuous2",
-    "covariate_study2_continuous1",
-    "covariate_study2_continuous2"
-  )
-  for (col in cols) {
-    expect_false(identical(sort(unique(out[[col]])), sort(unique(c(0, 1)))))
+  for (prior_tau in c("half_t", "uniform")) {
+    out <- hbl_sim_hierarchical(
+      n_study = 2,
+      n_group = 3,
+      n_patient = 5,
+      n_rep = 2,
+      n_continuous = 2,
+      n_binary = 2,
+      covariance_current = "unstructured",
+      covariance_historical = "unstructured",
+      prior_tau = prior_tau
+    )$data
+    expect_equal(dim(out), c(40, 13))
+    expect_equal(out$study, rep(c(1, 2, 2, 2), each = 10))
+    expect_equal(out$group, rep(c(1, 1, 2, 3), each = 10))
+    expect_equal(out$patient, rep(seq_len(20), each = 2))
+    expect_equal(out$rep, rep(seq_len(2), times = 20))
+    expect_true(is.numeric(out$response))
+    expect_false(anyNA(out$response))
+    cols <- c(
+      "covariate_study1_continuous1",
+      "covariate_study1_continuous2",
+      "covariate_study1_binary1",
+      "covariate_study1_binary2"
+    )
+    for (col in cols) {
+      expect_true(any(abs(out[[col]][seq_len(10)]) > 0))
+      expect_equal(out[[col]][seq(11, 40)], rep(0, 30))
+    }
+    cols <- c(
+      "covariate_study2_continuous1",
+      "covariate_study2_continuous2",
+      "covariate_study2_binary1",
+      "covariate_study2_binary2"
+    )
+    for (col in cols) {
+      expect_true(any(abs(out[[col]][seq(11, 40)]) > 0))
+      expect_equal(out[[col]][seq(1, 10)], rep(0, 10))
+    }
+    cols <- c(
+      "covariate_study1_binary1",
+      "covariate_study1_binary2",
+      "covariate_study2_binary1",
+      "covariate_study2_binary2"
+    )
+    for (col in cols) {
+      expect_equal(sort(unique(out[[col]])), sort(unique(c(0, 1))))
+    }
+    cols <- c(
+      "covariate_study1_continuous1",
+      "covariate_study1_continuous2",
+      "covariate_study2_continuous1",
+      "covariate_study2_continuous2"
+    )
+    for (col in cols) {
+      expect_false(identical(sort(unique(out[[col]])), sort(unique(c(0, 1)))))
+    }
   }
 })
 
