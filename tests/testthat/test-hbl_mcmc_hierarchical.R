@@ -26,7 +26,8 @@ test_that("hbl_mcmc_hierarchical() + diagonal + unstructured", {
           seed = 0,
           constraint = FALSE,
           covariance_current = "diagonal",
-          covariance_historical = "unstructured"
+          covariance_historical = "unstructured",
+          prior_tau = prior_tau
         )
       )
     )
