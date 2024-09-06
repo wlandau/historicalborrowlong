@@ -216,6 +216,6 @@ hbl_summary(mcmc, data)
 }
 \seealso{
 Other summary: 
-\code{\link{hbl_metrics}()}
+\code{\link{hbl_ess}()}
 }
 \concept{summary}

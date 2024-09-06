@@ -2,7 +2,7 @@
 % Please edit documentation in R/hbl_metrics.R
 \name{hbl_metrics}
 \alias{hbl_metrics}
-\title{Borrowing metrics}
+\title{Legacy function to compute superseded borrowing metrics}
 \usage{
 hbl_metrics(borrow, pool, independent)
 }
@@ -20,9 +20,10 @@ for the independent model.}
 A data frame with borrowing metrics.
 }
 \description{
-Calculate historical borrowing metrics using
+Calculate legacy/superseded borrowing metrics using
 summary output from a fitted borrowing model and
 analogous summaries from the benchmark models.
+\code{\link[=hbl_ess]{hbl_ess()}} is preferred over \code{\link[=hbl_metrics]{hbl_metrics()}}.
 }
 \examples{
 if (!identical(Sys.getenv("HBL_TEST", unset = ""), "")) {
@@ -76,8 +77,4 @@ hbl_metrics(
 )
 }
 }
-\seealso{
-Other summary: 
-\code{\link{hbl_summary}()}
-}
-\concept{summary}
+\keyword{internal}

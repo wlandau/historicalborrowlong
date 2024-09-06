@@ -2,6 +2,7 @@
 
 export(hbl_convergence)
 export(hbl_data)
+export(hbl_ess)
 export(hbl_mcmc_hierarchical)
 export(hbl_mcmc_independent)
 export(hbl_mcmc_pool)
