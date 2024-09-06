@@ -1,9 +1,10 @@
-#' @title Borrowing metrics
+#' @title Legacy function to compute superseded borrowing metrics
 #' @export
-#' @family summary
-#' @description Calculate historical borrowing metrics using
+#' @keywords internal
+#' @description Calculate legacy/superseded borrowing metrics using
 #'   summary output from a fitted borrowing model and
 #'   analogous summaries from the benchmark models.
+#'   [hbl_ess()] is preferred over [hbl_metrics()].
 #' @return A data frame with borrowing metrics.
 #' @param borrow A data frame returned by [hbl_summary()]
 #'   for the hierarchical model.
