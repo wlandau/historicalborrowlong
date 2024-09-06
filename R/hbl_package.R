@@ -1,6 +1,5 @@
 #' historicalborrowlong: Bayesian longitudinal historical borrowing models
 #'   for clinical studies.
-#' @docType package
 #' @description Bayesian longitudinal historical borrowing models for
 #'   clinical studies.
 #' @name historicalborrowlong-package
@@ -9,7 +8,7 @@
 #' @importFrom clustermq Q
 #' @importFrom dplyr across arrange bind_cols bind_rows distinct filter group_by
 #'   group_modify left_join mutate n rename select summarize ungroup
-#' @importFrom ggplot2 aes aes_string geom_errorbar facet_wrap geom_point ggplot
+#' @importFrom ggplot2 aes geom_errorbar facet_wrap geom_point ggplot
 #'   position_dodge theme_gray xlab ylab
 #' @importFrom MASS mvrnorm
 #' @importFrom Matrix bdiag

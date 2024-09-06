@@ -2,7 +2,7 @@
 % Please edit documentation in R/hbl_s_tau.R
 \name{hbl_s_tau}
 \alias{hbl_s_tau}
-\title{Suggest s_tau}
+\title{Superseded: suggest a value of s_tau}
 \usage{
 hbl_s_tau(precision_ratio = 0.5, sigma = 1, n = 100)
 }
@@ -20,10 +20,11 @@ Numeric of length equal to \code{length(precision_ratio)} and
 \code{precision_ratio} and \code{sigma}.
 }
 \description{
-Suggest a value of the \code{s_tau} hyperparameter
+Superseded:
+suggest a value of the \code{s_tau} hyperparameter
 to roughly target a specified minimum amount of borrowing
-in the hierarchical model. Only use if a diffuse prior
-on \code{tau} is not feasible.
+in the hierarchical model with the uniform prior.
+Only use if a diffuse prior on \code{tau} is not feasible.
 }
 \details{
 The target minimum amount of borrowing
@@ -35,8 +36,4 @@ for details.
 \examples{
 hbl_s_tau(precision_ratio = 0.5, sigma = 1, n = 100)
 }
-\seealso{
-Other data: 
-\code{\link{hbl_data}()}
-}
-\concept{data}
+\keyword{internal}

@@ -258,7 +258,6 @@ test_that("hbl_summary() pool mock mcmc", {
   data_current <- dplyr::filter(data, study == 2)
   x_alpha <- get_x_alpha_pool(data, constraint = FALSE)
   x_delta <- get_x_delta(data, constraint = FALSE)
-  x_beta <- get_x_beta(data = data, x_alpha = x_alpha, x_delta = x_delta)
   grid <- tidyr::expand_grid(
     group = seq_len(2),
     rep = seq_len(3),
@@ -269,11 +268,10 @@ test_that("hbl_summary() pool mock mcmc", {
     name_alpha <- sprintf("alpha[%s]", .y$rep)
     name_delta <- sprintf("delta[%s]", .y$rep)
     index <- data$study == 2 & data$group == .y$group & data$rep == .y$rep
-    y <- x_beta[index, 2, drop = TRUE] * mcmc[["beta[2]"]][.y$sample]
     if (.y$group == 1) {
-      y <- y + mcmc[[name_alpha]][.y$sample]
+      y <- mcmc[[name_alpha]][.y$sample]
     } else {
-      y <- y + mcmc[[name_delta]][.y$sample]
+      y <- mcmc[[name_delta]][.y$sample]
     }
     tibble::tibble(value = y)
   })

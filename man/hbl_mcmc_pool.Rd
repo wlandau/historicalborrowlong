@@ -124,7 +124,7 @@ but for the covariance structure of each separate historical study.
 Each historical study has its own separate covariance matrix.}
 
 \item{control}{A named \code{list} of parameters to control the sampler's
-    behavior. It defaults to \code{NULL} so all the default values are used. 
+    behavior. It defaults to \code{NULL} so all the default values are used.
     First, the following are adaptation parameters for sampling algorithms.
     These are parameters used in Stan with similar names here.
     \itemize{
@@ -141,10 +141,10 @@ Each historical study has its own separate covariance matrix.}
     In addition, algorithm HMC (called 'static HMC' in Stan) and NUTS share the
     following parameters:
     \itemize{
-      \item \code{stepsize} (\code{double}, positive, defaults to 1) 
+      \item \code{stepsize} (\code{double}, positive, defaults to 1)
         Note: this controls the \emph{initial} stepsize only, unless \code{adapt_engaged=FALSE}.
       \item \code{stepsize_jitter} (\code{double}, [0,1], defaults to 0)
-      \item \code{metric} (\code{string}, one of "unit_e", "diag_e", "dense_e", 
+      \item \code{metric} (\code{string}, one of "unit_e", "diag_e", "dense_e",
       defaults to "diag_e")
     }
     For algorithm NUTS, we can also set:
@@ -155,7 +155,7 @@ Each historical study has its own separate covariance matrix.}
     \itemize{
       \item \code{int_time} (\code{double}, positive)
     }
-    
+
     For \code{test_grad} mode, the following parameters can be set:
     \itemize{
       \item \code{epsilon} (\code{double}, defaults to 1e-6)

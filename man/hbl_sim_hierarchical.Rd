@@ -18,16 +18,17 @@ hbl_sim_hierarchical(
   s_lambda = 1,
   s_mu = 1,
   s_tau = 1,
+  d_tau = 4,
+  prior_tau = "half_t",
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
-  alpha = stats::rnorm(n = n_study * n_rep, mean = rep(mu, times = n_study), sd =
-    rep(tau, times = n_study)),
+  alpha = NULL,
   delta = stats::rnorm(n = (n_group - 1) * (n_rep - as.integer(constraint)), mean = 0, sd
     = s_delta),
   beta = stats::rnorm(n = n_study * (n_continuous + n_binary), mean = 0, sd = s_delta),
   sigma = stats::runif(n = n_study * n_rep, min = 0, max = s_sigma),
   mu = stats::rnorm(n = n_rep, mean = 0, sd = s_mu),
-  tau = stats::runif(n = n_rep, min = 0, max = s_tau),
+  tau = NULL,
   rho_current = stats::runif(n = 1, min = -1, max = 1),
   rho_historical = stats::runif(n = n_study - 1, min = -1, max = 1)
 )
@@ -67,8 +68,26 @@ on the unstructured correlation matrices.}
 \item{s_mu}{Numeric of length 1,
 prior standard deviation of \code{mu}.}
 
-\item{s_tau}{Numeric of length 1,
-Upper bound on \code{tau}.}
+\item{s_tau}{Non-negative numeric of length 1.
+If \code{prior_tau} is \code{"half_t"}, then \code{s_tau} is the scale parameter of
+the Student t prior of \code{tau} and analogous to the \code{sigma} parameter of
+the Student-t parameterization given at
+\url{https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html}. # nolint
+If \code{prior_tau} is \code{"uniform"}, then \code{s_tau} is the upper bound of \code{tau}.
+Upper bound on \code{tau} if \code{prior_tau} is \code{"uniform"}.}
+
+\item{d_tau}{Positive numeric of length 1. Degrees of freedom of the
+Student t prior of \code{tau} if \code{prior_tau} is \code{"half_t"}.}
+
+\item{prior_tau}{Character string, family of the prior of \code{tau}.
+If \code{prior_tau} equals \code{"uniform"}, then the prior on \code{tau} is
+a uniform prior with lower bound 0 and upper bound \code{s_tau}.
+If \code{prior_tau} equals \code{"half_t"}, then the prior on \code{tau} is a
+half Student-t prior with center 0, lower bound 0, scale parameter
+\code{s_tau}, and degrees of freedom \code{d_tau}. The scale parameter \code{s_tau}
+is analogous to the \code{sigma} parameter of
+the Student-t parameterization given at
+\url{https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html}. # nolint}
 
 \item{covariance_current}{Character of length 1,
 covariance structure of the current study.

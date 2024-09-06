@@ -1,3 +1,7 @@
+# historicalborrowlong 0.1.0
+
+* Fix marginal mean estimation, add a half-Student-t prior on tau, and implement `hbl_ess()` (#4).
+
 # historicalborrowlong 0.0.8
 
 * Release back to CRAN.

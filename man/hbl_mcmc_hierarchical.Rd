@@ -22,6 +22,8 @@ hbl_mcmc_hierarchical(
   s_lambda = 1,
   s_mu = 30,
   s_tau = 30,
+  d_tau = 4,
+  prior_tau = "half_t",
   covariance_current = "unstructured",
   covariance_historical = "unstructured",
   control = list(max_treedepth = 17, adapt_delta = 0.99),
@@ -109,8 +111,26 @@ on the unstructured correlation matrices.}
 \item{s_mu}{Numeric of length 1,
 prior standard deviation of \code{mu}.}
 
-\item{s_tau}{Numeric of length 1,
-Upper bound on \code{tau}.}
+\item{s_tau}{Non-negative numeric of length 1.
+If \code{prior_tau} is \code{"half_t"}, then \code{s_tau} is the scale parameter of
+the Student t prior of \code{tau} and analogous to the \code{sigma} parameter of
+the Student-t parameterization given at
+\url{https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html}. # nolint
+If \code{prior_tau} is \code{"uniform"}, then \code{s_tau} is the upper bound of \code{tau}.
+Upper bound on \code{tau} if \code{prior_tau} is \code{"uniform"}.}
+
+\item{d_tau}{Positive numeric of length 1. Degrees of freedom of the
+Student t prior of \code{tau} if \code{prior_tau} is \code{"half_t"}.}
+
+\item{prior_tau}{Character string, family of the prior of \code{tau}.
+If \code{prior_tau} equals \code{"uniform"}, then the prior on \code{tau} is
+a uniform prior with lower bound 0 and upper bound \code{s_tau}.
+If \code{prior_tau} equals \code{"half_t"}, then the prior on \code{tau} is a
+half Student-t prior with center 0, lower bound 0, scale parameter
+\code{s_tau}, and degrees of freedom \code{d_tau}. The scale parameter \code{s_tau}
+is analogous to the \code{sigma} parameter of
+the Student-t parameterization given at
+\url{https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html}. # nolint}
 
 \item{covariance_current}{Character of length 1,
 covariance structure of the current study.
@@ -128,7 +148,7 @@ but for the covariance structure of each separate historical study.
 Each historical study has its own separate covariance matrix.}
 
 \item{control}{A named \code{list} of parameters to control the sampler's
-    behavior. It defaults to \code{NULL} so all the default values are used. 
+    behavior. It defaults to \code{NULL} so all the default values are used.
     First, the following are adaptation parameters for sampling algorithms.
     These are parameters used in Stan with similar names here.
     \itemize{
@@ -145,10 +165,10 @@ Each historical study has its own separate covariance matrix.}
     In addition, algorithm HMC (called 'static HMC' in Stan) and NUTS share the
     following parameters:
     \itemize{
-      \item \code{stepsize} (\code{double}, positive, defaults to 1) 
+      \item \code{stepsize} (\code{double}, positive, defaults to 1)
         Note: this controls the \emph{initial} stepsize only, unless \code{adapt_engaged=FALSE}.
       \item \code{stepsize_jitter} (\code{double}, [0,1], defaults to 0)
-      \item \code{metric} (\code{string}, one of "unit_e", "diag_e", "dense_e", 
+      \item \code{metric} (\code{string}, one of "unit_e", "diag_e", "dense_e",
       defaults to "diag_e")
     }
     For algorithm NUTS, we can also set:
@@ -159,7 +179,7 @@ Each historical study has its own separate covariance matrix.}
     \itemize{
       \item \code{int_time} (\code{double}, positive)
     }
-    
+
     For \code{test_grad} mode, the following parameters can be set:
     \itemize{
       \item \code{epsilon} (\code{double}, defaults to 1e-6)
@@ -167,7 +187,7 @@ Each historical study has its own separate covariance matrix.}
     }
   }
 
-\item{...}{Other optional parameters: 
+\item{...}{Other optional parameters:
     \itemize{
       \item \code{chain_id} (\code{integer})
       \item \code{init_r} (\code{double}, positive)
@@ -175,44 +195,44 @@ Each historical study has its own separate covariance matrix.}
       \item \code{append_samples} (\code{logical})
       \item \code{refresh}(\code{integer})
       \item \code{save_warmup}(\code{logical})
-      \item deprecated: \code{enable_random_init}(\code{logical}) 
+      \item deprecated: \code{enable_random_init}(\code{logical})
     }
 
-    \code{chain_id} can be a vector to specify the chain_id for all 
-    chains or an integer. For the former case, they should be unique. 
+    \code{chain_id} can be a vector to specify the chain_id for all
+    chains or an integer. For the former case, they should be unique.
     For the latter, the sequence of integers starting from the given
-    \code{chain_id} are used for all chains. 
+    \code{chain_id} are used for all chains.
 
     \code{init_r} is used only for generating random initial values,
     specifically when \code{init="random"} or not all parameters
-    are initialized in the user-supplied list or function. If specified, 
-    the initial values are simulated uniformly from interval 
-    [-\code{init_r}, \code{init_r}] rather than using the default interval 
+    are initialized in the user-supplied list or function. If specified,
+    the initial values are simulated uniformly from interval
+    [-\code{init_r}, \code{init_r}] rather than using the default interval
     (see the manual of (cmd)Stan).
-    
-    \code{test_grad} (\code{logical}).  
+
+    \code{test_grad} (\code{logical}).
     If \code{test_grad=TRUE}, Stan will not do any sampling. Instead,
     the gradient calculation is tested and printed out and the fitted
     \code{stanfit} object is in test gradient mode.  By default, it is
     \code{FALSE}.
-    
-    \code{append_samples} (\code{logical}). 
-    Only relevant if \code{sample_file} is specified \emph{and} is an 
-    existing file. In that case, setting \code{append_samples=TRUE} will append 
-    the samples to the existing file rather than overwriting the contents of 
+
+    \code{append_samples} (\code{logical}).
+    Only relevant if \code{sample_file} is specified \emph{and} is an
+    existing file. In that case, setting \code{append_samples=TRUE} will append
+    the samples to the existing file rather than overwriting the contents of
     the file.
 
     \code{refresh} (\code{integer}) can be used to
-    control how often the progress of the sampling is reported (i.e. 
-    show the progress every \code{refresh} iterations). 
-    By default, \code{refresh = max(iter/10, 1)}. 
+    control how often the progress of the sampling is reported (i.e.
+    show the progress every \code{refresh} iterations).
+    By default, \code{refresh = max(iter/10, 1)}.
     The progress indicator is turned off if \code{refresh <= 0}.
 
     Deprecated: \code{enable_random_init} (\code{logical}) being \code{TRUE}
     enables specifying initial values randomly when the initial
-    values are not fully specified from the user. 
-    
-    \code{save_warmup} (\code{logical}) indicates whether to 
+    values are not fully specified from the user.
+
+    \code{save_warmup} (\code{logical}) indicates whether to
     save draws during the warmup phase and defaults to \code{TRUE}. Some
     memory related problems can be avoided by setting it to \code{FALSE},
     but some diagnostics are more limited if the warmup draws are not

@@ -1,5 +1,6 @@
 ---
 title: "Methods"
+bibliography: bibliography.bib
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -82,7 +83,7 @@ This parameterization is represented in the more compact expression $\left( X_\a
 
 ## Post-processing
 
-The `hbl_summary()` function post-processes the results from the model. It accepts MCMC samples of parameters and returns interpretable group-level posterior summaries such as change from baseline response and treatment effect. To arrive at these summaries, `hbl_summary()` computes marginal posteriors of transformed parameters. The transformations derive patient-level fitted values from model parameters, then derive group-level responses as averages of fitted values. We refer to this style of estimation as "unconditional estimation", as opposed to "conditional estimation", which takes each group mean to be the appropriate linear combination of the relevant $\alpha$ and $\delta$ parameters, without using $\beta$ components or going through fitted values. If the baseline covariates are balanced across studies, unconditional and conditional estimation should produce similar estimates of control and treatment effects. This approach to post-processing is explained in section III.C of the [FDA draft guidance on adjusting for covariates](https://www.fda.gov/media/148910/download).
+The `hbl_summary()` function post-processes the results from the model. It accepts MCMC samples of parameters and returns estimated marginal means of the response and treatment effect. To estimate marginal means of the response, `hbl_summary()` takes group-level averages of posterior samples of fitted values while dropping covariate adjustment terms from the model (i.e. $X_\alpha \alpha + X_\delta \delta$). Because the columns of $X_\beta$ are centered at their means, this choice is mathematically equivalent to `emmeans::emmeans()` with the `weights = "proportional"` (@lenth2016).
 
 ## Hierarchical model
 
@@ -90,7 +91,6 @@ Functions:
 
 * `hbl_sim_hierarchical()`
 * `hbl_mcmc_hierarchical()`
-* `hbl_s_tau()`
 
 The hierarchical model analyzes the data from all studies and shrinks the control study-by-rep means $\alpha_{kt}$ (one scalar parameter for each unique combination of study and rep) towards a common normal distribution with mean $\mu_t$ and variance $\tau_t^2$. For each study in the data (both current and historical), the covariance is user-defined. Options include:
 
@@ -103,7 +103,7 @@ $$
 & y_k \sim \text{MVN}((X_\alpha)_k \cdot \alpha + (X_\delta)_k \cdot \delta + (X_\beta)_k \cdot \beta, \ I_{N_k} \otimes \Sigma_k ) \\
 & \qquad \alpha_{kt} \stackrel{\text{ind}}{\sim} \text{Normal} (\mu_t, \tau_t^2) \\
 & \qquad \qquad \mu_t \stackrel{\text{ind}}{\sim} \text{Normal}(0, s_\mu^2) \\
-& \qquad \qquad \tau_t \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\tau) \\
+& \qquad \qquad \tau_t \stackrel{\text{ind}}{\sim} f_\tau \\
 & \qquad \delta_{dt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\delta^2) \\
 & \qquad \beta_{b} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\beta^2) \\
 & \qquad \Sigma_k = \left (I_T \sigma_k \right ) \Lambda_k \Lambda_k' \left (I_T \sigma_k \right ) \\
@@ -116,6 +116,26 @@ $$
 & \qquad \qquad \rho_k \stackrel{\text{ind}}{\sim} \text{Uniform}(-1, 1) \qquad (\text{only for } m_k = 2)
 \end{aligned} 
 $$
+
+The prior $f_\tau$ on $\tau$ is critically important because:
+
+1. It controls the prior amount of borrowing, and
+2. The prior has a large influence if there are few historical studies in the data.
+
+$f_\tau$ can either be a flexible half-Student-t distribution with $d_\tau$ degrees of freedom and scale parameter $s_\tau$:
+
+$$
+f_\tau = \text{Student-t}(0, s_\tau, d_\tau)^+
+$$
+or a uniform distribution with lower bound 0 and upper bound $s_\tau$:
+
+$$
+f_\tau = \text{Uniform}(0, s_\tau)
+$$
+
+Following the recommendation of @gelman2006, please use half-Student-t if the number of historical studies is small and consider uniform for large numbers of historical studies.
+
+For the half-Student-t distribution, the role of the $s_\tau$ parameter is equivalent to the $\sigma$ parameter from the [Student-t parameterization in the Stan user manual](https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html#student-t-distribution).
 
 ## Independent model
 
@@ -173,33 +193,45 @@ $$
 
 # Borrowing metrics
 
-## Mean shift ratio
+The package supports the following metrics to quantify borrowing. Various functions in `historicalborrowlong` compute each of the following metrics independently for each discrete time point ("rep").
 
-Let $\theta_m$ be the posterior mean control group response estimated by model $m$ at a given rep. The mean shift ratio is:
+## Effective sample size (ESS)
 
-$$
-\begin{aligned}
-\frac{\theta_{m*} - \theta_{\text{independent}}}{\theta_{\text{pool}} - \theta_{\text{independent}}}
-\end{aligned}
-$$
+See the `hbl_ess()` function for an implementation.
 
-where $m*$ is a historical borrowing model such as the hierarchical model featured here.
+@neuenschwander2010 posit a prior effective sample size metric for meta-analytic predictive (MAP) priors. In the original paper, the underlying hierarchical model only uses historical controls, and the hypothetical new study is the current study of interest. In `historicalborrow`, we adapt this metric to a hierarchical model which also includes both control and treatment data from the current study. We still define $N$ below to be the number of (non-missing) historical control patients so we can still interpret ESS on the same scale as in the paper.
 
-## Variance shift ratio
-
-Let $V_m$ be the estimated posterior variance of $\alpha_I$ (current study control group response mean) estimated by model $m$ at a given rep. The variance shift ratio is:
+For the pooled model, define $V_0$ to be the posterior predictive variance of the control mean $\alpha^*$ of a hypothetical new unobserved study. According to @neuenschwander2010, it can be derived as an average of study-specific variances. In practice, we estimate $V_0$ using the average of MCMC samples of $\frac{1}{\sum \sigma_i^{-2}}$.
 
 $$
-\begin{aligned}
-\frac{V_{m*} - V_{\text{independent}}}{V_{\text{pool}} - V_{\text{independent}}}
-\end{aligned}
+V_0 := \text{Var}(\alpha^* | y, \tau = 0) = \frac{1}{\sum \sigma_i^{-2}}
 $$
 
-where $m*$ is a historical borrowing model such as the hierarchical model featured here.
+For the hierarchical model, we define the analogous posterior predictive variance $V_\tau$ using the prior distribution 
+
+$$
+V_\tau := \text{Var}(\alpha^* | y) = \int E[(\alpha^* - E(\alpha^*|y))^2 | y] \cdot p(\alpha^* | \mu, \tau) \cdot p(\mu, \tau | y) d\mu d\tau
+$$
+
+The above integral implies a straightforward method of estimating $V_\tau$ using MCMC samples:
+
+1. For each MCMC sample $m = 1, \ldots, M$ from the hierarchical model, identify samples $\mu^{(m)}$ and $\tau^{(m)}$ of $\mu$ and $\tau$, respectively.
+2. Draw $(\alpha^*)^{m}$ from a Normal($\mu^{(m)}$, $(\tau^{(m)})^2$) distribution.
+3. Estimate $V_\tau$ as the variance of the collection $(\alpha^*)^{1}, (\alpha^*)^{2}, \ldots, (\alpha^*)^{M}$ from (2).
+
+Next, define $N$ as the number of non-missing control patients from the historical studies only. Given $N$, $V_0$, and $V_\tau$, define the effective sample size as:
+
+$$
+\text{ESS} := N \frac{V_0}{V_\tau}
+$$
+
+$\frac{V_0}{V_\tau}$ is a weight which quantifies the fraction of historical information that the hierarchical model leverages for borrowing. Notably, the weight should be 1 if the hierarchical and pooled model exhibit the same strength of borrowing. Multiplied by $N$, the quantity becomes a heuristic for the strength of borrowing of the hierarchical model, measured in terms of the number of historical patients.
 
 ## Precision ratio (hierarchical model only)
 
-The precision ratio compares the prior precision of a control mean response (an $\alpha$ component, numerator) to the analogous precision of the full conditional distribution (denominator). The former is $\frac{1}{\tau^2}$, and the latter is $\frac{1}{\tau^2} + \frac{n}{\sigma^2}$. Here, $n$ is the number of non-missing observed patients in the current study at the given rep, $\sigma^2$ is the residual variance at the given rep, and $\tau^2$ is the variance of study-specific control means (components of $\alpha$) at the given rep. The precision ratio is calculated on a rep-by-rep basis. The full precision ratio formula is:
+The precision ratio is an experimental ad hoc metric and should be used with caution. It is implemented in the `hbl_summary()` function for the hierarchical model.
+
+The precision ratio compares the prior precision of a control mean response (an $\alpha$ component, numerator) to the analogous precision of the full conditional distribution (denominator). The former is $\frac{1}{\tau^2}$, and the latter is $\frac{1}{\tau^2} + \frac{n}{\sigma^2}$. Here, $n$ is the number of non-missing patients in the current study, $\sigma^2$ is the residual variance, and $\tau^2$ is the variance of study-specific control means (components of $\alpha$). The full precision ratio is:
 
 $$
 \begin{aligned}
@@ -207,32 +239,34 @@ $$
 \end{aligned}
 $$
 
-The precision ratio comes from the conditional distribution of $\alpha_k$ in the hierarchical model given the other parameters and the data. More precisely, in this conditional distribution, the mean is a weighted average between the prior mean and data mean, and the precision ratio is the weight on the prior mean. This can be seen in a simpler case with a Bayesian model with a normal data model, a normal prior on the mean, and known constant variance. For details, see Chapter 2 of [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/) 3rd Ed. by Gelman et al.
+The precision ratio comes from the conditional distribution of $\alpha_k$ in the hierarchical model given the other parameters and the data. More precisely, in this conditional distribution, the mean is a weighted average between the prior mean and data mean, and the precision ratio is the weight on the prior mean. This can be seen in a simpler case with a Bayesian model with a normal data model, a normal prior on the mean, and known constant variance. For details, see Chapter 2 of @bda3.
 
-## Adjusting borrowing strength using the prior
+## Variance shift ratio
 
-It is almost always best to set a diffuse prior on $\tau_t$ so that hierarchical borrowing is fully dynamic. However, in extreme cases (e.g. few historical studies, combined with other issues), there may not be enough information to estimate the hierarchical variance $\tau_t^2$, so the model may exhibit weaker borrowing than it should. To roughly target a given minimum amount of borrowing, one option is to set the upper bound $s_\tau$ of the uniform prior of $\tau_t$. In the case where there are few studies, the function `hbl_s_tau()` suggests a value of $s_\tau$ that assigns a desired prior precision ratio. Suppose $P$ is the desired prior precision ratio. Taking $\tau^2$ and $\sigma^2$ to be scalar variances of the control means and residuals, respectively, and taking $n$ to be the number of non-missing observed patient in at a given rep in the current study:
+The variance shift ratio is an experimental ad hoc metric and should be used with caution. It is implemented in the legacy `hbl_metrics()` function.
 
-$$
-\begin{aligned}
-P = \frac{\frac{1}{\tau^2}}{\frac{1}{\tau^2} + \frac{n}{\sigma^2}}
-\end{aligned}
-$$
-
-Solving for $\tau$:
+Let $V_m$ be the estimated posterior variance of $\alpha_I$ (current study control group response mean) estimated by model $m$. The variance shift ratio is:
 
 $$
 \begin{aligned}
-\tau = \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
+\frac{V_{m*} - V_{\text{independent}}}{V_{\text{pool}} - V_{\text{independent}}}
 \end{aligned}
 $$
 
-If we expect the mean of $\tau$ to be as above, then our uniform upper bound is double. This is the value returned by `hbl_s_tau()`:
+where $m*$ is a historical borrowing model like the mixture model or hierarchical model.
+
+## Mean shift ratio (legacy)
+
+The mean shift ratio is not recommended to measure the strength of borrowing. Rather, it is an informal ad hoc measure of the lack of commensurability between the current and historical data sources. It is implemented in the legacy `hbl_metrics()` function.
+
+To define the mean shift ratio, let $\theta_m$ be the posterior mean control group response estimated by model $m$. The mean shift ratio is:
 
 $$
 \begin{aligned}
-s_\tau = 2 \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
+\frac{\theta_{m*} - \theta_{\text{independent}}}{\theta_{\text{pool}} - \theta_{\text{independent}}}
 \end{aligned}
 $$
 
-If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_t$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.
+where $m*$ is a historical borrowing model like the mixture model or hierarchical model.
+
+# References
