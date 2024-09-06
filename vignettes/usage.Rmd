@@ -79,7 +79,7 @@ standardized_data <- hbl_data(
   patient = "subject",
   rep = "visit",
   rep_reference = "visit1",
-   # Can be continuous, categorical, or binary columns:
+  # Can be continuous, categorical, or binary columns:
   covariates = c("factor1", "factor2")
 )
 standardized_data
@@ -140,7 +140,7 @@ mcmc <- hbl_mcmc_sge(
   patient = "subject",
   rep = "visit",
   rep_reference = "visit1",
-   # Can be continuous, categorical, or binary columns:
+  # Can be continuous, categorical, or binary columns:
   covariates = c("factor1", "factor2"),
   # Raise these arguments for serious analyses:
   chains = 1, # Increase to about 3 or 4 in real-life use cases.
@@ -164,7 +164,7 @@ suppressWarnings(
     patient = "subject",
     rep = "visit",
     rep_reference = "visit1",
-     # Can be continuous, categorical, or binary columns:
+    # Can be continuous, categorical, or binary columns:
     covariates = c("factor1", "factor2"),
     # Raise these arguments for serious analyses:
     chains = 1, # Increase to about 3 or 4 in real-life use cases.
@@ -218,7 +218,7 @@ suppressWarnings(
     patient = "subject",
     rep = "visit",
     rep_reference = "visit1",
-     # Can be continuous, categorical, or binary columns:
+    # Can be continuous, categorical, or binary columns:
     covariates = c("factor1", "factor2"),
     # Raise these arguments for serious analyses:
     chains = 1, # Increase to about 3 or 4 in real-life use cases.

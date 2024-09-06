@@ -1,6 +1,5 @@
 #' historicalborrowlong: Bayesian longitudinal historical borrowing models
 #'   for clinical studies.
-#' @docType package
 #' @description Bayesian longitudinal historical borrowing models for
 #'   clinical studies.
 #' @name historicalborrowlong-package
