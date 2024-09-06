@@ -105,7 +105,7 @@ distinct(
   )
 ```
 
-As explained in the `hbl_data()` and `hb_mcmc_*()` help files, before running the MCMC, dataset is pre-processed.
+As explained in the `hbl_data()` and `hbl_mcmc_*()` help files, before running the MCMC, dataset is pre-processed.
 This includes expanding the rows of the data so every rep
 of every patient gets an explicit row. So if your
 original data has irregular rep IDs, e.g. unscheduled
@@ -453,7 +453,25 @@ all historical studies.
 
 ## Borrowing metrics
 
-The `hbl_metrics()` function shows borrowing metrics like the mean shift ratio and variance shift ratio which require input from benchmark models. The mean shift ratio and variance shift ratio are defined in the methods vignette. Below, we compute these metrics on the hierarchical model.
+The `hbl_ess()` metric computes the effective sample size metric described at <https://wlandau.github.io/historicalborrowlong/articles/methods.html#effective-sample-size-ess>.
+
+```{r}
+hbl_ess(
+  mcmc_pool = mcmc_pool,
+  mcmc_hierarchical = mcmc_hierarchical,
+  data = data,
+  response = "outcome",
+  study = "trial",
+  study_reference = "trial3",
+  group = "arm",
+  group_reference = "arm1",
+  patient = "subject",
+  rep = "visit",
+  rep_reference = "visit1"
+)
+```
+
+The `hbl_metrics()` function shows legacy/superseded borrowing metrics like the mean shift ratio and variance shift ratio which require input from benchmark models. The metrics in `hbl_ess()` are preferred over those in `hbl_metrics()`, but here is a demonstration of `hbl_metrics()` below:
 
 ```{r}
 summary_pool <- hbl_summary(
