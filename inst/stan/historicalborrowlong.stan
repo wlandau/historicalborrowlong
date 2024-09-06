@@ -70,12 +70,15 @@ data {
   int<lower=0> n_lambda_historical;
   int<lower=0> n_rho_current;
   int<lower=0> n_rho_historical;
+  int<lower=1,upper=2> prior_tau;
   array[n_study] int<lower=0> n_patient_study;
   array[n_study] int<lower=0> index_patient_study;
   array[n_observe] int<lower=0> index_patient;
   real<lower=0> s_alpha;
   real<lower=0> s_mu;
   real<lower=0> s_tau;
+  real<lower=0> u_tau;
+  real<lower=0> d_tau;
   real<lower=0> s_beta;
   real<lower=0> s_delta;
   real<lower=0> s_sigma;
@@ -105,7 +108,7 @@ parameters {
   vector[n_missing] y_missing;
   vector[n_alpha] alpha_raw;
   vector[n_mu] mu;
-  vector<lower=0,upper=s_tau>[n_tau] tau;
+  vector<lower=0,upper=u_tau>[n_tau] tau;
   vector[n_delta] delta;
   vector[n_beta] beta;
   array[n_study] vector<lower=0,upper=s_sigma>[n_rep] sigma;
@@ -239,7 +242,11 @@ model {
   if (model_type == 3) {
     alpha_raw ~ std_normal();
     mu ~ normal(0, s_mu);
-    tau ~ uniform(0, s_tau);
+    if (prior_tau == 1) {
+      tau ~ student_t(d_tau, 0, s_tau);
+    } else if (prior_tau == 2) {
+      tau ~ uniform(0, s_tau);
+    }
   } else {
     alpha_raw ~ normal(0, s_alpha);
   }

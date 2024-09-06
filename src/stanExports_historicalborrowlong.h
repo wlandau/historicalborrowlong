@@ -27,133 +27,140 @@ namespace model_historicalborrowlong_namespace {
 using stan::model::model_base_crtp;
 using namespace stan::math;
 stan::math::profile_map profiles__;
-static constexpr std::array<const char*, 230> locations_array__ =
+static constexpr std::array<const char*, 240> locations_array__ =
   {" (found before start of program)",
-  " (in 'historicalborrowlong', line 105, column 2 to column 30)",
-  " (in 'historicalborrowlong', line 106, column 2 to column 28)",
-  " (in 'historicalborrowlong', line 107, column 2 to column 18)",
-  " (in 'historicalborrowlong', line 108, column 2 to column 41)",
-  " (in 'historicalborrowlong', line 109, column 2 to column 24)",
-  " (in 'historicalborrowlong', line 110, column 2 to column 22)",
-  " (in 'historicalborrowlong', line 111, column 2 to column 60)",
-  " (in 'historicalborrowlong', line 112, column 2 to column 69)",
-  " (in 'historicalborrowlong', line 113, column 2 to column 75)",
-  " (in 'historicalborrowlong', line 114, column 2 to column 54)",
-  " (in 'historicalborrowlong', line 115, column 2 to column 60)",
-  " (in 'historicalborrowlong', line 118, column 2 to column 24)",
-  " (in 'historicalborrowlong', line 119, column 2 to column 35)",
-  " (in 'historicalborrowlong', line 120, column 2 to column 58)",
-  " (in 'historicalborrowlong', line 122, column 4 to column 14)",
-  " (in 'historicalborrowlong', line 123, column 4 to column 19)",
-  " (in 'historicalborrowlong', line 124, column 4 to column 20)",
+  " (in 'historicalborrowlong', line 108, column 2 to column 30)",
+  " (in 'historicalborrowlong', line 109, column 2 to column 28)",
+  " (in 'historicalborrowlong', line 110, column 2 to column 18)",
+  " (in 'historicalborrowlong', line 111, column 2 to column 41)",
+  " (in 'historicalborrowlong', line 112, column 2 to column 24)",
+  " (in 'historicalborrowlong', line 113, column 2 to column 22)",
+  " (in 'historicalborrowlong', line 114, column 2 to column 60)",
+  " (in 'historicalborrowlong', line 115, column 2 to column 69)",
+  " (in 'historicalborrowlong', line 116, column 2 to column 75)",
+  " (in 'historicalborrowlong', line 117, column 2 to column 54)",
+  " (in 'historicalborrowlong', line 118, column 2 to column 60)",
+  " (in 'historicalborrowlong', line 121, column 2 to column 24)",
+  " (in 'historicalborrowlong', line 122, column 2 to column 35)",
+  " (in 'historicalborrowlong', line 123, column 2 to column 58)",
   " (in 'historicalborrowlong', line 125, column 4 to column 14)",
-  " (in 'historicalborrowlong', line 126, column 4 to column 14)",
-  " (in 'historicalborrowlong', line 127, column 4 to column 14)",
+  " (in 'historicalborrowlong', line 126, column 4 to column 19)",
+  " (in 'historicalborrowlong', line 127, column 4 to column 20)",
   " (in 'historicalborrowlong', line 128, column 4 to column 14)",
-  " (in 'historicalborrowlong', line 129, column 11 to column 22)",
-  " (in 'historicalborrowlong', line 129, column 4 to column 37)",
-  " (in 'historicalborrowlong', line 130, column 11 to column 22)",
-  " (in 'historicalborrowlong', line 130, column 4 to column 37)",
-  " (in 'historicalborrowlong', line 131, column 11 to column 20)",
-  " (in 'historicalborrowlong', line 131, column 4 to column 36)",
-  " (in 'historicalborrowlong', line 132, column 11 to column 20)",
-  " (in 'historicalborrowlong', line 132, column 4 to column 28)",
-  " (in 'historicalborrowlong', line 133, column 11 to column 16)",
-  " (in 'historicalborrowlong', line 133, column 18 to column 27)",
-  " (in 'historicalborrowlong', line 133, column 4 to column 42)",
+  " (in 'historicalborrowlong', line 129, column 4 to column 14)",
+  " (in 'historicalborrowlong', line 130, column 4 to column 14)",
+  " (in 'historicalborrowlong', line 131, column 4 to column 14)",
+  " (in 'historicalborrowlong', line 132, column 11 to column 22)",
+  " (in 'historicalborrowlong', line 132, column 4 to column 37)",
+  " (in 'historicalborrowlong', line 133, column 11 to column 22)",
+  " (in 'historicalborrowlong', line 133, column 4 to column 37)",
   " (in 'historicalborrowlong', line 134, column 11 to column 20)",
-  " (in 'historicalborrowlong', line 134, column 4 to column 32)",
-  " (in 'historicalborrowlong', line 135, column 11 to column 16)",
-  " (in 'historicalborrowlong', line 135, column 18 to column 27)",
-  " (in 'historicalborrowlong', line 135, column 4 to column 38)",
-  " (in 'historicalborrowlong', line 141, column 6 to column 24)",
-  " (in 'historicalborrowlong', line 140, column 11 to line 142, column 5)",
-  " (in 'historicalborrowlong', line 139, column 6 to column 72)",
-  " (in 'historicalborrowlong', line 138, column 25 to line 140, column 5)",
-  " (in 'historicalborrowlong', line 138, column 4 to line 142, column 5)",
-  " (in 'historicalborrowlong', line 143, column 4 to column 24)",
-  " (in 'historicalborrowlong', line 144, column 4 to column 42)",
-  " (in 'historicalborrowlong', line 145, column 4 to column 24)",
-  " (in 'historicalborrowlong', line 146, column 4 to column 42)",
-  " (in 'historicalborrowlong', line 149, column 4 to column 45)",
-  " (in 'historicalborrowlong', line 152, column 8 to column 36)",
-  " (in 'historicalborrowlong', line 153, column 8 to column 36)",
-  " (in 'historicalborrowlong', line 154, column 8 to column 32)",
-  " (in 'historicalborrowlong', line 155, column 8 to column 32)",
-  " (in 'historicalborrowlong', line 156, column 8 to line 159, column 11)",
-  " (in 'historicalborrowlong', line 151, column 34 to line 160, column 7)",
-  " (in 'historicalborrowlong', line 151, column 6 to line 160, column 7)",
-  " (in 'historicalborrowlong', line 150, column 20 to line 161, column 5)",
-  " (in 'historicalborrowlong', line 150, column 4 to line 161, column 5)",
-  " (in 'historicalborrowlong', line 169, column 6 to column 78)",
-  " (in 'historicalborrowlong', line 168, column 11 to line 170, column 5)",
-  " (in 'historicalborrowlong', line 165, column 6 to line 167, column 35)",
-  " (in 'historicalborrowlong', line 164, column 20 to line 168, column 5)",
-  " (in 'historicalborrowlong', line 164, column 4 to line 170, column 5)",
-  " (in 'historicalborrowlong', line 184, column 6 to column 65)",
-  " (in 'historicalborrowlong', line 183, column 11 to line 185, column 5)",
-  " (in 'historicalborrowlong', line 179, column 6 to line 182, column 8)",
-  " (in 'historicalborrowlong', line 178, column 53 to line 183, column 5)",
-  " (in 'historicalborrowlong', line 178, column 11 to line 185, column 5)",
-  " (in 'historicalborrowlong', line 174, column 6 to line 177, column 8)",
-  " (in 'historicalborrowlong', line 173, column 55 to line 178, column 5)",
-  " (in 'historicalborrowlong', line 173, column 4 to line 185, column 5)",
-  " (in 'historicalborrowlong', line 200, column 8 to column 55)",
-  " (in 'historicalborrowlong', line 199, column 13 to line 201, column 7)",
-  " (in 'historicalborrowlong', line 195, column 8 to line 198, column 10)",
-  " (in 'historicalborrowlong', line 194, column 58 to line 199, column 7)",
-  " (in 'historicalborrowlong', line 194, column 13 to line 201, column 7)",
-  " (in 'historicalborrowlong', line 190, column 8 to line 193, column 10)",
-  " (in 'historicalborrowlong', line 189, column 60 to line 194, column 7)",
-  " (in 'historicalborrowlong', line 189, column 6 to line 201, column 7)",
-  " (in 'historicalborrowlong', line 188, column 31 to line 202, column 5)",
-  " (in 'historicalborrowlong', line 188, column 4 to line 202, column 5)",
-  " (in 'historicalborrowlong', line 206, column 6 to line 208, column 21)",
-  " (in 'historicalborrowlong', line 205, column 37 to line 209, column 5)",
-  " (in 'historicalborrowlong', line 205, column 4 to line 209, column 5)",
-  " (in 'historicalborrowlong', line 212, column 4 to column 14)",
-  " (in 'historicalborrowlong', line 214, column 6 to column 61)",
-  " (in 'historicalborrowlong', line 215, column 6 to column 61)",
-  " (in 'historicalborrowlong', line 216, column 6 to column 21)",
-  " (in 'historicalborrowlong', line 213, column 33 to line 217, column 5)",
-  " (in 'historicalborrowlong', line 213, column 4 to line 217, column 5)",
-  " (in 'historicalborrowlong', line 218, column 4 to column 38)",
-  " (in 'historicalborrowlong', line 121, column 2 to line 219, column 3)",
-  " (in 'historicalborrowlong', line 223, column 2 to column 12)",
-  " (in 'historicalborrowlong', line 224, column 2 to column 10)",
-  " (in 'historicalborrowlong', line 225, column 2 to column 13)",
-  " (in 'historicalborrowlong', line 227, column 4 to column 39)",
-  " (in 'historicalborrowlong', line 228, column 4 to column 36)",
-  " (in 'historicalborrowlong', line 229, column 4 to column 29)",
-  " (in 'historicalborrowlong', line 230, column 4 to line 235, column 6)",
-  " (in 'historicalborrowlong', line 226, column 27 to line 236, column 3)",
-  " (in 'historicalborrowlong', line 226, column 2 to line 236, column 3)",
-  " (in 'historicalborrowlong', line 243, column 4 to column 35)",
-  " (in 'historicalborrowlong', line 242, column 9 to line 244, column 3)",
-  " (in 'historicalborrowlong', line 239, column 4 to column 29)",
-  " (in 'historicalborrowlong', line 240, column 4 to column 25)",
-  " (in 'historicalborrowlong', line 241, column 4 to column 28)",
-  " (in 'historicalborrowlong', line 238, column 23 to line 242, column 3)",
-  " (in 'historicalborrowlong', line 238, column 2 to line 244, column 3)",
-  " (in 'historicalborrowlong', line 245, column 2 to column 29)",
-  " (in 'historicalborrowlong', line 246, column 2 to column 27)",
-  " (in 'historicalborrowlong', line 248, column 4 to column 35)",
-  " (in 'historicalborrowlong', line 247, column 23 to line 249, column 3)",
-  " (in 'historicalborrowlong', line 247, column 2 to line 249, column 3)",
-  " (in 'historicalborrowlong', line 253, column 4 to column 33)",
-  " (in 'historicalborrowlong', line 252, column 51 to line 254, column 3)",
-  " (in 'historicalborrowlong', line 252, column 9 to line 254, column 3)",
-  " (in 'historicalborrowlong', line 251, column 4 to column 52)",
-  " (in 'historicalborrowlong', line 250, column 53 to line 252, column 3)",
-  " (in 'historicalborrowlong', line 250, column 2 to line 254, column 3)",
-  " (in 'historicalborrowlong', line 260, column 4 to column 36)",
-  " (in 'historicalborrowlong', line 259, column 54 to line 261, column 3)",
-  " (in 'historicalborrowlong', line 259, column 9 to line 261, column 3)",
-  " (in 'historicalborrowlong', line 257, column 6 to column 57)",
-  " (in 'historicalborrowlong', line 256, column 37 to line 258, column 5)",
-  " (in 'historicalborrowlong', line 256, column 4 to line 258, column 5)",
-  " (in 'historicalborrowlong', line 255, column 56 to line 259, column 3)",
-  " (in 'historicalborrowlong', line 255, column 2 to line 261, column 3)",
+  " (in 'historicalborrowlong', line 134, column 4 to column 36)",
+  " (in 'historicalborrowlong', line 135, column 11 to column 20)",
+  " (in 'historicalborrowlong', line 135, column 4 to column 28)",
+  " (in 'historicalborrowlong', line 136, column 11 to column 16)",
+  " (in 'historicalborrowlong', line 136, column 18 to column 27)",
+  " (in 'historicalborrowlong', line 136, column 4 to column 42)",
+  " (in 'historicalborrowlong', line 137, column 11 to column 20)",
+  " (in 'historicalborrowlong', line 137, column 4 to column 32)",
+  " (in 'historicalborrowlong', line 138, column 11 to column 16)",
+  " (in 'historicalborrowlong', line 138, column 18 to column 27)",
+  " (in 'historicalborrowlong', line 138, column 4 to column 38)",
+  " (in 'historicalborrowlong', line 144, column 6 to column 24)",
+  " (in 'historicalborrowlong', line 143, column 11 to line 145, column 5)",
+  " (in 'historicalborrowlong', line 142, column 6 to column 72)",
+  " (in 'historicalborrowlong', line 141, column 25 to line 143, column 5)",
+  " (in 'historicalborrowlong', line 141, column 4 to line 145, column 5)",
+  " (in 'historicalborrowlong', line 146, column 4 to column 24)",
+  " (in 'historicalborrowlong', line 147, column 4 to column 42)",
+  " (in 'historicalborrowlong', line 148, column 4 to column 24)",
+  " (in 'historicalborrowlong', line 149, column 4 to column 42)",
+  " (in 'historicalborrowlong', line 152, column 4 to column 45)",
+  " (in 'historicalborrowlong', line 155, column 8 to column 36)",
+  " (in 'historicalborrowlong', line 156, column 8 to column 36)",
+  " (in 'historicalborrowlong', line 157, column 8 to column 32)",
+  " (in 'historicalborrowlong', line 158, column 8 to column 32)",
+  " (in 'historicalborrowlong', line 159, column 8 to line 162, column 11)",
+  " (in 'historicalborrowlong', line 154, column 34 to line 163, column 7)",
+  " (in 'historicalborrowlong', line 154, column 6 to line 163, column 7)",
+  " (in 'historicalborrowlong', line 153, column 20 to line 164, column 5)",
+  " (in 'historicalborrowlong', line 153, column 4 to line 164, column 5)",
+  " (in 'historicalborrowlong', line 172, column 6 to column 78)",
+  " (in 'historicalborrowlong', line 171, column 11 to line 173, column 5)",
+  " (in 'historicalborrowlong', line 168, column 6 to line 170, column 35)",
+  " (in 'historicalborrowlong', line 167, column 20 to line 171, column 5)",
+  " (in 'historicalborrowlong', line 167, column 4 to line 173, column 5)",
+  " (in 'historicalborrowlong', line 187, column 6 to column 65)",
+  " (in 'historicalborrowlong', line 186, column 11 to line 188, column 5)",
+  " (in 'historicalborrowlong', line 182, column 6 to line 185, column 8)",
+  " (in 'historicalborrowlong', line 181, column 53 to line 186, column 5)",
+  " (in 'historicalborrowlong', line 181, column 11 to line 188, column 5)",
+  " (in 'historicalborrowlong', line 177, column 6 to line 180, column 8)",
+  " (in 'historicalborrowlong', line 176, column 55 to line 181, column 5)",
+  " (in 'historicalborrowlong', line 176, column 4 to line 188, column 5)",
+  " (in 'historicalborrowlong', line 203, column 8 to column 55)",
+  " (in 'historicalborrowlong', line 202, column 13 to line 204, column 7)",
+  " (in 'historicalborrowlong', line 198, column 8 to line 201, column 10)",
+  " (in 'historicalborrowlong', line 197, column 58 to line 202, column 7)",
+  " (in 'historicalborrowlong', line 197, column 13 to line 204, column 7)",
+  " (in 'historicalborrowlong', line 193, column 8 to line 196, column 10)",
+  " (in 'historicalborrowlong', line 192, column 60 to line 197, column 7)",
+  " (in 'historicalborrowlong', line 192, column 6 to line 204, column 7)",
+  " (in 'historicalborrowlong', line 191, column 31 to line 205, column 5)",
+  " (in 'historicalborrowlong', line 191, column 4 to line 205, column 5)",
+  " (in 'historicalborrowlong', line 209, column 6 to line 211, column 21)",
+  " (in 'historicalborrowlong', line 208, column 37 to line 212, column 5)",
+  " (in 'historicalborrowlong', line 208, column 4 to line 212, column 5)",
+  " (in 'historicalborrowlong', line 215, column 4 to column 14)",
+  " (in 'historicalborrowlong', line 217, column 6 to column 61)",
+  " (in 'historicalborrowlong', line 218, column 6 to column 61)",
+  " (in 'historicalborrowlong', line 219, column 6 to column 21)",
+  " (in 'historicalborrowlong', line 216, column 33 to line 220, column 5)",
+  " (in 'historicalborrowlong', line 216, column 4 to line 220, column 5)",
+  " (in 'historicalborrowlong', line 221, column 4 to column 38)",
+  " (in 'historicalborrowlong', line 124, column 2 to line 222, column 3)",
+  " (in 'historicalborrowlong', line 226, column 2 to column 12)",
+  " (in 'historicalborrowlong', line 227, column 2 to column 10)",
+  " (in 'historicalborrowlong', line 228, column 2 to column 13)",
+  " (in 'historicalborrowlong', line 230, column 4 to column 39)",
+  " (in 'historicalborrowlong', line 231, column 4 to column 36)",
+  " (in 'historicalborrowlong', line 232, column 4 to column 29)",
+  " (in 'historicalborrowlong', line 233, column 4 to line 238, column 6)",
+  " (in 'historicalborrowlong', line 229, column 27 to line 239, column 3)",
+  " (in 'historicalborrowlong', line 229, column 2 to line 239, column 3)",
+  " (in 'historicalborrowlong', line 256, column 4 to column 35)",
+  " (in 'historicalborrowlong', line 255, column 9 to line 257, column 3)",
+  " (in 'historicalborrowlong', line 242, column 4 to column 29)",
+  " (in 'historicalborrowlong', line 243, column 4 to column 25)",
+  " (in 'historicalborrowlong', line 251, column 6 to column 23)",
+  " (in 'historicalborrowlong', line 253, column 6 to column 30)",
+  " (in 'historicalborrowlong', line 249, column 31 to line 254, column 5)",
+  " (in 'historicalborrowlong', line 249, column 11 to line 254, column 5)",
+  " (in 'historicalborrowlong', line 246, column 6 to column 25)",
+  " (in 'historicalborrowlong', line 248, column 6 to column 39)",
+  " (in 'historicalborrowlong', line 244, column 24 to line 249, column 5)",
+  " (in 'historicalborrowlong', line 244, column 4 to line 254, column 5)",
+  " (in 'historicalborrowlong', line 241, column 23 to line 255, column 3)",
+  " (in 'historicalborrowlong', line 241, column 2 to line 257, column 3)",
+  " (in 'historicalborrowlong', line 258, column 2 to column 29)",
+  " (in 'historicalborrowlong', line 259, column 2 to column 27)",
+  " (in 'historicalborrowlong', line 261, column 4 to column 35)",
+  " (in 'historicalborrowlong', line 260, column 23 to line 262, column 3)",
+  " (in 'historicalborrowlong', line 260, column 2 to line 262, column 3)",
+  " (in 'historicalborrowlong', line 266, column 4 to column 33)",
+  " (in 'historicalborrowlong', line 265, column 51 to line 267, column 3)",
+  " (in 'historicalborrowlong', line 265, column 9 to line 267, column 3)",
+  " (in 'historicalborrowlong', line 264, column 4 to column 52)",
+  " (in 'historicalborrowlong', line 263, column 53 to line 265, column 3)",
+  " (in 'historicalborrowlong', line 263, column 2 to line 267, column 3)",
+  " (in 'historicalborrowlong', line 273, column 4 to column 36)",
+  " (in 'historicalborrowlong', line 272, column 54 to line 274, column 3)",
+  " (in 'historicalborrowlong', line 272, column 9 to line 274, column 3)",
+  " (in 'historicalborrowlong', line 270, column 6 to column 57)",
+  " (in 'historicalborrowlong', line 269, column 37 to line 271, column 5)",
+  " (in 'historicalborrowlong', line 269, column 4 to line 271, column 5)",
+  " (in 'historicalborrowlong', line 268, column 56 to line 272, column 3)",
+  " (in 'historicalborrowlong', line 268, column 2 to line 274, column 3)",
   " (in 'historicalborrowlong', line 57, column 2 to column 34)",
   " (in 'historicalborrowlong', line 58, column 2 to column 23)",
   " (in 'historicalborrowlong', line 59, column 2 to column 20)",
@@ -170,77 +177,80 @@ static constexpr std::array<const char*, 230> locations_array__ =
   " (in 'historicalborrowlong', line 70, column 2 to column 35)",
   " (in 'historicalborrowlong', line 71, column 2 to column 29)",
   " (in 'historicalborrowlong', line 72, column 2 to column 32)",
-  " (in 'historicalborrowlong', line 73, column 8 to column 15)",
-  " (in 'historicalborrowlong', line 73, column 2 to column 46)",
+  " (in 'historicalborrowlong', line 73, column 2 to column 33)",
   " (in 'historicalborrowlong', line 74, column 8 to column 15)",
-  " (in 'historicalborrowlong', line 74, column 2 to column 50)",
-  " (in 'historicalborrowlong', line 75, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 75, column 2 to column 46)",
-  " (in 'historicalborrowlong', line 76, column 2 to column 24)",
-  " (in 'historicalborrowlong', line 77, column 2 to column 21)",
-  " (in 'historicalborrowlong', line 78, column 2 to column 22)",
-  " (in 'historicalborrowlong', line 79, column 2 to column 23)",
-  " (in 'historicalborrowlong', line 80, column 2 to column 24)",
-  " (in 'historicalborrowlong', line 81, column 2 to column 24)",
-  " (in 'historicalborrowlong', line 82, column 2 to column 25)",
-  " (in 'historicalborrowlong', line 83, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 83, column 2 to column 40)",
-  " (in 'historicalborrowlong', line 84, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 84, column 2 to column 46)",
-  " (in 'historicalborrowlong', line 85, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 85, column 2 to column 44)",
-  " (in 'historicalborrowlong', line 86, column 8 to column 15)",
-  " (in 'historicalborrowlong', line 86, column 2 to column 46)",
+  " (in 'historicalborrowlong', line 74, column 2 to column 46)",
+  " (in 'historicalborrowlong', line 75, column 8 to column 15)",
+  " (in 'historicalborrowlong', line 75, column 2 to column 50)",
+  " (in 'historicalborrowlong', line 76, column 8 to column 17)",
+  " (in 'historicalborrowlong', line 76, column 2 to column 46)",
+  " (in 'historicalborrowlong', line 77, column 2 to column 24)",
+  " (in 'historicalborrowlong', line 78, column 2 to column 21)",
+  " (in 'historicalborrowlong', line 79, column 2 to column 22)",
+  " (in 'historicalborrowlong', line 80, column 2 to column 22)",
+  " (in 'historicalborrowlong', line 81, column 2 to column 22)",
+  " (in 'historicalborrowlong', line 82, column 2 to column 23)",
+  " (in 'historicalborrowlong', line 83, column 2 to column 24)",
+  " (in 'historicalborrowlong', line 84, column 2 to column 24)",
+  " (in 'historicalborrowlong', line 85, column 2 to column 25)",
+  " (in 'historicalborrowlong', line 86, column 8 to column 17)",
+  " (in 'historicalborrowlong', line 86, column 2 to column 40)",
   " (in 'historicalborrowlong', line 87, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 87, column 2 to column 49)",
+  " (in 'historicalborrowlong', line 87, column 2 to column 46)",
   " (in 'historicalborrowlong', line 88, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 88, column 2 to column 49)",
-  " (in 'historicalborrowlong', line 89, column 8 to column 22)",
-  " (in 'historicalborrowlong', line 89, column 2 to column 54)",
-  " (in 'historicalborrowlong', line 90, column 8 to column 22)",
-  " (in 'historicalborrowlong', line 90, column 2 to column 54)",
-  " (in 'historicalborrowlong', line 91, column 8 to column 22)",
-  " (in 'historicalborrowlong', line 91, column 2 to column 50)",
+  " (in 'historicalborrowlong', line 88, column 2 to column 44)",
+  " (in 'historicalborrowlong', line 89, column 8 to column 15)",
+  " (in 'historicalborrowlong', line 89, column 2 to column 46)",
+  " (in 'historicalborrowlong', line 90, column 8 to column 17)",
+  " (in 'historicalborrowlong', line 90, column 2 to column 49)",
+  " (in 'historicalborrowlong', line 91, column 8 to column 17)",
+  " (in 'historicalborrowlong', line 91, column 2 to column 49)",
   " (in 'historicalborrowlong', line 92, column 8 to column 22)",
-  " (in 'historicalborrowlong', line 92, column 2 to column 50)",
-  " (in 'historicalborrowlong', line 93, column 8 to column 17)",
-  " (in 'historicalborrowlong', line 93, column 2 to column 62)",
-  " (in 'historicalborrowlong', line 94, column 9 to column 18)",
-  " (in 'historicalborrowlong', line 94, column 2 to column 22)",
-  " (in 'historicalborrowlong', line 95, column 9 to column 18)",
-  " (in 'historicalborrowlong', line 95, column 20 to column 27)",
-  " (in 'historicalborrowlong', line 95, column 2 to column 37)",
-  " (in 'historicalborrowlong', line 96, column 9 to column 18)",
-  " (in 'historicalborrowlong', line 96, column 20 to column 27)",
-  " (in 'historicalborrowlong', line 96, column 2 to column 37)",
-  " (in 'historicalborrowlong', line 97, column 9 to column 15)",
-  " (in 'historicalborrowlong', line 97, column 17 to column 26)",
-  " (in 'historicalborrowlong', line 97, column 2 to column 35)",
-  " (in 'historicalborrowlong', line 98, column 2 to column 42)",
-  " (in 'historicalborrowlong', line 99, column 2 to column 45)",
-  " (in 'historicalborrowlong', line 100, column 2 to column 30)",
-  " (in 'historicalborrowlong', line 101, column 2 to column 21)",
-  " (in 'historicalborrowlong', line 102, column 2 to column 26)",
-  " (in 'historicalborrowlong', line 105, column 9 to column 18)",
-  " (in 'historicalborrowlong', line 106, column 9 to column 16)",
-  " (in 'historicalborrowlong', line 107, column 9 to column 13)",
-  " (in 'historicalborrowlong', line 108, column 30 to column 35)",
+  " (in 'historicalborrowlong', line 92, column 2 to column 54)",
+  " (in 'historicalborrowlong', line 93, column 8 to column 22)",
+  " (in 'historicalborrowlong', line 93, column 2 to column 54)",
+  " (in 'historicalborrowlong', line 94, column 8 to column 22)",
+  " (in 'historicalborrowlong', line 94, column 2 to column 50)",
+  " (in 'historicalborrowlong', line 95, column 8 to column 22)",
+  " (in 'historicalborrowlong', line 95, column 2 to column 50)",
+  " (in 'historicalborrowlong', line 96, column 8 to column 17)",
+  " (in 'historicalborrowlong', line 96, column 2 to column 62)",
+  " (in 'historicalborrowlong', line 97, column 9 to column 18)",
+  " (in 'historicalborrowlong', line 97, column 2 to column 22)",
+  " (in 'historicalborrowlong', line 98, column 9 to column 18)",
+  " (in 'historicalborrowlong', line 98, column 20 to column 27)",
+  " (in 'historicalborrowlong', line 98, column 2 to column 37)",
+  " (in 'historicalborrowlong', line 99, column 9 to column 18)",
+  " (in 'historicalborrowlong', line 99, column 20 to column 27)",
+  " (in 'historicalborrowlong', line 99, column 2 to column 37)",
+  " (in 'historicalborrowlong', line 100, column 9 to column 15)",
+  " (in 'historicalborrowlong', line 100, column 17 to column 26)",
+  " (in 'historicalborrowlong', line 100, column 2 to column 35)",
+  " (in 'historicalborrowlong', line 101, column 2 to column 42)",
+  " (in 'historicalborrowlong', line 102, column 2 to column 45)",
+  " (in 'historicalborrowlong', line 103, column 2 to column 30)",
+  " (in 'historicalborrowlong', line 104, column 2 to column 21)",
+  " (in 'historicalborrowlong', line 105, column 2 to column 26)",
+  " (in 'historicalborrowlong', line 108, column 9 to column 18)",
   " (in 'historicalborrowlong', line 109, column 9 to column 16)",
-  " (in 'historicalborrowlong', line 110, column 9 to column 15)",
-  " (in 'historicalborrowlong', line 111, column 8 to column 15)",
-  " (in 'historicalborrowlong', line 111, column 47 to column 52)",
-  " (in 'historicalborrowlong', line 112, column 8 to column 24)",
-  " (in 'historicalborrowlong', line 112, column 47 to column 52)",
-  " (in 'historicalborrowlong', line 113, column 8 to column 27)",
-  " (in 'historicalborrowlong', line 113, column 50 to column 55)",
-  " (in 'historicalborrowlong', line 114, column 27 to column 40)",
-  " (in 'historicalborrowlong', line 115, column 27 to column 43)",
-  " (in 'historicalborrowlong', line 118, column 9 to column 16)",
-  " (in 'historicalborrowlong', line 119, column 9 to column 14)",
-  " (in 'historicalborrowlong', line 119, column 16 to column 25)",
-  " (in 'historicalborrowlong', line 120, column 8 to column 15)",
-  " (in 'historicalborrowlong', line 120, column 24 to column 29)",
-  " (in 'historicalborrowlong', line 120, column 31 to column 36)",
+  " (in 'historicalborrowlong', line 110, column 9 to column 13)",
+  " (in 'historicalborrowlong', line 111, column 30 to column 35)",
+  " (in 'historicalborrowlong', line 112, column 9 to column 16)",
+  " (in 'historicalborrowlong', line 113, column 9 to column 15)",
+  " (in 'historicalborrowlong', line 114, column 8 to column 15)",
+  " (in 'historicalborrowlong', line 114, column 47 to column 52)",
+  " (in 'historicalborrowlong', line 115, column 8 to column 24)",
+  " (in 'historicalborrowlong', line 115, column 47 to column 52)",
+  " (in 'historicalborrowlong', line 116, column 8 to column 27)",
+  " (in 'historicalborrowlong', line 116, column 50 to column 55)",
+  " (in 'historicalborrowlong', line 117, column 27 to column 40)",
+  " (in 'historicalborrowlong', line 118, column 27 to column 43)",
+  " (in 'historicalborrowlong', line 121, column 9 to column 16)",
+  " (in 'historicalborrowlong', line 122, column 9 to column 14)",
+  " (in 'historicalborrowlong', line 122, column 16 to column 25)",
+  " (in 'historicalborrowlong', line 123, column 8 to column 15)",
+  " (in 'historicalborrowlong', line 123, column 24 to column 29)",
+  " (in 'historicalborrowlong', line 123, column 31 to column 36)",
   " (in 'historicalborrowlong', line 24, column 4 to line 25, column 36)",
   " (in 'historicalborrowlong', line 23, column 64 to line 26, column 3)",
   " (in 'historicalborrowlong', line 42, column 4 to column 39)",
@@ -292,7 +302,7 @@ log_normal_kernel(const T0__& cholesky_arg__, const T1__& epsilon_arg__,
   // suppress unused var warning
   (void) DUMMY_VAR__;
   try {
-    current_statement__ = 213;
+    current_statement__ = 223;
     return stan::math::subtract(
              stan::math::multiply(-0.5,
                stan::math::columns_dot_self(
@@ -315,38 +325,38 @@ ar1_cholesky(const T0__& rho, const int& n, std::ostream* pstream__) {
   (void) DUMMY_VAR__;
   try {
     local_scalar_t__ scale = DUMMY_VAR__;
-    current_statement__ = 215;
+    current_statement__ = 225;
     scale = stan::math::sqrt((1 - (rho * rho)));
-    current_statement__ = 216;
+    current_statement__ = 226;
     stan::math::validate_non_negative_index("out", "n", n);
-    current_statement__ = 217;
+    current_statement__ = 227;
     stan::math::validate_non_negative_index("out", "n", n);
     Eigen::Matrix<local_scalar_t__,-1,-1> out =
       Eigen::Matrix<local_scalar_t__,-1,-1>::Constant(n, n, DUMMY_VAR__);
-    current_statement__ = 218;
+    current_statement__ = 228;
     stan::model::assign(out, stan::math::rep_matrix(0, n, n),
       "assigning variable out");
-    current_statement__ = 219;
+    current_statement__ = 229;
     stan::model::assign(out, 1.0, "assigning variable out",
       stan::model::index_uni(1), stan::model::index_uni(1));
-    current_statement__ = 222;
+    current_statement__ = 232;
     for (int i = 2; i <= n; ++i) {
-      current_statement__ = 220;
+      current_statement__ = 230;
       stan::model::assign(out, stan::math::pow(rho, (i - 1)),
         "assigning variable out", stan::model::index_uni(i),
         stan::model::index_uni(1));
     }
-    current_statement__ = 227;
+    current_statement__ = 237;
     for (int i = 2; i <= n; ++i) {
-      current_statement__ = 225;
+      current_statement__ = 235;
       for (int j = 2; j <= i; ++j) {
-        current_statement__ = 223;
+        current_statement__ = 233;
         stan::model::assign(out, (scale * stan::math::pow(rho, (i - j))),
           "assigning variable out", stan::model::index_uni(i),
           stan::model::index_uni(j));
       }
     }
-    current_statement__ = 228;
+    current_statement__ = 238;
     return out;
   } catch (const std::exception& e) {
     stan::lang::rethrow_located(e, locations_array__[current_statement__]);
@@ -371,12 +381,15 @@ private:
   int n_lambda_historical;
   int n_rho_current;
   int n_rho_historical;
+  int prior_tau;
   std::vector<int> n_patient_study;
   std::vector<int> index_patient_study;
   std::vector<int> index_patient;
   double s_alpha;
   double s_mu;
   double s_tau;
+  double u_tau;
+  double d_tau;
   double s_beta;
   double s_delta;
   double s_sigma;
@@ -426,387 +439,414 @@ public:
     try {
       int pos__ = std::numeric_limits<int>::min();
       pos__ = 1;
-      current_statement__ = 126;
+      current_statement__ = 133;
       context__.validate_dims("data initialization", "model_type", "int",
         std::vector<size_t>{});
       model_type = std::numeric_limits<int>::min();
-      current_statement__ = 126;
+      current_statement__ = 133;
       model_type = context__.vals_i("model_type")[(1 - 1)];
-      current_statement__ = 126;
+      current_statement__ = 133;
       stan::math::check_greater_or_equal(function__, "model_type",
         model_type, 1);
-      current_statement__ = 126;
+      current_statement__ = 133;
       stan::math::check_less_or_equal(function__, "model_type", model_type, 3);
-      current_statement__ = 127;
+      current_statement__ = 134;
       context__.validate_dims("data initialization", "n_alpha", "int",
         std::vector<size_t>{});
       n_alpha = std::numeric_limits<int>::min();
-      current_statement__ = 127;
+      current_statement__ = 134;
       n_alpha = context__.vals_i("n_alpha")[(1 - 1)];
-      current_statement__ = 127;
+      current_statement__ = 134;
       stan::math::check_greater_or_equal(function__, "n_alpha", n_alpha, 0);
-      current_statement__ = 128;
+      current_statement__ = 135;
       context__.validate_dims("data initialization", "n_mu", "int",
         std::vector<size_t>{});
       n_mu = std::numeric_limits<int>::min();
-      current_statement__ = 128;
+      current_statement__ = 135;
       n_mu = context__.vals_i("n_mu")[(1 - 1)];
-      current_statement__ = 128;
+      current_statement__ = 135;
       stan::math::check_greater_or_equal(function__, "n_mu", n_mu, 0);
-      current_statement__ = 129;
+      current_statement__ = 136;
       context__.validate_dims("data initialization", "n_tau", "int",
         std::vector<size_t>{});
       n_tau = std::numeric_limits<int>::min();
-      current_statement__ = 129;
+      current_statement__ = 136;
       n_tau = context__.vals_i("n_tau")[(1 - 1)];
-      current_statement__ = 129;
+      current_statement__ = 136;
       stan::math::check_greater_or_equal(function__, "n_tau", n_tau, 0);
-      current_statement__ = 130;
+      current_statement__ = 137;
       context__.validate_dims("data initialization", "n_delta", "int",
         std::vector<size_t>{});
       n_delta = std::numeric_limits<int>::min();
-      current_statement__ = 130;
+      current_statement__ = 137;
       n_delta = context__.vals_i("n_delta")[(1 - 1)];
-      current_statement__ = 130;
+      current_statement__ = 137;
       stan::math::check_greater_or_equal(function__, "n_delta", n_delta, 0);
-      current_statement__ = 131;
+      current_statement__ = 138;
       context__.validate_dims("data initialization", "n_beta", "int",
         std::vector<size_t>{});
       n_beta = std::numeric_limits<int>::min();
-      current_statement__ = 131;
+      current_statement__ = 138;
       n_beta = context__.vals_i("n_beta")[(1 - 1)];
-      current_statement__ = 131;
+      current_statement__ = 138;
       stan::math::check_greater_or_equal(function__, "n_beta", n_beta, 0);
-      current_statement__ = 132;
+      current_statement__ = 139;
       context__.validate_dims("data initialization", "n_observe", "int",
         std::vector<size_t>{});
       n_observe = std::numeric_limits<int>::min();
-      current_statement__ = 132;
+      current_statement__ = 139;
       n_observe = context__.vals_i("n_observe")[(1 - 1)];
-      current_statement__ = 132;
+      current_statement__ = 139;
       stan::math::check_greater_or_equal(function__, "n_observe", n_observe,
         0);
-      current_statement__ = 133;
+      current_statement__ = 140;
       context__.validate_dims("data initialization", "n_missing", "int",
         std::vector<size_t>{});
       n_missing = std::numeric_limits<int>::min();
-      current_statement__ = 133;
+      current_statement__ = 140;
       n_missing = context__.vals_i("n_missing")[(1 - 1)];
-      current_statement__ = 133;
+      current_statement__ = 140;
       stan::math::check_greater_or_equal(function__, "n_missing", n_missing,
         0);
-      current_statement__ = 134;
+      current_statement__ = 141;
       context__.validate_dims("data initialization", "n_patient", "int",
         std::vector<size_t>{});
       n_patient = std::numeric_limits<int>::min();
-      current_statement__ = 134;
+      current_statement__ = 141;
       n_patient = context__.vals_i("n_patient")[(1 - 1)];
-      current_statement__ = 134;
+      current_statement__ = 141;
       stan::math::check_greater_or_equal(function__, "n_patient", n_patient,
         0);
-      current_statement__ = 135;
+      current_statement__ = 142;
       context__.validate_dims("data initialization", "n_rep", "int",
         std::vector<size_t>{});
       n_rep = std::numeric_limits<int>::min();
-      current_statement__ = 135;
+      current_statement__ = 142;
       n_rep = context__.vals_i("n_rep")[(1 - 1)];
-      current_statement__ = 135;
+      current_statement__ = 142;
       stan::math::check_greater_or_equal(function__, "n_rep", n_rep, 0);
-      current_statement__ = 136;
+      current_statement__ = 143;
       context__.validate_dims("data initialization", "n_study", "int",
         std::vector<size_t>{});
       n_study = std::numeric_limits<int>::min();
-      current_statement__ = 136;
+      current_statement__ = 143;
       n_study = context__.vals_i("n_study")[(1 - 1)];
-      current_statement__ = 136;
+      current_statement__ = 143;
       stan::math::check_greater_or_equal(function__, "n_study", n_study, 0);
-      current_statement__ = 137;
+      current_statement__ = 144;
       context__.validate_dims("data initialization", "n_study_x_beta", "int",
         std::vector<size_t>{});
       n_study_x_beta = std::numeric_limits<int>::min();
-      current_statement__ = 137;
+      current_statement__ = 144;
       n_study_x_beta = context__.vals_i("n_study_x_beta")[(1 - 1)];
-      current_statement__ = 137;
+      current_statement__ = 144;
       stan::math::check_greater_or_equal(function__, "n_study_x_beta",
         n_study_x_beta, 0);
-      current_statement__ = 138;
+      current_statement__ = 145;
       context__.validate_dims("data initialization", "n_lambda_current",
         "int", std::vector<size_t>{});
       n_lambda_current = std::numeric_limits<int>::min();
-      current_statement__ = 138;
+      current_statement__ = 145;
       n_lambda_current = context__.vals_i("n_lambda_current")[(1 - 1)];
-      current_statement__ = 138;
+      current_statement__ = 145;
       stan::math::check_greater_or_equal(function__, "n_lambda_current",
         n_lambda_current, 0);
-      current_statement__ = 139;
+      current_statement__ = 146;
       context__.validate_dims("data initialization", "n_lambda_historical",
         "int", std::vector<size_t>{});
       n_lambda_historical = std::numeric_limits<int>::min();
-      current_statement__ = 139;
+      current_statement__ = 146;
       n_lambda_historical = context__.vals_i("n_lambda_historical")[(1 - 1)];
-      current_statement__ = 139;
+      current_statement__ = 146;
       stan::math::check_greater_or_equal(function__, "n_lambda_historical",
         n_lambda_historical, 0);
-      current_statement__ = 140;
+      current_statement__ = 147;
       context__.validate_dims("data initialization", "n_rho_current", "int",
         std::vector<size_t>{});
       n_rho_current = std::numeric_limits<int>::min();
-      current_statement__ = 140;
+      current_statement__ = 147;
       n_rho_current = context__.vals_i("n_rho_current")[(1 - 1)];
-      current_statement__ = 140;
+      current_statement__ = 147;
       stan::math::check_greater_or_equal(function__, "n_rho_current",
         n_rho_current, 0);
-      current_statement__ = 141;
+      current_statement__ = 148;
       context__.validate_dims("data initialization", "n_rho_historical",
         "int", std::vector<size_t>{});
       n_rho_historical = std::numeric_limits<int>::min();
-      current_statement__ = 141;
+      current_statement__ = 148;
       n_rho_historical = context__.vals_i("n_rho_historical")[(1 - 1)];
-      current_statement__ = 141;
+      current_statement__ = 148;
       stan::math::check_greater_or_equal(function__, "n_rho_historical",
         n_rho_historical, 0);
-      current_statement__ = 142;
+      current_statement__ = 149;
+      context__.validate_dims("data initialization", "prior_tau", "int",
+        std::vector<size_t>{});
+      prior_tau = std::numeric_limits<int>::min();
+      current_statement__ = 149;
+      prior_tau = context__.vals_i("prior_tau")[(1 - 1)];
+      current_statement__ = 149;
+      stan::math::check_greater_or_equal(function__, "prior_tau", prior_tau,
+        1);
+      current_statement__ = 149;
+      stan::math::check_less_or_equal(function__, "prior_tau", prior_tau, 2);
+      current_statement__ = 150;
       stan::math::validate_non_negative_index("n_patient_study", "n_study",
         n_study);
-      current_statement__ = 143;
+      current_statement__ = 151;
       context__.validate_dims("data initialization", "n_patient_study",
         "int", std::vector<size_t>{static_cast<size_t>(n_study)});
       n_patient_study = std::vector<int>(n_study,
                           std::numeric_limits<int>::min());
-      current_statement__ = 143;
+      current_statement__ = 151;
       n_patient_study = context__.vals_i("n_patient_study");
-      current_statement__ = 143;
+      current_statement__ = 151;
       stan::math::check_greater_or_equal(function__, "n_patient_study",
         n_patient_study, 0);
-      current_statement__ = 144;
+      current_statement__ = 152;
       stan::math::validate_non_negative_index("index_patient_study",
         "n_study", n_study);
-      current_statement__ = 145;
+      current_statement__ = 153;
       context__.validate_dims("data initialization", "index_patient_study",
         "int", std::vector<size_t>{static_cast<size_t>(n_study)});
       index_patient_study = std::vector<int>(n_study,
                               std::numeric_limits<int>::min());
-      current_statement__ = 145;
+      current_statement__ = 153;
       index_patient_study = context__.vals_i("index_patient_study");
-      current_statement__ = 145;
+      current_statement__ = 153;
       stan::math::check_greater_or_equal(function__, "index_patient_study",
         index_patient_study, 0);
-      current_statement__ = 146;
+      current_statement__ = 154;
       stan::math::validate_non_negative_index("index_patient", "n_observe",
         n_observe);
-      current_statement__ = 147;
+      current_statement__ = 155;
       context__.validate_dims("data initialization", "index_patient", "int",
         std::vector<size_t>{static_cast<size_t>(n_observe)});
       index_patient = std::vector<int>(n_observe,
                         std::numeric_limits<int>::min());
-      current_statement__ = 147;
+      current_statement__ = 155;
       index_patient = context__.vals_i("index_patient");
-      current_statement__ = 147;
+      current_statement__ = 155;
       stan::math::check_greater_or_equal(function__, "index_patient",
         index_patient, 0);
-      current_statement__ = 148;
+      current_statement__ = 156;
       context__.validate_dims("data initialization", "s_alpha", "double",
         std::vector<size_t>{});
       s_alpha = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 148;
+      current_statement__ = 156;
       s_alpha = context__.vals_r("s_alpha")[(1 - 1)];
-      current_statement__ = 148;
+      current_statement__ = 156;
       stan::math::check_greater_or_equal(function__, "s_alpha", s_alpha, 0);
-      current_statement__ = 149;
+      current_statement__ = 157;
       context__.validate_dims("data initialization", "s_mu", "double",
         std::vector<size_t>{});
       s_mu = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 149;
+      current_statement__ = 157;
       s_mu = context__.vals_r("s_mu")[(1 - 1)];
-      current_statement__ = 149;
+      current_statement__ = 157;
       stan::math::check_greater_or_equal(function__, "s_mu", s_mu, 0);
-      current_statement__ = 150;
+      current_statement__ = 158;
       context__.validate_dims("data initialization", "s_tau", "double",
         std::vector<size_t>{});
       s_tau = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 150;
+      current_statement__ = 158;
       s_tau = context__.vals_r("s_tau")[(1 - 1)];
-      current_statement__ = 150;
+      current_statement__ = 158;
       stan::math::check_greater_or_equal(function__, "s_tau", s_tau, 0);
-      current_statement__ = 151;
+      current_statement__ = 159;
+      context__.validate_dims("data initialization", "u_tau", "double",
+        std::vector<size_t>{});
+      u_tau = std::numeric_limits<double>::quiet_NaN();
+      current_statement__ = 159;
+      u_tau = context__.vals_r("u_tau")[(1 - 1)];
+      current_statement__ = 159;
+      stan::math::check_greater_or_equal(function__, "u_tau", u_tau, 0);
+      current_statement__ = 160;
+      context__.validate_dims("data initialization", "d_tau", "double",
+        std::vector<size_t>{});
+      d_tau = std::numeric_limits<double>::quiet_NaN();
+      current_statement__ = 160;
+      d_tau = context__.vals_r("d_tau")[(1 - 1)];
+      current_statement__ = 160;
+      stan::math::check_greater_or_equal(function__, "d_tau", d_tau, 0);
+      current_statement__ = 161;
       context__.validate_dims("data initialization", "s_beta", "double",
         std::vector<size_t>{});
       s_beta = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 151;
+      current_statement__ = 161;
       s_beta = context__.vals_r("s_beta")[(1 - 1)];
-      current_statement__ = 151;
+      current_statement__ = 161;
       stan::math::check_greater_or_equal(function__, "s_beta", s_beta, 0);
-      current_statement__ = 152;
+      current_statement__ = 162;
       context__.validate_dims("data initialization", "s_delta", "double",
         std::vector<size_t>{});
       s_delta = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 152;
+      current_statement__ = 162;
       s_delta = context__.vals_r("s_delta")[(1 - 1)];
-      current_statement__ = 152;
+      current_statement__ = 162;
       stan::math::check_greater_or_equal(function__, "s_delta", s_delta, 0);
-      current_statement__ = 153;
+      current_statement__ = 163;
       context__.validate_dims("data initialization", "s_sigma", "double",
         std::vector<size_t>{});
       s_sigma = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 153;
+      current_statement__ = 163;
       s_sigma = context__.vals_r("s_sigma")[(1 - 1)];
-      current_statement__ = 153;
+      current_statement__ = 163;
       stan::math::check_greater_or_equal(function__, "s_sigma", s_sigma, 0);
-      current_statement__ = 154;
+      current_statement__ = 164;
       context__.validate_dims("data initialization", "s_lambda", "double",
         std::vector<size_t>{});
       s_lambda = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 154;
+      current_statement__ = 164;
       s_lambda = context__.vals_r("s_lambda")[(1 - 1)];
-      current_statement__ = 154;
+      current_statement__ = 164;
       stan::math::check_greater_or_equal(function__, "s_lambda", s_lambda, 0);
-      current_statement__ = 155;
+      current_statement__ = 165;
       stan::math::validate_non_negative_index("missing", "n_observe",
         n_observe);
-      current_statement__ = 156;
+      current_statement__ = 166;
       context__.validate_dims("data initialization", "missing", "int",
         std::vector<size_t>{static_cast<size_t>(n_observe)});
       missing = std::vector<int>(n_observe, std::numeric_limits<int>::min());
-      current_statement__ = 156;
+      current_statement__ = 166;
       missing = context__.vals_i("missing");
-      current_statement__ = 156;
+      current_statement__ = 166;
       stan::math::check_greater_or_equal(function__, "missing", missing, 0);
-      current_statement__ = 157;
+      current_statement__ = 167;
       stan::math::validate_non_negative_index("count_missing", "n_observe",
         n_observe);
-      current_statement__ = 158;
+      current_statement__ = 168;
       context__.validate_dims("data initialization", "count_missing", "int",
         std::vector<size_t>{static_cast<size_t>(n_observe)});
       count_missing = std::vector<int>(n_observe,
                         std::numeric_limits<int>::min());
-      current_statement__ = 158;
+      current_statement__ = 168;
       count_missing = context__.vals_i("count_missing");
-      current_statement__ = 158;
+      current_statement__ = 168;
       stan::math::check_greater_or_equal(function__, "count_missing",
         count_missing, 0);
-      current_statement__ = 159;
+      current_statement__ = 169;
       stan::math::validate_non_negative_index("study_index", "n_observe",
         n_observe);
-      current_statement__ = 160;
+      current_statement__ = 170;
       context__.validate_dims("data initialization", "study_index", "int",
         std::vector<size_t>{static_cast<size_t>(n_observe)});
       study_index = std::vector<int>(n_observe,
                       std::numeric_limits<int>::min());
-      current_statement__ = 160;
+      current_statement__ = 170;
       study_index = context__.vals_i("study_index");
-      current_statement__ = 160;
+      current_statement__ = 170;
       stan::math::check_greater_or_equal(function__, "study_index",
         study_index, 0);
-      current_statement__ = 161;
+      current_statement__ = 171;
       stan::math::validate_non_negative_index("alpha_rep_index", "n_alpha",
         n_alpha);
-      current_statement__ = 162;
+      current_statement__ = 172;
       context__.validate_dims("data initialization", "alpha_rep_index",
         "int", std::vector<size_t>{static_cast<size_t>(n_alpha)});
       alpha_rep_index = std::vector<int>(n_alpha,
                           std::numeric_limits<int>::min());
-      current_statement__ = 162;
+      current_statement__ = 172;
       alpha_rep_index = context__.vals_i("alpha_rep_index");
-      current_statement__ = 162;
+      current_statement__ = 172;
       stan::math::check_greater_or_equal(function__, "alpha_rep_index",
         alpha_rep_index, 0);
-      current_statement__ = 163;
+      current_statement__ = 173;
       stan::math::validate_non_negative_index("alpha_data_index",
         "n_observe", n_observe);
-      current_statement__ = 164;
+      current_statement__ = 174;
       context__.validate_dims("data initialization", "alpha_data_index",
         "int", std::vector<size_t>{static_cast<size_t>(n_observe)});
       alpha_data_index = std::vector<int>(n_observe,
                            std::numeric_limits<int>::min());
-      current_statement__ = 164;
+      current_statement__ = 174;
       alpha_data_index = context__.vals_i("alpha_data_index");
-      current_statement__ = 164;
+      current_statement__ = 174;
       stan::math::check_greater_or_equal(function__, "alpha_data_index",
         alpha_data_index, 0);
-      current_statement__ = 165;
+      current_statement__ = 175;
       stan::math::validate_non_negative_index("delta_data_index",
         "n_observe", n_observe);
-      current_statement__ = 166;
+      current_statement__ = 176;
       context__.validate_dims("data initialization", "delta_data_index",
         "int", std::vector<size_t>{static_cast<size_t>(n_observe)});
       delta_data_index = std::vector<int>(n_observe,
                            std::numeric_limits<int>::min());
-      current_statement__ = 166;
+      current_statement__ = 176;
       delta_data_index = context__.vals_i("delta_data_index");
-      current_statement__ = 166;
+      current_statement__ = 176;
       stan::math::check_greater_or_equal(function__, "delta_data_index",
         delta_data_index, 0);
-      current_statement__ = 167;
+      current_statement__ = 177;
       stan::math::validate_non_negative_index("x_beta_col_index",
         "n_study_x_beta", n_study_x_beta);
-      current_statement__ = 168;
+      current_statement__ = 178;
       context__.validate_dims("data initialization", "x_beta_col_index",
         "int", std::vector<size_t>{static_cast<size_t>(n_study_x_beta)});
       x_beta_col_index = std::vector<int>(n_study_x_beta,
                            std::numeric_limits<int>::min());
-      current_statement__ = 168;
+      current_statement__ = 178;
       x_beta_col_index = context__.vals_i("x_beta_col_index");
-      current_statement__ = 168;
+      current_statement__ = 178;
       stan::math::check_greater_or_equal(function__, "x_beta_col_index",
         x_beta_col_index, 0);
-      current_statement__ = 169;
+      current_statement__ = 179;
       stan::math::validate_non_negative_index("x_beta_row_index",
         "n_study_x_beta", n_study_x_beta);
-      current_statement__ = 170;
+      current_statement__ = 180;
       context__.validate_dims("data initialization", "x_beta_row_index",
         "int", std::vector<size_t>{static_cast<size_t>(n_study_x_beta)});
       x_beta_row_index = std::vector<int>(n_study_x_beta,
                            std::numeric_limits<int>::min());
-      current_statement__ = 170;
+      current_statement__ = 180;
       x_beta_row_index = context__.vals_i("x_beta_row_index");
-      current_statement__ = 170;
+      current_statement__ = 180;
       stan::math::check_greater_or_equal(function__, "x_beta_row_index",
         x_beta_row_index, 0);
-      current_statement__ = 171;
+      current_statement__ = 181;
       stan::math::validate_non_negative_index("x_beta_col_n",
         "n_study_x_beta", n_study_x_beta);
-      current_statement__ = 172;
+      current_statement__ = 182;
       context__.validate_dims("data initialization", "x_beta_col_n", "int",
         std::vector<size_t>{static_cast<size_t>(n_study_x_beta)});
       x_beta_col_n = std::vector<int>(n_study_x_beta,
                        std::numeric_limits<int>::min());
-      current_statement__ = 172;
+      current_statement__ = 182;
       x_beta_col_n = context__.vals_i("x_beta_col_n");
-      current_statement__ = 172;
+      current_statement__ = 182;
       stan::math::check_greater_or_equal(function__, "x_beta_col_n",
         x_beta_col_n, 0);
-      current_statement__ = 173;
+      current_statement__ = 183;
       stan::math::validate_non_negative_index("x_beta_row_n",
         "n_study_x_beta", n_study_x_beta);
-      current_statement__ = 174;
+      current_statement__ = 184;
       context__.validate_dims("data initialization", "x_beta_row_n", "int",
         std::vector<size_t>{static_cast<size_t>(n_study_x_beta)});
       x_beta_row_n = std::vector<int>(n_study_x_beta,
                        std::numeric_limits<int>::min());
-      current_statement__ = 174;
+      current_statement__ = 184;
       x_beta_row_n = context__.vals_i("x_beta_row_n");
-      current_statement__ = 174;
+      current_statement__ = 184;
       stan::math::check_greater_or_equal(function__, "x_beta_row_n",
         x_beta_row_n, 0);
-      current_statement__ = 175;
+      current_statement__ = 185;
       stan::math::validate_non_negative_index("study_patient", "n_patient",
         n_patient);
-      current_statement__ = 176;
+      current_statement__ = 186;
       context__.validate_dims("data initialization", "study_patient", "int",
         std::vector<size_t>{static_cast<size_t>(n_patient)});
       study_patient = std::vector<int>(n_patient,
                         std::numeric_limits<int>::min());
-      current_statement__ = 176;
+      current_statement__ = 186;
       study_patient = context__.vals_i("study_patient");
-      current_statement__ = 176;
+      current_statement__ = 186;
       stan::math::check_greater_or_equal(function__, "study_patient",
         study_patient, 0);
-      current_statement__ = 176;
+      current_statement__ = 186;
       stan::math::check_less_or_equal(function__, "study_patient",
         study_patient, n_patient);
-      current_statement__ = 177;
+      current_statement__ = 187;
       stan::math::validate_non_negative_index("y", "n_observe", n_observe);
-      current_statement__ = 178;
+      current_statement__ = 188;
       context__.validate_dims("data initialization", "y", "double",
         std::vector<size_t>{static_cast<size_t>(n_observe)});
       y_data__ = Eigen::Matrix<double,-1,1>::Constant(n_observe,
@@ -815,25 +855,25 @@ public:
         n_observe);
       {
         std::vector<local_scalar_t__> y_flat__;
-        current_statement__ = 178;
+        current_statement__ = 188;
         y_flat__ = context__.vals_r("y");
-        current_statement__ = 178;
+        current_statement__ = 188;
         pos__ = 1;
-        current_statement__ = 178;
+        current_statement__ = 188;
         for (int sym1__ = 1; sym1__ <= n_observe; ++sym1__) {
-          current_statement__ = 178;
+          current_statement__ = 188;
           stan::model::assign(y, y_flat__[(pos__ - 1)],
             "assigning variable y", stan::model::index_uni(sym1__));
-          current_statement__ = 178;
+          current_statement__ = 188;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 179;
+      current_statement__ = 189;
       stan::math::validate_non_negative_index("x_alpha", "n_observe",
         n_observe);
-      current_statement__ = 180;
+      current_statement__ = 190;
       stan::math::validate_non_negative_index("x_alpha", "n_alpha", n_alpha);
-      current_statement__ = 181;
+      current_statement__ = 191;
       context__.validate_dims("data initialization", "x_alpha", "double",
         std::vector<size_t>{static_cast<size_t>(n_observe),
           static_cast<size_t>(n_alpha)});
@@ -844,29 +884,29 @@ public:
         n_observe, n_alpha);
       {
         std::vector<local_scalar_t__> x_alpha_flat__;
-        current_statement__ = 181;
+        current_statement__ = 191;
         x_alpha_flat__ = context__.vals_r("x_alpha");
-        current_statement__ = 181;
+        current_statement__ = 191;
         pos__ = 1;
-        current_statement__ = 181;
+        current_statement__ = 191;
         for (int sym1__ = 1; sym1__ <= n_alpha; ++sym1__) {
-          current_statement__ = 181;
+          current_statement__ = 191;
           for (int sym2__ = 1; sym2__ <= n_observe; ++sym2__) {
-            current_statement__ = 181;
+            current_statement__ = 191;
             stan::model::assign(x_alpha, x_alpha_flat__[(pos__ - 1)],
               "assigning variable x_alpha", stan::model::index_uni(sym2__),
               stan::model::index_uni(sym1__));
-            current_statement__ = 181;
+            current_statement__ = 191;
             pos__ = (pos__ + 1);
           }
         }
       }
-      current_statement__ = 182;
+      current_statement__ = 192;
       stan::math::validate_non_negative_index("x_delta", "n_observe",
         n_observe);
-      current_statement__ = 183;
+      current_statement__ = 193;
       stan::math::validate_non_negative_index("x_delta", "n_delta", n_delta);
-      current_statement__ = 184;
+      current_statement__ = 194;
       context__.validate_dims("data initialization", "x_delta", "double",
         std::vector<size_t>{static_cast<size_t>(n_observe),
           static_cast<size_t>(n_delta)});
@@ -877,29 +917,29 @@ public:
         n_observe, n_delta);
       {
         std::vector<local_scalar_t__> x_delta_flat__;
-        current_statement__ = 184;
+        current_statement__ = 194;
         x_delta_flat__ = context__.vals_r("x_delta");
-        current_statement__ = 184;
+        current_statement__ = 194;
         pos__ = 1;
-        current_statement__ = 184;
+        current_statement__ = 194;
         for (int sym1__ = 1; sym1__ <= n_delta; ++sym1__) {
-          current_statement__ = 184;
+          current_statement__ = 194;
           for (int sym2__ = 1; sym2__ <= n_observe; ++sym2__) {
-            current_statement__ = 184;
+            current_statement__ = 194;
             stan::model::assign(x_delta, x_delta_flat__[(pos__ - 1)],
               "assigning variable x_delta", stan::model::index_uni(sym2__),
               stan::model::index_uni(sym1__));
-            current_statement__ = 184;
+            current_statement__ = 194;
             pos__ = (pos__ + 1);
           }
         }
       }
-      current_statement__ = 185;
+      current_statement__ = 195;
       stan::math::validate_non_negative_index("x_beta", "n_beta", n_beta);
-      current_statement__ = 186;
+      current_statement__ = 196;
       stan::math::validate_non_negative_index("x_beta", "n_patient",
         n_patient);
-      current_statement__ = 187;
+      current_statement__ = 197;
       context__.validate_dims("data initialization", "x_beta", "double",
         std::vector<size_t>{static_cast<size_t>(n_beta),
           static_cast<size_t>(n_patient)});
@@ -910,122 +950,122 @@ public:
         n_patient);
       {
         std::vector<local_scalar_t__> x_beta_flat__;
-        current_statement__ = 187;
+        current_statement__ = 197;
         x_beta_flat__ = context__.vals_r("x_beta");
-        current_statement__ = 187;
+        current_statement__ = 197;
         pos__ = 1;
-        current_statement__ = 187;
+        current_statement__ = 197;
         for (int sym1__ = 1; sym1__ <= n_patient; ++sym1__) {
-          current_statement__ = 187;
+          current_statement__ = 197;
           for (int sym2__ = 1; sym2__ <= n_beta; ++sym2__) {
-            current_statement__ = 187;
+            current_statement__ = 197;
             stan::model::assign(x_beta, x_beta_flat__[(pos__ - 1)],
               "assigning variable x_beta", stan::model::index_uni(sym2__),
               stan::model::index_uni(sym1__));
-            current_statement__ = 187;
+            current_statement__ = 197;
             pos__ = (pos__ + 1);
           }
         }
       }
-      current_statement__ = 188;
+      current_statement__ = 198;
       context__.validate_dims("data initialization", "covariance_current",
         "int", std::vector<size_t>{});
       covariance_current = std::numeric_limits<int>::min();
-      current_statement__ = 188;
+      current_statement__ = 198;
       covariance_current = context__.vals_i("covariance_current")[(1 - 1)];
-      current_statement__ = 188;
+      current_statement__ = 198;
       stan::math::check_greater_or_equal(function__, "covariance_current",
         covariance_current, 1);
-      current_statement__ = 188;
+      current_statement__ = 198;
       stan::math::check_less_or_equal(function__, "covariance_current",
         covariance_current, 3);
-      current_statement__ = 189;
+      current_statement__ = 199;
       context__.validate_dims("data initialization", "covariance_historical",
         "int", std::vector<size_t>{});
       covariance_historical = std::numeric_limits<int>::min();
-      current_statement__ = 189;
+      current_statement__ = 199;
       covariance_historical = context__.vals_i("covariance_historical")[(1 -
         1)];
-      current_statement__ = 189;
+      current_statement__ = 199;
       stan::math::check_greater_or_equal(function__, "covariance_historical",
         covariance_historical, 1);
-      current_statement__ = 189;
+      current_statement__ = 199;
       stan::math::check_less_or_equal(function__, "covariance_historical",
         covariance_historical, 3);
-      current_statement__ = 190;
+      current_statement__ = 200;
       context__.validate_dims("data initialization",
         "covariance_unstructured", "int", std::vector<size_t>{});
       covariance_unstructured = std::numeric_limits<int>::min();
-      current_statement__ = 190;
+      current_statement__ = 200;
       covariance_unstructured = context__.vals_i("covariance_unstructured")[(1
         - 1)];
-      current_statement__ = 191;
+      current_statement__ = 201;
       context__.validate_dims("data initialization", "covariance_ar1", "int",
         std::vector<size_t>{});
       covariance_ar1 = std::numeric_limits<int>::min();
-      current_statement__ = 191;
+      current_statement__ = 201;
       covariance_ar1 = context__.vals_i("covariance_ar1")[(1 - 1)];
-      current_statement__ = 192;
+      current_statement__ = 202;
       context__.validate_dims("data initialization", "covariance_diagonal",
         "int", std::vector<size_t>{});
       covariance_diagonal = std::numeric_limits<int>::min();
-      current_statement__ = 192;
+      current_statement__ = 202;
       covariance_diagonal = context__.vals_i("covariance_diagonal")[(1 - 1)];
-      current_statement__ = 193;
+      current_statement__ = 203;
       stan::math::validate_non_negative_index("y_missing", "n_missing",
         n_missing);
-      current_statement__ = 194;
+      current_statement__ = 204;
       stan::math::validate_non_negative_index("alpha_raw", "n_alpha", n_alpha);
-      current_statement__ = 195;
+      current_statement__ = 205;
       stan::math::validate_non_negative_index("mu", "n_mu", n_mu);
-      current_statement__ = 196;
+      current_statement__ = 206;
       stan::math::validate_non_negative_index("tau", "n_tau", n_tau);
-      current_statement__ = 197;
+      current_statement__ = 207;
       stan::math::validate_non_negative_index("delta", "n_delta", n_delta);
-      current_statement__ = 198;
+      current_statement__ = 208;
       stan::math::validate_non_negative_index("beta", "n_beta", n_beta);
-      current_statement__ = 199;
+      current_statement__ = 209;
       stan::math::validate_non_negative_index("sigma", "n_study", n_study);
-      current_statement__ = 200;
+      current_statement__ = 210;
       stan::math::validate_non_negative_index("sigma", "n_rep", n_rep);
-      current_statement__ = 201;
+      current_statement__ = 211;
       stan::math::validate_non_negative_index("lambda_current",
         "n_lambda_current", n_lambda_current);
-      current_statement__ = 202;
+      current_statement__ = 212;
       stan::math::validate_non_negative_index("lambda_current", "n_rep",
-        n_rep);
-      current_statement__ = 202;
-      stan::math::validate_non_negative_index("lambda_current", "n_rep",
-        n_rep);
-      current_statement__ = 203;
-      stan::math::validate_non_negative_index("lambda_historical",
-        "n_lambda_historical", n_lambda_historical);
-      current_statement__ = 204;
-      stan::math::validate_non_negative_index("lambda_historical", "n_rep",
-        n_rep);
-      current_statement__ = 204;
-      stan::math::validate_non_negative_index("lambda_historical", "n_rep",
-        n_rep);
-      current_statement__ = 205;
-      stan::math::validate_non_negative_index("rho_current", "n_rho_current",
-        n_rho_current);
-      current_statement__ = 206;
-      stan::math::validate_non_negative_index("rho_historical",
-        "n_rho_historical", n_rho_historical);
-      current_statement__ = 207;
-      stan::math::validate_non_negative_index("alpha", "n_alpha", n_alpha);
-      current_statement__ = 208;
-      stan::math::validate_non_negative_index("epsilon", "n_rep", n_rep);
-      current_statement__ = 209;
-      stan::math::validate_non_negative_index("epsilon", "n_patient",
-        n_patient);
-      current_statement__ = 210;
-      stan::math::validate_non_negative_index("covariance_cholesky",
-        "n_study", n_study);
-      current_statement__ = 211;
-      stan::math::validate_non_negative_index("covariance_cholesky", "n_rep",
         n_rep);
       current_statement__ = 212;
+      stan::math::validate_non_negative_index("lambda_current", "n_rep",
+        n_rep);
+      current_statement__ = 213;
+      stan::math::validate_non_negative_index("lambda_historical",
+        "n_lambda_historical", n_lambda_historical);
+      current_statement__ = 214;
+      stan::math::validate_non_negative_index("lambda_historical", "n_rep",
+        n_rep);
+      current_statement__ = 214;
+      stan::math::validate_non_negative_index("lambda_historical", "n_rep",
+        n_rep);
+      current_statement__ = 215;
+      stan::math::validate_non_negative_index("rho_current", "n_rho_current",
+        n_rho_current);
+      current_statement__ = 216;
+      stan::math::validate_non_negative_index("rho_historical",
+        "n_rho_historical", n_rho_historical);
+      current_statement__ = 217;
+      stan::math::validate_non_negative_index("alpha", "n_alpha", n_alpha);
+      current_statement__ = 218;
+      stan::math::validate_non_negative_index("epsilon", "n_rep", n_rep);
+      current_statement__ = 219;
+      stan::math::validate_non_negative_index("epsilon", "n_patient",
+        n_patient);
+      current_statement__ = 220;
+      stan::math::validate_non_negative_index("covariance_cholesky",
+        "n_study", n_study);
+      current_statement__ = 221;
+      stan::math::validate_non_negative_index("covariance_cholesky", "n_rep",
+        n_rep);
+      current_statement__ = 222;
       stan::math::validate_non_negative_index("covariance_cholesky", "n_rep",
         n_rep);
     } catch (const std::exception& e) {
@@ -1082,7 +1122,7 @@ public:
         Eigen::Matrix<local_scalar_t__,-1,1>::Constant(n_tau, DUMMY_VAR__);
       current_statement__ = 4;
       tau = in__.template read_constrain_lub<
-              Eigen::Matrix<local_scalar_t__,-1,1>, jacobian__>(0, s_tau,
+              Eigen::Matrix<local_scalar_t__,-1,1>, jacobian__>(0, u_tau,
               lp__, n_tau);
       Eigen::Matrix<local_scalar_t__,-1,1> delta =
         Eigen::Matrix<local_scalar_t__,-1,1>::Constant(n_delta, DUMMY_VAR__);
@@ -1418,61 +1458,81 @@ public:
                                stan::model::index_min_max(start, end)),
                              pstream__)));
         }
-        current_statement__ = 106;
+        current_statement__ = 113;
         if (stan::math::logical_eq(model_type, 3)) {
           current_statement__ = 102;
           lp_accum__.add(stan::math::std_normal_lpdf<propto__>(alpha_raw));
           current_statement__ = 103;
           lp_accum__.add(stan::math::normal_lpdf<propto__>(mu, 0, s_mu));
-          current_statement__ = 104;
-          lp_accum__.add(stan::math::uniform_lpdf<propto__>(tau, 0, s_tau));
+          current_statement__ = 111;
+          if (stan::math::logical_eq(prior_tau, 1)) {
+            current_statement__ = 108;
+            if (pstream__) {
+              stan::math::stan_print(pstream__, "student t");
+              *(pstream__) << std::endl;
+            }
+            current_statement__ = 109;
+            lp_accum__.add(stan::math::student_t_lpdf<propto__>(tau, d_tau,
+                             0, s_tau));
+          } else {
+            current_statement__ = 107;
+            if (stan::math::logical_eq(prior_tau, 2)) {
+              current_statement__ = 104;
+              if (pstream__) {
+                stan::math::stan_print(pstream__, "uniform");
+                *(pstream__) << std::endl;
+              }
+              current_statement__ = 105;
+              lp_accum__.add(stan::math::uniform_lpdf<propto__>(tau, 0, s_tau));
+            }
+          }
         } else {
           current_statement__ = 100;
           lp_accum__.add(stan::math::normal_lpdf<propto__>(alpha_raw, 0,
                            s_alpha));
         }
-        current_statement__ = 107;
+        current_statement__ = 114;
         lp_accum__.add(stan::math::normal_lpdf<propto__>(delta, 0, s_delta));
-        current_statement__ = 108;
+        current_statement__ = 115;
         lp_accum__.add(stan::math::normal_lpdf<propto__>(beta, 0, s_beta));
-        current_statement__ = 111;
+        current_statement__ = 118;
         for (int i = 1; i <= n_study; ++i) {
-          current_statement__ = 109;
+          current_statement__ = 116;
           lp_accum__.add(stan::math::uniform_lpdf<propto__>(
                            stan::model::rvalue(sigma, "sigma",
                              stan::model::index_uni(i)), 0, s_sigma));
         }
-        current_statement__ = 117;
+        current_statement__ = 124;
         if (stan::math::logical_eq(covariance_current,
               covariance_unstructured)) {
-          current_statement__ = 115;
+          current_statement__ = 122;
           lp_accum__.add(stan::math::lkj_corr_cholesky_lpdf<propto__>(
                            stan::model::rvalue(lambda_current,
                              "lambda_current", stan::model::index_uni(1)),
                            s_lambda));
         } else {
-          current_statement__ = 114;
+          current_statement__ = 121;
           if (stan::math::logical_eq(covariance_current, covariance_ar1)) {
-            current_statement__ = 112;
+            current_statement__ = 119;
             lp_accum__.add(stan::math::uniform_lpdf<propto__>(rho_current,
                              -1, 1));
           }
         }
-        current_statement__ = 125;
+        current_statement__ = 132;
         if (stan::math::logical_eq(covariance_historical,
               covariance_unstructured)) {
-          current_statement__ = 123;
+          current_statement__ = 130;
           for (int i = 1; i <= n_lambda_historical; ++i) {
-            current_statement__ = 121;
+            current_statement__ = 128;
             lp_accum__.add(stan::math::lkj_corr_cholesky_lpdf<propto__>(
                              stan::model::rvalue(lambda_historical,
                                "lambda_historical", stan::model::index_uni(i)),
                              s_lambda));
           }
         } else {
-          current_statement__ = 120;
+          current_statement__ = 127;
           if (stan::math::logical_eq(covariance_historical, covariance_ar1)) {
-            current_statement__ = 118;
+            current_statement__ = 125;
             lp_accum__.add(stan::math::uniform_lpdf<propto__>(rho_historical,
                              -1, 1));
           }
@@ -1537,7 +1597,7 @@ public:
           std::numeric_limits<double>::quiet_NaN());
       current_statement__ = 4;
       tau = in__.template read_constrain_lub<
-              Eigen::Matrix<local_scalar_t__,-1,1>, jacobian__>(0, s_tau,
+              Eigen::Matrix<local_scalar_t__,-1,1>, jacobian__>(0, u_tau,
               lp__, n_tau);
       Eigen::Matrix<double,-1,1> delta =
         Eigen::Matrix<double,-1,1>::Constant(n_delta,
@@ -1956,7 +2016,7 @@ public:
       stan::model::assign(tau,
         in__.read<Eigen::Matrix<local_scalar_t__,-1,1>>(n_tau),
         "assigning variable tau");
-      out__.write_free_lub(0, s_tau, tau);
+      out__.write_free_lub(0, u_tau, tau);
       Eigen::Matrix<local_scalar_t__,-1,1> delta =
         Eigen::Matrix<local_scalar_t__,-1,1>::Constant(n_delta, DUMMY_VAR__);
       current_statement__ = 5;
@@ -2168,7 +2228,7 @@ public:
           pos__ = (pos__ + 1);
         }
       }
-      out__.write_free_lub(0, s_tau, tau);
+      out__.write_free_lub(0, u_tau, tau);
       Eigen::Matrix<local_scalar_t__,-1,1> delta =
         Eigen::Matrix<local_scalar_t__,-1,1>::Constant(n_delta, DUMMY_VAR__);
       {

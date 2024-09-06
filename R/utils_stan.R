@@ -97,6 +97,13 @@ stan_mcmc <- function(
     s_lambda = s_lambda,
     s_mu = s_mu,
     s_tau = s_tau,
+    d_tau = d_tau,
+    u_tau = if_any(prior_tau == "half_t", Inf, s_tau),
+    prior_tau = switch(
+      prior_tau,
+      half_t = 1L,
+      uniform = 2L
+    ),
     missing = missing,
     alpha_rep_index = alpha_rep_index,
     alpha_data_index = alpha_data_index,
