@@ -1,5 +1,6 @@
 ---
 title: "Methods"
+bibliography: bibliography.bib
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -82,7 +83,7 @@ This parameterization is represented in the more compact expression $\left( X_\a
 
 ## Post-processing
 
-The `hbl_summary()` function post-processes the results from the model. It accepts MCMC samples of parameters and returns interpretable group-level posterior summaries such as change from baseline response and treatment effect. To arrive at these summaries, `hbl_summary()` computes marginal posteriors of transformed parameters. The transformations derive patient-level fitted values from model parameters, then derive group-level responses as averages of fitted values. We refer to this style of estimation as "unconditional estimation", as opposed to "conditional estimation", which takes each group mean to be the appropriate linear combination of the relevant $\alpha$ and $\delta$ parameters, without using $\beta$ components or going through fitted values. If the baseline covariates are balanced across studies, unconditional and conditional estimation should produce similar estimates of control and treatment effects. This approach to post-processing is explained in section III.C of the [FDA draft guidance on adjusting for covariates](https://www.fda.gov/media/148910/download).
+The `hbl_summary()` function post-processes the results from the model. It accepts MCMC samples of parameters and returns estimated marginal means of the response and treatment effect. To estimate marginal means of the response, `hbl_summary()` takes group-level averages of posterior samples of fitted values while dropping covariate adjustment terms from the model (i.e. $X_\alpha \alpha + X_\delta \delta$). Because the columns of $X_\beta$ are centered at their means, this choice is mathematically equivalent to `emmeans::emmeans()` with the `weights = "proportional"` (@lenth2016).
 
 ## Hierarchical model
 
@@ -236,3 +237,5 @@ s_\tau = 2 \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
 $$
 
 If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_t$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.
+
+# References
