@@ -30,6 +30,15 @@
 #'   <https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html>. # nolint
 #'   If `prior_tau` is `"uniform"`, then `s_tau` is the upper bound of `tau`.
 #'   Upper bound on `tau` if `prior_tau` is `"uniform"`.
+#' @param prior_tau Character string, family of the prior of `tau`.
+#'   If `prior_tau` equals `"uniform"`, then the prior on `tau` is
+#'   a uniform prior with lower bound 0 and upper bound `s_tau`.
+#'   If `prior_tau` equals `"half_t"`, then the prior on `tau` is a
+#'   half Student-t prior with center 0, lower bound 0, scale parameter
+#'   `s_tau`, and degrees of freedom `d_tau`. The scale parameter `s_tau`
+#'   is analogous to the `sigma` parameter of
+#'   the Student-t parameterization given at
+#'   <https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html>. # nolint
 #' @param mu Numeric of length `n_rep`,
 #'   mean of the control group means `alpha` for each rep.
 #' @param tau Numeric of length `n_rep`,
