@@ -513,16 +513,8 @@ hbl_plot_group(
 )
 ```
 
-For the hierarchical model, we can plot the marginal posterior of the $\tau$ parameter to see the influence of the uniform prior upper bound. If the probability mass of $\tau$ builds up against the uniform upper bound, then the estimated hierarchical variance may be larger than assumed, and should indicate that the algorithm wants to borrow less. If the probability mass of $\tau$ is concentrated on the left, towards 0, then this may indicate that the data suggests borrowing and the uniform prior upper bound has little effect on the model estimates.
+`hbl_plot_tau()` visualizes the marginal posterior of $\tau$.
 
 ```{r}
 hbl_plot_tau(mcmc_hierarchical)
 ```
-
-## Ongoing problems with borrowing metrics
-
-For some analyses, the mean shift ratio can fall below 0 or above 1. This may occur if pooled model estimates are very close to independent model estimates for some time points, or when the uniform upper bound prior is set to an uninformative large value and pooled model estimates are very far away from independent model estimates, due to random variability in the estimates of the independent, pooled, and hierarchical model estimates. Mean shift ratio issues may also occur when enforcing nontrivial correlation structures among time points because of differences in longitudinal smoothing behavior among models. (In the latter case, specifying diagonal covariance matrices may resolve the issues.)
-
-Similar issues with the variance shift ratio may occur for time points where the pooled model estimate is far away from the independent model, since large shifts in the mean may increase the magnitude of the estimate of residual error for the current study.
-
-The precision ratio metric is based on the conditional estimation of treatment effect, rather than the unconditional estimation, so it will usually be an underestimate of the mean shift ratio or the variance shift ratio. (One benefit of unconditional estimation over conditional estimation is reduced variability in the estimate of treatment effect.)

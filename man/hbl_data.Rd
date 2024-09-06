@@ -160,8 +160,4 @@ hbl_data(
   covariates = c("cov1", "cov2")
 )
 }
-\seealso{
-Other data: 
-\code{\link{hbl_s_tau}()}
-}
 \concept{data}

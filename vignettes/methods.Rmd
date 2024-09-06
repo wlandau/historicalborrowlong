@@ -91,7 +91,6 @@ Functions:
 
 * `hbl_sim_hierarchical()`
 * `hbl_mcmc_hierarchical()`
-* `hbl_s_tau()`
 
 The hierarchical model analyzes the data from all studies and shrinks the control study-by-rep means $\alpha_{kt}$ (one scalar parameter for each unique combination of study and rep) towards a common normal distribution with mean $\mu_t$ and variance $\tau_t^2$. For each study in the data (both current and historical), the covariance is user-defined. Options include:
 
@@ -104,7 +103,7 @@ $$
 & y_k \sim \text{MVN}((X_\alpha)_k \cdot \alpha + (X_\delta)_k \cdot \delta + (X_\beta)_k \cdot \beta, \ I_{N_k} \otimes \Sigma_k ) \\
 & \qquad \alpha_{kt} \stackrel{\text{ind}}{\sim} \text{Normal} (\mu_t, \tau_t^2) \\
 & \qquad \qquad \mu_t \stackrel{\text{ind}}{\sim} \text{Normal}(0, s_\mu^2) \\
-& \qquad \qquad \tau_t \stackrel{\text{ind}}{\sim} \text{Uniform}(0, s_\tau) \\
+& \qquad \qquad \tau_t \stackrel{\text{ind}}{\sim} f_\tau \\
 & \qquad \delta_{dt} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\delta^2) \\
 & \qquad \beta_{b} \stackrel{\text{ind}}{\sim} \text{Normal} (0, s_\beta^2) \\
 & \qquad \Sigma_k = \left (I_T \sigma_k \right ) \Lambda_k \Lambda_k' \left (I_T \sigma_k \right ) \\
@@ -117,6 +116,26 @@ $$
 & \qquad \qquad \rho_k \stackrel{\text{ind}}{\sim} \text{Uniform}(-1, 1) \qquad (\text{only for } m_k = 2)
 \end{aligned} 
 $$
+
+The prior $f_\tau$ on $\tau$ is critically important because:
+
+1. It controls the prior amount of borrowing, and
+2. The prior has a large influence if there are few historical studies in the data.
+
+$f_\tau$ can either be a flexible half-Student-t distribution with $d_\tau$ degrees of freedom and scale parameter $s_\tau$:
+
+$$
+f_\tau = \text{Student-t}(0, s_\tau, d_\tau)^+
+$$
+or a uniform distribution with lower bound 0 and upper bound $s_\tau$:
+
+$$
+f_\tau = \text{Uniform}(0, s_\tau)
+$$
+
+Following the recommendation of @gelman2006, please use half-Student-t if the number of historical studies is small and consider uniform for large numbers of historical studies.
+
+For the half-Student-t distribution, the role of the $s_\tau$ parameter is equivalent to the $\sigma$ parameter from the [Student-t parameterization in the Stan user manual](https://mc-stan.org/docs/functions-reference/unbounded_continuous_distributions.html#student-t-distribution).
 
 ## Independent model
 
@@ -209,33 +228,5 @@ $$
 $$
 
 The precision ratio comes from the conditional distribution of $\alpha_k$ in the hierarchical model given the other parameters and the data. More precisely, in this conditional distribution, the mean is a weighted average between the prior mean and data mean, and the precision ratio is the weight on the prior mean. This can be seen in a simpler case with a Bayesian model with a normal data model, a normal prior on the mean, and known constant variance. For details, see Chapter 2 of [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/) 3rd Ed. by Gelman et al.
-
-## Adjusting borrowing strength using the prior
-
-It is almost always best to set a diffuse prior on $\tau_t$ so that hierarchical borrowing is fully dynamic. However, in extreme cases (e.g. few historical studies, combined with other issues), there may not be enough information to estimate the hierarchical variance $\tau_t^2$, so the model may exhibit weaker borrowing than it should. To roughly target a given minimum amount of borrowing, one option is to set the upper bound $s_\tau$ of the uniform prior of $\tau_t$. In the case where there are few studies, the function `hbl_s_tau()` suggests a value of $s_\tau$ that assigns a desired prior precision ratio. Suppose $P$ is the desired prior precision ratio. Taking $\tau^2$ and $\sigma^2$ to be scalar variances of the control means and residuals, respectively, and taking $n$ to be the number of non-missing observed patient in at a given rep in the current study:
-
-$$
-\begin{aligned}
-P = \frac{\frac{1}{\tau^2}}{\frac{1}{\tau^2} + \frac{n}{\sigma^2}}
-\end{aligned}
-$$
-
-Solving for $\tau$:
-
-$$
-\begin{aligned}
-\tau = \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
-\end{aligned}
-$$
-
-If we expect the mean of $\tau$ to be as above, then our uniform upper bound is double. This is the value returned by `hbl_s_tau()`:
-
-$$
-\begin{aligned}
-s_\tau = 2 \sigma \sqrt{\frac{1}{n} \left ( \frac{1}{P} - 1 \right )}
-\end{aligned}
-$$
-
-If you do set a small $s_\tau$, be aware that the marginal probability mass of each $\tau_t$ may pile up at the uniform prior upper bound. This is generally a sign of poor prior specification in Bayesian models, and you can monitor it with `hbl_plot_tau()`.
 
 # References

@@ -1,10 +1,11 @@
-#' @title Suggest s_tau
+#' @title Superseded: suggest a value of s_tau
 #' @export
-#' @family data
-#' @description Suggest a value of the `s_tau` hyperparameter
+#' @keywords internal
+#' @description Superseded:
+#'   suggest a value of the `s_tau` hyperparameter
 #'   to roughly target a specified minimum amount of borrowing
-#'   in the hierarchical model. Only use if a diffuse prior
-#'   on `tau` is not feasible.
+#'   in the hierarchical model with the uniform prior.
+#'   Only use if a diffuse prior on `tau` is not feasible.
 #' @details The target minimum amount of borrowing
 #'   is expressed in the `precision_ratio` argument.
 #'   The precision ratio is a metric that quantifies the amount of

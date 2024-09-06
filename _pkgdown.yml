@@ -6,7 +6,6 @@ reference:
 - title: Data
   contents:
   - '`hbl_data`'
-  - '`hbl_s_tau`'
 - title: Simulate
   contents:
   - '`hbl_sim_hierarchical`'
