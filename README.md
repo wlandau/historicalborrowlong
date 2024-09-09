@@ -1,11 +1,6 @@
 
 # historicalborrowlong
 
-[![check](https://github.com/wlandau/historicalborrowlong/workflows/check/badge.svg)](https://github.com/wlandau/historicalborrowlong/actions?query=workflow%3Acheck)
-[![cover](https://github.com/wlandau/historicalborrowlong/workflows/cover/badge.svg)](https://github.com/wlandau/historicalborrowlong/actions?query=workflow%3Acover)
-[![pkgdown](https://github.com/wlandau/historicalborrowlong/workflows/pkgdown/badge.svg)](https://github.com/wlandau/historicalborrowlong/actions?query=workflow%3Apkgdown)
-[![lint](https://github.com/wlandau/historicalborrowlong/workflows/pkgdown/badge.svg)](https://github.com/wlandau/historicalborrowlong/actions?query=workflow%3Alint)
-
 Historical borrowing in clinical trials can improve precision and
 operating characteristics. This package supports a longitudinal
 hierarchical model to borrow historical control data from other studies
