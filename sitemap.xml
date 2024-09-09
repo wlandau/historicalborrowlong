@@ -1,87 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/methods.html</loc>
-  </url>
-  <url>
-    <loc>/articles/usage.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_convergence.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_mcmc_hierarchical.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_mcmc_independent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_mcmc_pool.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_mcmc_sge.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_metrics.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_plot_borrow.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_plot_group.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_plot_tau.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_s_tau.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_sim_hierarchical.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_sim_independent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_sim_pool.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hbl_summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/historicalborrowlong-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>/CONTRIBUTING.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/methods.html</loc></url>
+<url><loc>/articles/usage.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/hbl_convergence.html</loc></url>
+<url><loc>/reference/hbl_data.html</loc></url>
+<url><loc>/reference/hbl_ess.html</loc></url>
+<url><loc>/reference/hbl_mcmc_hierarchical.html</loc></url>
+<url><loc>/reference/hbl_mcmc_independent.html</loc></url>
+<url><loc>/reference/hbl_mcmc_pool.html</loc></url>
+<url><loc>/reference/hbl_mcmc_sge.html</loc></url>
+<url><loc>/reference/hbl_metrics.html</loc></url>
+<url><loc>/reference/hbl_plot_borrow.html</loc></url>
+<url><loc>/reference/hbl_plot_group.html</loc></url>
+<url><loc>/reference/hbl_plot_tau.html</loc></url>
+<url><loc>/reference/hbl_s_tau.html</loc></url>
+<url><loc>/reference/hbl_sim_hierarchical.html</loc></url>
+<url><loc>/reference/hbl_sim_independent.html</loc></url>
+<url><loc>/reference/hbl_sim_pool.html</loc></url>
+<url><loc>/reference/hbl_summary.html</loc></url>
+<url><loc>/reference/historicalborrowlong-package.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
 </urlset>
+
