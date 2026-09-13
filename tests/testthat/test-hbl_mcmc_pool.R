@@ -18,8 +18,8 @@ test_that("hbl_mcmc_pool() unstructured + ar1", {
       out <- hbl_mcmc_pool(
         data,
         chains = 2,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE,
         covariance_current = "unstructured",

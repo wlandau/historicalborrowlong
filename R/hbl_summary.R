@@ -225,9 +225,9 @@ hbl_summary <- function(
 
 get_samples_response <- function(mcmc, data, x_alpha, x_delta) {
   index_max <- data$study == max(data$study)
-  data <- data[index_max,, drop = FALSE] # nolint
-  x_alpha <- x_alpha[index_max,, drop = FALSE] # nolint
-  x_delta <- x_delta[index_max,, drop = FALSE] # nolint
+  data <- data[index_max, , drop = FALSE] # nolint
+  x_alpha <- x_alpha[index_max, , drop = FALSE] # nolint
+  x_delta <- x_delta[index_max, , drop = FALSE] # nolint
   alpha <- t(as.matrix(mcmc[, grepl("^alpha", colnames(mcmc)), drop = FALSE]))
   delta <- t(as.matrix(mcmc[, grepl("^delta", colnames(mcmc)), drop = FALSE]))
   beta <- t(as.matrix(mcmc[, grepl("^beta", colnames(mcmc)), drop = FALSE]))
@@ -276,7 +276,8 @@ get_samples_change <- function(samples_response) {
     y = baseline,
     by = c("study", "group", "sample")
   )
-  out$value_percent <- 100 * (out$value - out$value_baseline) /
+  out$value_percent <- 100 *
+    (out$value - out$value_baseline) /
     out$value_baseline
   out$value <- out$value - out$value_baseline
   out$value_baseline <- NULL
@@ -347,8 +348,8 @@ get_samples_precision_ratio <- function(samples_sigma, samples_tau, data) {
     by = c("rep", "sample")
   )
   out <- dplyr::left_join(x = out, y = n, by = "rep")
-  out$value <- (1 / out$tau ^ 2) /
-    ((1 / out$tau ^ 2) + 1 / (out$sigma ^ 2 / out$n))
+  out$value <- (1 / out$tau^2) /
+    ((1 / out$tau^2) + 1 / (out$sigma^2 / out$n))
   out
 }
 
@@ -407,50 +408,56 @@ get_table_data_N_study <- function(data) {
 }
 
 get_table_response <- function(samples_response) {
-  dplyr::summarize(
-    dplyr::group_by(samples_response, group, rep),
-    response_mean = mean(value),
-    response_variance = stats::var(value),
-    response_sd = stats::sd(value),
-    response_lower = quantile(value, 0.025),
-    response_upper = quantile(value, 0.975),
-    response_mean_mcse = posterior::mcse_mean(value),
-    response_sd_mcse = posterior::mcse_sd(value),
-    response_lower_mcse = posterior::mcse_quantile(value, 0.025),
-    response_upper_mcse = posterior::mcse_quantile(value, 0.975),
-    .groups = "drop"
+  suppressWarnings(
+    dplyr::summarize(
+      dplyr::group_by(samples_response, group, rep),
+      response_mean = mean(value),
+      response_variance = stats::var(value),
+      response_sd = stats::sd(value),
+      response_lower = quantile(value, 0.025),
+      response_upper = quantile(value, 0.975),
+      response_mean_mcse = posterior::mcse_mean(value),
+      response_sd_mcse = posterior::mcse_sd(value),
+      response_lower_mcse = posterior::mcse_quantile(value, 0.025),
+      response_upper_mcse = posterior::mcse_quantile(value, 0.975),
+      .groups = "drop"
+    )
   )
 }
 
 get_table_change <- function(samples_change) {
-  dplyr::summarize(
-    dplyr::group_by(samples_change, group, rep),
-    change_mean = mean(value),
-    change_lower = quantile(value, 0.025),
-    change_upper = quantile(value, 0.975),
-    change_mean_mcse = posterior::mcse_mean(value),
-    change_lower_mcse = posterior::mcse_quantile(value, 0.025),
-    change_upper_mcse = posterior::mcse_quantile(value, 0.975),
-    change_percent_mean = mean(value_percent),
-    change_percent_lower = quantile(value_percent, 0.025),
-    change_percent_upper = quantile(value_percent, 0.975),
-    change_percent_mean_mcse = posterior::mcse_mean(value_percent),
-    change_percent_lower_mcse = posterior::mcse_quantile(value_percent, 0.025),
-    change_percent_upper_mcse = posterior::mcse_quantile(value_percent, 0.975),
-    .groups = "drop"
+  suppressWarnings(
+    dplyr::summarize(
+      dplyr::group_by(samples_change, group, rep),
+      change_mean = mean(value),
+      change_lower = quantile(value, 0.025),
+      change_upper = quantile(value, 0.975),
+      change_mean_mcse = posterior::mcse_mean(value),
+      change_lower_mcse = posterior::mcse_quantile(value, 0.025),
+      change_upper_mcse = posterior::mcse_quantile(value, 0.975),
+      change_percent_mean = mean(value_percent),
+      change_percent_lower = quantile(value_percent, 0.025),
+      change_percent_upper = quantile(value_percent, 0.975),
+      change_percent_mean_mcse = posterior::mcse_mean(value_percent),
+      change_percent_lower_mcse = posterior::mcse_quantile(value_percent, 0.025),
+      change_percent_upper_mcse = posterior::mcse_quantile(value_percent, 0.975),
+      .groups = "drop"
+    )
   )
 }
 
 get_table_diff <- function(samples_diff) {
-  dplyr::summarize(
-    dplyr::group_by(samples_diff, group, rep),
-    diff_mean = mean(value),
-    diff_lower = quantile(value, 0.025),
-    diff_upper = quantile(value, 0.975),
-    diff_mean_mcse = posterior::mcse_mean(value),
-    diff_lower_mcse = posterior::mcse_quantile(value, 0.025),
-    diff_upper_mcse = posterior::mcse_quantile(value, 0.975),
-    .groups = "drop"
+  suppressWarnings(
+    dplyr::summarize(
+      dplyr::group_by(samples_diff, group, rep),
+      diff_mean = mean(value),
+      diff_lower = quantile(value, 0.025),
+      diff_upper = quantile(value, 0.975),
+      diff_mean_mcse = posterior::mcse_mean(value),
+      diff_lower_mcse = posterior::mcse_quantile(value, 0.025),
+      diff_upper_mcse = posterior::mcse_quantile(value, 0.975),
+      .groups = "drop"
+    )
   )
 }
 
@@ -477,15 +484,17 @@ get_table_eoi <- function(samples_diff, eoi, direction) {
 }
 
 get_table_effect <- function(samples_effect) {
-  dplyr::summarize(
-    dplyr::group_by(samples_effect, group, rep),
-    effect_mean = mean(value),
-    effect_lower = quantile(value, 0.025),
-    effect_upper = quantile(value, 0.975),
-    effect_mean_mcse = posterior::mcse_mean(value),
-    effect_lower_mcse = posterior::mcse_quantile(value, 0.025),
-    effect_upper_mcse = posterior::mcse_quantile(value, 0.975),
-    .groups = "drop"
+  suppressWarnings(
+    dplyr::summarize(
+      dplyr::group_by(samples_effect, group, rep),
+      effect_mean = mean(value),
+      effect_lower = quantile(value, 0.025),
+      effect_upper = quantile(value, 0.975),
+      effect_mean_mcse = posterior::mcse_mean(value),
+      effect_lower_mcse = posterior::mcse_quantile(value, 0.025),
+      effect_upper_mcse = posterior::mcse_quantile(value, 0.975),
+      .groups = "drop"
+    )
   )
 }
 

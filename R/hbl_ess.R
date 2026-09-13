@@ -110,7 +110,7 @@ hbl_ess <- function(
 
 hbl_ess_v0 <- function(data, mcmc_pool) {
   sigma <- dplyr::select(mcmc_pool, tidyselect::starts_with("sigma["))
-  precision <- as.data.frame(lapply(sigma, function(x) x ^ (-2)))
+  precision <- as.data.frame(lapply(sigma, function(x) x^(-2)))
   out <- numeric(0L)
   studies <- sort(unique(data$study))
   for (rep in sort(unique(data$rep))) {

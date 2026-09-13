@@ -125,7 +125,7 @@ as cited and explained in the methods vignette at
   )
 }
 \seealso{
-Other summary: 
-\code{\link{hbl_summary}()}
+Other summary:
+\code{\link[=hbl_summary]{hbl_summary()}}
 }
 \concept{summary}

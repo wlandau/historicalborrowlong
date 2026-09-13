@@ -33,32 +33,24 @@ test_that("hbl_ess()", {
   )
   v0 <- c(
     mean(
-      (
-        (pool$`sigma[1,1]` ^ (-2)) +
-          (pool$`sigma[2,1]` ^ (-2)) +
-          (pool$`sigma[3,1]` ^ (-2))
-      ) ^ (-1)
+      ((pool$`sigma[1,1]`^(-2)) +
+        (pool$`sigma[2,1]`^(-2)) +
+        (pool$`sigma[3,1]`^(-2)))^(-1)
     ),
     mean(
-      (
-        (pool$`sigma[1,2]` ^ (-2)) +
-          (pool$`sigma[2,2]` ^ (-2)) +
-          (pool$`sigma[3,2]` ^ (-2))
-      ) ^ (-1)
+      ((pool$`sigma[1,2]`^(-2)) +
+        (pool$`sigma[2,2]`^(-2)) +
+        (pool$`sigma[3,2]`^(-2)))^(-1)
     ),
     mean(
-      (
-        (pool$`sigma[1,3]` ^ (-2)) +
-          (pool$`sigma[2,3]` ^ (-2)) +
-          (pool$`sigma[3,3]` ^ (-2))
-      ) ^ (-1)
+      ((pool$`sigma[1,3]`^(-2)) +
+        (pool$`sigma[2,3]`^(-2)) +
+        (pool$`sigma[3,3]`^(-2)))^(-1)
     ),
     mean(
-      (
-        (pool$`sigma[1,4]` ^ (-2)) +
-          (pool$`sigma[2,4]` ^ (-2)) +
-          (pool$`sigma[3,4]` ^ (-2))
-      ) ^ (-1)
+      ((pool$`sigma[1,4]`^(-2)) +
+        (pool$`sigma[2,4]`^(-2)) +
+        (pool$`sigma[3,4]`^(-2)))^(-1)
     )
   )
   expect_equal(out$v0, v0)

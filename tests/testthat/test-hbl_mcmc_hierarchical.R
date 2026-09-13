@@ -21,8 +21,8 @@ test_that("hbl_mcmc_hierarchical() + diagonal + unstructured", {
         out <- hbl_mcmc_hierarchical(
           data,
           chains = 2,
-          warmup = 10,
-          iter = 20,
+          warmup = 20,
+          iter = 40,
           seed = 0,
           constraint = FALSE,
           covariance_current = "diagonal",

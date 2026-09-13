@@ -15,8 +15,8 @@ test_that("hbl_summary() pool with raw response type", {
       mcmc <- hbl_mcmc_pool(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE
       )
@@ -35,27 +35,54 @@ test_that("hbl_summary() pool with raw response type", {
   expect_equal(out$rep, rep(seq_len(3), times = 2))
   expect_equal(dim(out), c(6, 49))
   cols <- c(
-    "group", "group_label",
-    "rep", "rep_label",
-    "data_mean", "data_lower", "data_upper",
-    "data_n", "data_N", "data_sd",
-    "data_n_study_1", "data_n_study_2",
-    "data_N_study_1", "data_N_study_2",
-    "response_mean", "response_sd", "response_variance", "response_lower",
-    "response_upper", "response_mean_mcse", "response_sd_mcse",
-    "response_lower_mcse",  "response_upper_mcse",
-    "change_mean", "change_lower",
+    "group",
+    "group_label",
+    "rep",
+    "rep_label",
+    "data_mean",
+    "data_lower",
+    "data_upper",
+    "data_n",
+    "data_N",
+    "data_sd",
+    "data_n_study_1",
+    "data_n_study_2",
+    "data_N_study_1",
+    "data_N_study_2",
+    "response_mean",
+    "response_sd",
+    "response_variance",
+    "response_lower",
+    "response_upper",
+    "response_mean_mcse",
+    "response_sd_mcse",
+    "response_lower_mcse",
+    "response_upper_mcse",
+    "change_mean",
+    "change_lower",
     "change_upper",
-    "change_percent_mean", "change_percent_lower",
+    "change_percent_mean",
+    "change_percent_lower",
     "change_percent_upper",
-    "change_percent_mean_mcse", "change_percent_lower_mcse",
+    "change_percent_mean_mcse",
+    "change_percent_lower_mcse",
     "change_percent_upper_mcse",
     "change_mean_mcse",
-    "change_lower_mcse", "change_upper_mcse",
-    "diff_mean", "diff_lower",
-    "diff_upper",  "diff_mean_mcse", "diff_lower_mcse", "diff_upper_mcse",
-    "P(diff > 0)",  "P(diff < 1)", "effect_mean", "effect_lower",
-    "effect_upper",  "effect_mean_mcse", "effect_lower_mcse",
+    "change_lower_mcse",
+    "change_upper_mcse",
+    "diff_mean",
+    "diff_lower",
+    "diff_upper",
+    "diff_mean_mcse",
+    "diff_lower_mcse",
+    "diff_upper_mcse",
+    "P(diff > 0)",
+    "P(diff < 1)",
+    "effect_mean",
+    "effect_lower",
+    "effect_upper",
+    "effect_mean_mcse",
+    "effect_lower_mcse",
     "effect_upper_mcse"
   )
   expect_equal(sort(cols), sort(colnames(out)))
@@ -77,8 +104,8 @@ test_that("hbl_summary() independent with change response type", {
       mcmc <- hbl_mcmc_independent(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE
       )
@@ -98,19 +125,42 @@ test_that("hbl_summary() independent with change response type", {
   expect_equal(out$rep, rep(seq_len(3), times = 2))
   expect_equal(dim(out), c(6, 37))
   cols <- c(
-    "group", "group_label",
-    "rep", "rep_label",
-    "data_mean", "data_lower", "data_upper",
-    "data_n", "data_N", "data_sd",
-    "data_n_study_1", "data_n_study_2",
-    "data_N_study_1", "data_N_study_2",
-    "response_mean", "response_sd", "response_variance", "response_lower",
-    "response_upper", "response_mean_mcse", "response_sd_mcse",
-    "response_lower_mcse",  "response_upper_mcse",
-    "diff_mean", "diff_lower",
-    "diff_upper",  "diff_mean_mcse", "diff_lower_mcse", "diff_upper_mcse",
-    "P(diff > 0)",  "P(diff < 1)", "effect_mean", "effect_lower",
-    "effect_upper",  "effect_mean_mcse", "effect_lower_mcse",
+    "group",
+    "group_label",
+    "rep",
+    "rep_label",
+    "data_mean",
+    "data_lower",
+    "data_upper",
+    "data_n",
+    "data_N",
+    "data_sd",
+    "data_n_study_1",
+    "data_n_study_2",
+    "data_N_study_1",
+    "data_N_study_2",
+    "response_mean",
+    "response_sd",
+    "response_variance",
+    "response_lower",
+    "response_upper",
+    "response_mean_mcse",
+    "response_sd_mcse",
+    "response_lower_mcse",
+    "response_upper_mcse",
+    "diff_mean",
+    "diff_lower",
+    "diff_upper",
+    "diff_mean_mcse",
+    "diff_lower_mcse",
+    "diff_upper_mcse",
+    "P(diff > 0)",
+    "P(diff < 1)",
+    "effect_mean",
+    "effect_lower",
+    "effect_upper",
+    "effect_mean_mcse",
+    "effect_lower_mcse",
     "effect_upper_mcse"
   )
   expect_equal(sort(cols), sort(colnames(out)))
@@ -132,8 +182,8 @@ test_that("hbl_summary() data counts", {
       mcmc <- hbl_mcmc_independent(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE
       )
@@ -174,8 +224,8 @@ test_that("hbl_summary() hierarchical with raw response type", {
       mcmc <- hbl_mcmc_hierarchical(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE
       )
@@ -194,29 +244,58 @@ test_that("hbl_summary() hierarchical with raw response type", {
   expect_equal(out$rep, rep(seq_len(3), times = 2))
   expect_equal(dim(out), c(6, 52))
   cols <- c(
-    "group", "group_label",
-    "rep", "rep_label",
-    "data_mean", "data_lower", "data_upper",
-    "data_n", "data_N", "data_sd",
-    "data_n_study_1", "data_n_study_2",
-    "data_N_study_1", "data_N_study_2",
-    "response_mean", "response_sd", "response_variance", "response_lower",
-    "response_upper", "response_mean_mcse", "response_sd_mcse",
-    "response_lower_mcse",  "response_upper_mcse",
-    "change_mean", "change_lower",
+    "group",
+    "group_label",
+    "rep",
+    "rep_label",
+    "data_mean",
+    "data_lower",
+    "data_upper",
+    "data_n",
+    "data_N",
+    "data_sd",
+    "data_n_study_1",
+    "data_n_study_2",
+    "data_N_study_1",
+    "data_N_study_2",
+    "response_mean",
+    "response_sd",
+    "response_variance",
+    "response_lower",
+    "response_upper",
+    "response_mean_mcse",
+    "response_sd_mcse",
+    "response_lower_mcse",
+    "response_upper_mcse",
+    "change_mean",
+    "change_lower",
     "change_upper",
-    "change_percent_mean", "change_percent_lower",
+    "change_percent_mean",
+    "change_percent_lower",
     "change_percent_upper",
-    "change_percent_mean_mcse", "change_percent_lower_mcse",
+    "change_percent_mean_mcse",
+    "change_percent_lower_mcse",
     "change_percent_upper_mcse",
     "change_mean_mcse",
-    "change_lower_mcse", "change_upper_mcse",
-    "diff_mean", "diff_lower",
-    "diff_upper",  "diff_mean_mcse", "diff_lower_mcse", "diff_upper_mcse",
-    "P(diff > 0)",  "P(diff < 1)", "effect_mean", "effect_lower",
-    "effect_upper",  "effect_mean_mcse", "effect_lower_mcse",
+    "change_lower_mcse",
+    "change_upper_mcse",
+    "diff_mean",
+    "diff_lower",
+    "diff_upper",
+    "diff_mean_mcse",
+    "diff_lower_mcse",
+    "diff_upper_mcse",
+    "P(diff > 0)",
+    "P(diff < 1)",
+    "effect_mean",
+    "effect_lower",
+    "effect_upper",
+    "effect_mean_mcse",
+    "effect_lower_mcse",
     "effect_upper_mcse",
-    "precision_ratio", "precision_ratio_lower", "precision_ratio_upper"
+    "precision_ratio",
+    "precision_ratio_lower",
+    "precision_ratio_upper"
   )
   expect_equal(sort(cols), sort(colnames(out)))
 })
@@ -236,8 +315,8 @@ test_that("hbl_summary() pool mock mcmc", {
       mcmc <- hbl_mcmc_pool(
         data,
         chains = 2,
-        warmup = 100,
-        iter = 200,
+        warmup = 200,
+        iter = 400,
         seed = 0,
         constraint = FALSE
       )
@@ -264,17 +343,20 @@ test_that("hbl_summary() pool mock mcmc", {
     sample = seq_len(6)
   )
   grid <- dplyr::group_by(grid, group, rep, sample)
-  grid <- dplyr::group_modify(grid, ~{
-    name_alpha <- sprintf("alpha[%s]", .y$rep)
-    name_delta <- sprintf("delta[%s]", .y$rep)
-    index <- data$study == 2 & data$group == .y$group & data$rep == .y$rep
-    if (.y$group == 1) {
-      y <- mcmc[[name_alpha]][.y$sample]
-    } else {
-      y <- mcmc[[name_delta]][.y$sample]
+  grid <- dplyr::group_modify(
+    grid,
+    ~ {
+      name_alpha <- sprintf("alpha[%s]", .y$rep)
+      name_delta <- sprintf("delta[%s]", .y$rep)
+      index <- data$study == 2 & data$group == .y$group & data$rep == .y$rep
+      if (.y$group == 1) {
+        y <- mcmc[[name_alpha]][.y$sample]
+      } else {
+        y <- mcmc[[name_delta]][.y$sample]
+      }
+      tibble::tibble(value = y)
     }
-    tibble::tibble(value = y)
-  })
+  )
   response <- dplyr::ungroup(grid)
   response <- dplyr::group_by(response, group, rep, sample)
   response <- dplyr::summarize(response, value = mean(value), .groups = "drop")
@@ -413,8 +495,8 @@ test_that("hbl_summary() precision ratio", {
       mcmc <- hbl_mcmc_hierarchical(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE
       )
@@ -435,7 +517,7 @@ test_that("hbl_summary() precision ratio", {
     sigma <- mcmc[[sprintf("sigma[2,%s]", rep)]]
     tau <- mcmc[[sprintf("tau[%s]", rep)]]
     n <- 10
-    samples <- (1 / tau ^ 2) / ((1 / tau ^ 2) + 1 / (sigma ^ 2 / n))
+    samples <- (1 / tau^2) / ((1 / tau^2) + 1 / (sigma^2 / n))
     expect_equal(
       out$precision_ratio[rep],
       mean(samples)

@@ -113,7 +113,7 @@ hbl_plot_group <- function(
   )
   out$Group <- as.character(out$group_label)
   out$Rep <- as.character(out$rep_label)
-  out <- out[!is.na(out[[paste0(outcome, "_mean")]]),, drop = FALSE] # nolint
+  out <- out[!is.na(out[[paste0(outcome, "_mean")]]), , drop = FALSE] # nolint
   args_point <- list(
     x = as.symbol("Rep"),
     y = as.symbol(paste0(outcome, "_mean")),

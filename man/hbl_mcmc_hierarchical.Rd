@@ -291,10 +291,10 @@ mcmc
 }
 }
 \seealso{
-Other mcmc: 
-\code{\link{hbl_convergence}()},
-\code{\link{hbl_mcmc_independent}()},
-\code{\link{hbl_mcmc_pool}()},
-\code{\link{hbl_mcmc_sge}()}
+Other mcmc:
+\code{\link[=hbl_convergence]{hbl_convergence()}},
+\code{\link[=hbl_mcmc_independent]{hbl_mcmc_independent()}},
+\code{\link[=hbl_mcmc_pool]{hbl_mcmc_pool()}},
+\code{\link[=hbl_mcmc_sge]{hbl_mcmc_sge()}}
 }
 \concept{mcmc}

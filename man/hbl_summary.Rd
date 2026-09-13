@@ -215,7 +215,7 @@ hbl_summary(mcmc, data)
 }
 }
 \seealso{
-Other summary: 
-\code{\link{hbl_ess}()}
+Other summary:
+\code{\link[=hbl_ess]{hbl_ess()}}
 }
 \concept{summary}

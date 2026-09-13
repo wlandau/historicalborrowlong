@@ -37,11 +37,13 @@
 #' hbl_convergence(mcmc)
 #' }
 hbl_convergence <- function(mcmc) {
-  out <- posterior::summarize_draws(
-    mcmc,
-    rhat = posterior::rhat,
-    ess_bulk = posterior::ess_bulk,
-    ess_tail = posterior::ess_tail
+  out <- suppressWarnings(
+    posterior::summarize_draws(
+      mcmc,
+      rhat = posterior::rhat,
+      ess_bulk = posterior::ess_bulk,
+      ess_tail = posterior::ess_tail
+    )
   )
   tibble::tibble(
     max_rhat = max(out$rhat, na.rm = TRUE),

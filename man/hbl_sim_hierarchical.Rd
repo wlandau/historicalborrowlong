@@ -174,8 +174,8 @@ Simulate from the non-longitudinal hierarchical model.
 hbl_sim_hierarchical(n_continuous = 1)$data
 }
 \seealso{
-Other simulate: 
-\code{\link{hbl_sim_independent}()},
-\code{\link{hbl_sim_pool}()}
+Other simulate:
+\code{\link[=hbl_sim_independent]{hbl_sim_independent()}},
+\code{\link[=hbl_sim_pool]{hbl_sim_pool()}}
 }
 \concept{simulate}

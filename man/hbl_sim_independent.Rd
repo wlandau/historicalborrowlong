@@ -142,8 +142,8 @@ Simulate from the longitudinal independent model.
 hbl_sim_independent(n_continuous = 1)$data
 }
 \seealso{
-Other simulate: 
-\code{\link{hbl_sim_hierarchical}()},
-\code{\link{hbl_sim_pool}()}
+Other simulate:
+\code{\link[=hbl_sim_hierarchical]{hbl_sim_hierarchical()}},
+\code{\link[=hbl_sim_pool]{hbl_sim_pool()}}
 }
 \concept{simulate}

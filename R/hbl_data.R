@@ -241,23 +241,31 @@ hbl_data_assert_unique_patients <- function(data) {
 }
 
 hbl_data_enforce_baseline_covariates <- function(data) {
-  out <- dplyr::group_modify(dplyr::group_by(data, study, patient), ~ {
-    for (x in grep("^covariate_", colnames(data), value = TRUE)) {
-      if (length(unique(.x[[x]])) != 1L) {
-        hbl_warn(
-          paste(
-            "covariate", x, "of patient", .x$patient_label[1],
-            "is time-varying.",
-            "All covariates must be *baseline* covariates, not time-varying.",
-            "All elements of", x, "and other covariates",
-            "must be the same within each patient. The model assumes this fact",
-            "and only uses the baseline level of each covariate."
+  out <- dplyr::group_modify(
+    dplyr::group_by(data, study, patient),
+    ~ {
+      for (x in grep("^covariate_", colnames(data), value = TRUE)) {
+        if (length(unique(.x[[x]])) != 1L) {
+          hbl_warn(
+            paste(
+              "covariate",
+              x,
+              "of patient",
+              .x$patient_label[1],
+              "is time-varying.",
+              "All covariates must be *baseline* covariates, not time-varying.",
+              "All elements of",
+              x,
+              "and other covariates",
+              "must be the same within each patient. The model assumes this fact",
+              "and only uses the baseline level of each covariate."
+            )
           )
-        )
-        .x[[x]] <- .x[[x]][.x$rep == min(.x$rep)]
+          .x[[x]] <- .x[[x]][.x$rep == min(.x$rep)]
+        }
       }
+      .x
     }
-    .x
-  })
+  )
   dplyr::ungroup(out)
 }

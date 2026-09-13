@@ -311,10 +311,10 @@ mcmc
 }
 }
 \seealso{
-Other mcmc: 
-\code{\link{hbl_convergence}()},
-\code{\link{hbl_mcmc_hierarchical}()},
-\code{\link{hbl_mcmc_independent}()},
-\code{\link{hbl_mcmc_pool}()}
+Other mcmc:
+\code{\link[=hbl_convergence]{hbl_convergence()}},
+\code{\link[=hbl_mcmc_hierarchical]{hbl_mcmc_hierarchical()}},
+\code{\link[=hbl_mcmc_independent]{hbl_mcmc_independent()}},
+\code{\link[=hbl_mcmc_pool]{hbl_mcmc_pool()}}
 }
 \concept{mcmc}

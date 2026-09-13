@@ -18,8 +18,8 @@ test_that("hbl_mcmc_independent() with betas + ar1 + diagonal", {
       out <- hbl_mcmc_independent(
         data,
         chains = 2,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0,
         constraint = FALSE,
         covariance_current = "ar1",

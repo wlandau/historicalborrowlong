@@ -1,6 +1,6 @@
-# historicalborrowlong 0.1.0.9000 (development)
+# historicalborrowlong 0.1.1
 
-
+* Compatibility with `rstan` 2.3.9 (#6).
 
 # historicalborrowlong 0.1.0
 

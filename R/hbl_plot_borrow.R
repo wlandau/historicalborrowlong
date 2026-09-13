@@ -115,7 +115,7 @@ hbl_plot_borrow <- function(
   )
   out$Group <- as.character(out$group_label)
   out$Rep <- as.character(out$rep_label)
-  out <- out[!is.na(out[[paste0(outcome, "_mean")]]),, drop = FALSE] # nolint
+  out <- out[!is.na(out[[paste0(outcome, "_mean")]]), , drop = FALSE] # nolint
   args_point <- list(
     x = as.symbol("Rep"),
     y = as.symbol(paste0(outcome, "_mean")),
@@ -136,7 +136,7 @@ hbl_plot_borrow <- function(
       do.call(what = ggplot2::aes, args = args_errorbar),
       position = ggplot2::position_dodge(width = 0.5)
     ) +
-    ggplot2::facet_wrap(~ Group) +
+    ggplot2::facet_wrap(~Group) +
     ggplot2::ylab(paste("Posterior", outcome)) +
     ggplot2::theme_gray(20) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))

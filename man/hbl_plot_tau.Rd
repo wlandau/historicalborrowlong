@@ -36,8 +36,8 @@ hbl_plot_tau(mcmc)
 }
 }
 \seealso{
-Other plot: 
-\code{\link{hbl_plot_borrow}()},
-\code{\link{hbl_plot_group}()}
+Other plot:
+\code{\link[=hbl_plot_borrow]{hbl_plot_borrow()}},
+\code{\link[=hbl_plot_group]{hbl_plot_group()}}
 }
 \concept{plot}

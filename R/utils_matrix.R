@@ -70,8 +70,8 @@ get_x_beta <- function(data, x_alpha, x_delta) {
     )
     index_study <- which(index_study)
     index_study_na <- which(index_study_na)
-    x_study <- x_all[index_study,, drop = FALSE] # nolint
-    x_study_na <- x_all[index_study_na,, drop = FALSE] # nolint
+    x_study <- x_all[index_study, , drop = FALSE] # nolint
+    x_study_na <- x_all[index_study_na, , drop = FALSE] # nolint
     columns <- beta_only(columns_full_rank(x_study))
     columns_na <- beta_only(columns_full_rank(x_study_na))
     columns_both <- intersect(columns, columns_na)
@@ -97,7 +97,7 @@ get_x_beta <- function(data, x_alpha, x_delta) {
     rep(TRUE, nrow(data))
   )
   x_all_out <- cbind(x_alpha, x_delta, diagonal)
-  x_all_out_na <- x_all_out[index_na,, drop = FALSE] # nolint
+  x_all_out_na <- x_all_out[index_na, , drop = FALSE] # nolint
   columns <- beta_only(columns_full_rank(x_all_out))
   columns_na <- beta_only(columns_full_rank(x_all_out_na))
   columns_both <- intersect(columns, columns_na)

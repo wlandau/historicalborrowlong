@@ -22,9 +22,9 @@ hbl_sim_x_beta <- function(
   x_delta_full <- x_delta
   n_rep <- length(unique(data_full$rep))
   index <- data_full$rep == min(data_full$rep)
-  data <- data_full[index,, drop = FALSE] # nolint
-  x_alpha <- x_alpha[index,, drop = FALSE] # nolint
-  x_delta <- x_delta[index,, drop = FALSE] # nolint
+  data <- data_full[index, , drop = FALSE] # nolint
+  x_alpha <- x_alpha[index, , drop = FALSE] # nolint
+  x_delta <- x_delta[index, , drop = FALSE] # nolint
   out <- NULL
   try_x_beta_full <- 0
   while (
@@ -37,9 +37,9 @@ hbl_sim_x_beta <- function(
       out[[study]] <- hbl_sim_x_beta_study(
         n_continuous = n_continuous,
         n_binary = n_binary,
-        data = data[data$study == study,, drop = FALSE], # nolint
-        x_alpha = x_alpha[data$study == study,, drop = FALSE], # nolint
-        x_delta = x_delta[data$study == study,, drop = FALSE] # nolint
+        data = data[data$study == study, , drop = FALSE], # nolint
+        x_alpha = x_alpha[data$study == study, , drop = FALSE], # nolint
+        x_delta = x_delta[data$study == study, , drop = FALSE] # nolint
       )
     }
     out <- as.matrix(Matrix::bdiag(out))
@@ -55,7 +55,7 @@ hbl_sim_x_beta <- function(
       covariates
     )
     index <- rep(seq_len(nrow(data)), each = n_rep)
-    out <- out[index,, drop = FALSE] # nolint
+    out <- out[index, , drop = FALSE] # nolint
   }
   out
 }
@@ -108,9 +108,7 @@ hbl_sim_response <- function(
   n_rep <- max(data$rep)
   true(all(data$patient == rep(seq_len(max(data$patient)), each = n_rep)))
   true(all(data$rep == rep(seq_len(n_rep), times = n_patient)))
-  means <- x_alpha %*% alpha +
-    x_delta %*% delta +
-    x_beta %*% beta
+  means <- x_alpha %*% alpha + x_delta %*% delta + x_beta %*% beta
   means <- as.numeric(means)
   residuals <- numeric(0)
   correlations <- hbl_get_correlations(
@@ -126,7 +124,7 @@ hbl_sim_response <- function(
   for (patient in seq_len(n_patient)) {
     study <- unique(data$study[data$patient == patient])
     true(length(study) == 1)
-    sigma_patient <- diag(sigma[study,, drop = TRUE]) # nolint
+    sigma_patient <- diag(sigma[study, , drop = TRUE]) # nolint
     correlation_patient <- correlations[[study]]
     covariance <- sigma_patient %*% correlation_patient %*% sigma_patient
     epsilon <- MASS::mvrnorm(n = 1L, mu = rep(0, n_rep), Sigma = covariance)
@@ -151,11 +149,11 @@ hbl_get_correlations <- function(
     if (study == n_study) {
       covariance <- covariance_current
       rho <- rho_current
-      lambda <- lambda_current[1,, .drop = TRUE] # nolint
+      lambda <- lambda_current[1, , .drop = TRUE] # nolint
     } else {
       covariance <- covariance_historical
       rho <- rho_historical[study]
-      lambda <- lambda_historical[study,, .drop = TRUE] # nolint
+      lambda <- lambda_historical[study, , .drop = TRUE] # nolint
     }
     if (covariance == "unstructured") {
       out[[study]] <- lambda %*% t(lambda)
@@ -175,11 +173,11 @@ ar1_correlation <- function(rho, n) {
   out <- matrix(0, nrow = n, ncol = n)
   out[1, 1] <- 1
   for (i in seq(2, n)) {
-    out[i, 1] <- rho ^ (i - 1)
+    out[i, 1] <- rho^(i - 1)
   }
   for (i in seq(2, n)) {
     for (j in seq(2, i)) {
-      out[i, j] <- scale * rho ^ (i - j)
+      out[i, j] <- scale * rho^(i - j)
     }
   }
   out %*% t(out)
@@ -191,8 +189,8 @@ hbl_sim_lambda <- function(n_matrix, n_rep, s_lambda) {
     return(array(t(chol(out)), dim = c(1, n_rep, n_rep)))
   }
   for (index in seq_len(n_matrix)) {
-    out[index,, .drop = TRUE] <- # nolint
-      t(chol(out[index,, .drop = TRUE])) # nolint
+    out[index, , .drop = TRUE] <- # nolint
+      t(chol(out[index, , .drop = TRUE])) # nolint
   }
   out
 }

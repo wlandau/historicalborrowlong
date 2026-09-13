@@ -12,8 +12,8 @@ test_that("hbl_plot_borrow()", {
       mcmc_borrow <- hbl_mcmc_hierarchical(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0
       )
     )
@@ -23,8 +23,8 @@ test_that("hbl_plot_borrow()", {
       mcmc_pool <- hbl_mcmc_pool(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0
       )
     )
@@ -34,8 +34,8 @@ test_that("hbl_plot_borrow()", {
       mcmc_independent <- hbl_mcmc_independent(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0
       )
     )

@@ -36,7 +36,7 @@ hbl_warn_identifiable <- function(response, x_alpha, x_delta, x_beta) {
     hbl_warn(message = message)
     return()
   }
-  x <- x[!is.na(response),, drop = FALSE] # nolint
+  x <- x[!is.na(response), , drop = FALSE] # nolint
   if (!is_full_rank(x)) {
     message <- paste(
       "full model matrix is not full rank after removing rows",

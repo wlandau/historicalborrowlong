@@ -14,6 +14,6 @@ test_that("ar1_cholesky()", {
   expect_equal(diag(out), rep(1, 3))
   expect_equal(out[lower.tri(out)], out[upper.tri(out)])
   expect_equal(out[1, 2], rho)
-  expect_equal(out[1, 3], rho ^ 2)
-  expect_equal(out[2, 3], rho ^ 1)
+  expect_equal(out[1, 3], rho^2)
+  expect_equal(out[2, 3], rho^1)
 })

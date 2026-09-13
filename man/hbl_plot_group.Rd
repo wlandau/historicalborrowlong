@@ -86,8 +86,8 @@ hbl_plot_group(
 }
 }
 \seealso{
-Other plot: 
-\code{\link{hbl_plot_borrow}()},
-\code{\link{hbl_plot_tau}()}
+Other plot:
+\code{\link[=hbl_plot_borrow]{hbl_plot_borrow()}},
+\code{\link[=hbl_plot_tau]{hbl_plot_tau()}}
 }
 \concept{plot}

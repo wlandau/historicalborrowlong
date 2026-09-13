@@ -43,13 +43,15 @@ stan_mcmc <- function(
   n_patient <- length(unique(data$patient))
   n_rep <- length(unique(data$rep))
   n_lambda_current <- as.integer(identical(covariance_current, "unstructured"))
-  n_lambda_historical <- (n_study - 1L) * as.integer(
-    identical(covariance_historical, "unstructured")
-  )
+  n_lambda_historical <- (n_study - 1L) *
+    as.integer(
+      identical(covariance_historical, "unstructured")
+    )
   n_rho_current <- as.integer(identical(covariance_current, "ar1"))
-  n_rho_historical <- (n_study - 1L) * as.integer(
-    identical(covariance_historical, "ar1")
-  )
+  n_rho_historical <- (n_study - 1L) *
+    as.integer(
+      identical(covariance_historical, "ar1")
+    )
   patients <- dplyr::distinct(data, study, patient)
   patients <- dplyr::arrange(patients, study)
   # Use index vectors instead of multiplying x_alpha or x_delta.
@@ -149,7 +151,8 @@ stan_mcmc <- function(
   out$.draw <- seq_len(nrow(out))
   out <- dplyr::select(
     out,
-    tidyselect::starts_with(pars), tidyselect::starts_with(".")
+    tidyselect::starts_with(pars),
+    tidyselect::starts_with(".")
   )
   out <- dplyr::select(
     out,

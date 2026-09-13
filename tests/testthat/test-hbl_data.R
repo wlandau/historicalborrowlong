@@ -127,7 +127,7 @@ test_that("hbl_data() completes the grid", {
   data$outcome <- rnorm(n = 16)
   data_full <- data
   data_full$id <- paste(data_full$subject, data_full$visit)
-  data <- data[-15,, drop = FALSE] # nolint
+  data <- data[-15, , drop = FALSE] # nolint
   out <- hbl_data(
     data = data,
     response = "outcome",
