@@ -9,8 +9,8 @@ test_that("hbl_ess()", {
       pool <- hbl_mcmc_pool(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0
       )
     )
@@ -20,8 +20,8 @@ test_that("hbl_ess()", {
       hierarchical <- hbl_mcmc_hierarchical(
         data,
         chains = 1,
-        warmup = 10,
-        iter = 20,
+        warmup = 20,
+        iter = 40,
         seed = 0
       )
     )
